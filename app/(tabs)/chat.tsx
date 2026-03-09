@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native'
 import { supabase } from '@/lib/supabase'
 import { TextInput, IconButton, useTheme, ActivityIndicator } from 'react-native-paper'
@@ -10,6 +10,7 @@ export default function TabThreeScreen() {
   const [isLoading, setIsLoading] = useState(false)
   const { colors } = useTheme()
   const notify = useSnackbar()
+  const scrollRef = useRef<ScrollView>(null)
 
   useEffect(() => { fetchMessages() }, [])
 
@@ -75,7 +76,7 @@ export default function TabThreeScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} ref={scrollRef} onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}>
         {isLoading
           ? <ActivityIndicator animating color={colors.primary} style={{ marginTop: 40 }} />
           : messages.map(m => (
