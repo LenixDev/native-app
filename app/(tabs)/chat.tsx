@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Tou
 import { supabase } from '@/lib/supabase'
 import { TextInput, IconButton, useTheme, ActivityIndicator } from 'react-native-paper'
 import { useSnackbar } from '@/hooks/use-snackbar'
+import { Button } from 'heroui-native/button'
 
 export default function TabThreeScreen() {
   const [content, setContent] = useState('')
@@ -103,7 +104,7 @@ export default function TabThreeScreen() {
           mode="outlined"
           dense
         />
-        <IconButton icon="send" onPress={insert} />
+        <Button onPress={insert}>Send</Button>
       </View>
     </KeyboardAvoidingView>
   )
