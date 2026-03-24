@@ -10,8 +10,10 @@
     "web": "npx expo start --web",
     "lint": "npx expo lint",
     "host": "eas build --platform android --profile production",
-    "launch": "npx expo start --web --port ${PORT:-8080}",
-    "supacli": "npx @supabase/supabase-js-cli"
+    "launch": "npx expo start --web --port ${PORT:-8081}",
+    "supacli": "npx supabase --help",
+    "supalink": "supabase link",
+    "supapull": "supabase db pull"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
