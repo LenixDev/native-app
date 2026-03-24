@@ -10,7 +10,7 @@
     "web": "npx expo start --web",
     "lint": "npx expo lint",
     "host": "eas build --platform android --profile production",
-    "launch": "npx expo start --web --port ${PORT:-8081}",
+    "launch": "npx expo export -p web && npx serve dist --listen ${PORT:-8081}",
     "supacli": "npx supabase --help",
     "supalink": "supabase link",
     "supapull": "supabase db pull"
