@@ -9,10 +9,6 @@ import '../global.css'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { HeroUINativeProvider } from 'heroui-native'
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 

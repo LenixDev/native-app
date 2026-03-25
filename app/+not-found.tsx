@@ -1,6 +1,6 @@
-import { Link } from "expo-router"
+import { Text } from "react-native"
 
 const NotFound = () => (
-  <Link href={"./(tabs)/home"} className="text-foreground">Go to home</Link>
+  <Text>Not Found</Text>
 )
 export default NotFound
