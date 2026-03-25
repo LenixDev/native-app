@@ -6,6 +6,7 @@ export function IconSymbol({
   size = 24,
   color,
   style,
+  
   weight = 'regular',
 }: {
   name: SymbolViewProps['name'];
