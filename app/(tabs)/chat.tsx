@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native'
 import { supabase } from '@/lib/supabase'
-import { TextInput, IconButton, useTheme, ActivityIndicator } from 'react-native-paper'
+import { TextInput, useTheme, ActivityIndicator } from 'react-native-paper'
 import { useSnackbar } from '@/hooks/use-snackbar'
 import { Button } from 'heroui-native/button'
 
+// eslint-disable-next-line max-lines-per-function, max-statements
 export default function TabThreeScreen() {
   const [content, setContent] = useState('')
   const [messages, setMessages] = useState<{ id: string; content: string }[]>([])
@@ -13,34 +14,45 @@ export default function TabThreeScreen() {
   const notify = useSnackbar()
   const scrollRef = useRef<ScrollView>(null)
 
-  useEffect(() => { fetchMessages() }, [])
-
-  async function fetchMessages() {
+  const fetchMessages = async () => {
     setIsLoading(true)
     const { data } = await supabase.from('messages').select()
     setMessages(data ?? [])
     setIsLoading(false)
   }
 
-  async function insert() {
-    if (!content.trim()) return notify('please add content to the placeholder!')
+  const insert = async () => {
+    if (!content.trim()) {
+      notify('please add content to the placeholder!')
+      return 
+    }
     await supabase.from('messages').insert({ content, user_id: '00000000-0000-0000-0000-000000000000' })
     setContent('')
-    fetchMessages()
+    await fetchMessages()
   }
 
-  async function update(id: string) {
-    if (!content.trim()) return notify('please add content to the placeholder!')
-    const original = messages.find(m => m.id === id)
-    if (original?.content === content) return notify('can not update with the same content!')
+  useEffect(() => {
+    fetchMessages().catch(() => { throw new Error("An error occur inside a useEffect") })
+  }, [])
+
+  const update = async (id: string) => {
+    if (!content.trim()) {
+      notify('please add content to the placeholder!')
+      return
+    }
+    const original = messages.find(message => message.id === id)
+    if (original?.content === content) {
+      notify('can not update with the same content!')
+      return
+    }
     await supabase.from('messages').update({ content }).eq('id', id)
-    fetchMessages()
+    await fetchMessages()
     notify('updated!')
   }
 
-  async function remove(id: string) {
+  const remove = async (id: string) => {
     await supabase.from('messages').delete().eq('id', id)
-    fetchMessages()
+    await fetchMessages()
     notify('deleted!')
   }
 
@@ -80,14 +92,14 @@ export default function TabThreeScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} ref={scrollRef} onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}>
         {isLoading
           ? <ActivityIndicator animating color={colors.primary} style={{ marginTop: 40 }} />
-          : messages.map(m => (
-            <View key={m.id} style={styles.bubble}>
-              <Text style={styles.messageText}>{m.content}</Text>
+          : messages.map(message => (
+            <View key={message.id} style={styles.bubble}>
+              <Text style={styles.messageText}>{message.content}</Text>
               <View style={styles.actions}>
-                <TouchableOpacity style={styles.actionBtn} onPress={() => update(m.id)}>
+                <TouchableOpacity style={styles.actionBtn} onPress={() => { update(message.id).catch(() => undefined) }}>
                   <Text style={styles.actionText}>Edit</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.actionBtn, styles.deleteBtn]} onPress={() => remove(m.id)}>
+                <TouchableOpacity style={[styles.actionBtn, styles.deleteBtn]} onPress={() => { remove(message.id).catch(() => undefined) }}>
                   <Text style={styles.deleteText}>Delete</Text>
                 </TouchableOpacity>
               </View>
@@ -104,7 +116,7 @@ export default function TabThreeScreen() {
           mode="outlined"
           dense
         />
-        <Button onPress={insert}>Send</Button>
+        <Button onPress={() => { insert().catch(() => undefined) }}>Send</Button>
       </View>
     </KeyboardAvoidingView>
   )
