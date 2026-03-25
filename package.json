@@ -10,6 +10,7 @@
     "web": "npx expo start --web",
     "lint": "npx expo lint",
     "host": "eas build --platform android --profile production",
+    "devhost": "eas build --platform android --profile development",
     "net": "npx expo start --web --tunnel",
     "supacli": "npx supabase --help",
     "supalink": "supabase link",
