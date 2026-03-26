@@ -2,11 +2,12 @@
 const { defineConfig } = require('eslint/config')
 const expoConfig = require('eslint-config-expo/flat')
 const lint = require('lenix/lint')
+const prettier = require('eslint-config-prettier')
 
 module.exports = defineConfig([
   expoConfig,
   {
-    extends: ['prettier'],
+    extends: [prettier],
     ignores: ['dist/*'],
     languageOptions: {
       parserOptions: {

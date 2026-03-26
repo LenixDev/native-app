@@ -27,6 +27,7 @@ export const initI18n = async () => {
 export const changeLanguage = async (lang: string) => {
   await AsyncStorage.setItem('lang', lang)
   await i18n.changeLanguage(lang)
+  console.log(true)
 }
 
 export default i18n

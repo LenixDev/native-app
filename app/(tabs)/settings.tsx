@@ -1,8 +1,7 @@
 import { Button } from 'heroui-native'
 import * as Updates from 'expo-updates'
+import { I18nManager, View } from 'react-native'
 import i18n, { changeLanguage } from '@/i18n'
-import { I18nManager } from 'react-native'
-import { Platform } from 'react-native'
 
 export default function Tab() {
   const toggleLanguage = async () => {
@@ -12,12 +11,14 @@ export default function Tab() {
     await Updates.reloadAsync()
   }
   return (
-    <Button
-      onPress={() => {
-        toggleLanguage().catch(() => undefined)
-      }}
-    >
-      {i18n.language === 'en' ? 'العربية' : 'English'}
-    </Button>
+    <View className='flex justify-center h-full'>
+      <Button
+        onPress={() => {
+          toggleLanguage()
+        }}
+      >
+        {i18n.language === 'en' ? 'العربية' : 'English'}
+      </Button>
+    </View>
   )
 }
