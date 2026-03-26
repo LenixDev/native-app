@@ -9,7 +9,7 @@ export default function Tab() {
     const next = i18n.language === 'en' ? 'ar' : 'en'
     await changeLanguage(next)
     I18nManager.forceRTL(next === 'ar')
-    if (Platform.OS !== 'web' && !__DEV__) await Updates.reloadAsync()
+    await Updates.reloadAsync()
   }
   return (
     <Button
