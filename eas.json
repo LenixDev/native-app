@@ -3,7 +3,7 @@
     "version": ">= 18.1.0",
     "appVersionSource": "remote"
   },
-  
+
   "build": {
     "development": {
       "developmentClient": true,
