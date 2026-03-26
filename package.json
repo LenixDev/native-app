@@ -15,7 +15,8 @@
     "go": "npx expo start --go",
     "supacli": "npx supabase --help",
     "supalink": "supabase link",
-    "supapull": "supabase db pull"
+    "supapull": "supabase db pull",
+    "format": "pnpm exec prettier . --write"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
