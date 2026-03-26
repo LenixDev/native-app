@@ -1,13 +1,13 @@
 // https://docs.expo.dev/guides/using-eslint/
-const { defineConfig } = require("eslint/config");
-const expoConfig = require("eslint-config-expo/flat");
-const lint = require("lenix/lint");
+const { defineConfig } = require('eslint/config')
+const expoConfig = require('eslint-config-expo/flat')
+const lint = require('lenix/lint')
 
 module.exports = defineConfig([
   expoConfig,
   {
-    extends: ["prettier"],
-    ignores: ["dist/*"],
+    extends: ['prettier'],
+    ignores: ['dist/*'],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -18,4 +18,4 @@ module.exports = defineConfig([
       ...lint.strict,
     },
   },
-]);
+])
