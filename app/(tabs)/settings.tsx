@@ -12,7 +12,7 @@ export default function Tab() {
     if (Platform.OS !== 'web' && !__DEV__) await Updates.reloadAsync()
   }
   return (
-    <Button onPress={toggleLanguage}>
+    <Button onPress={() => { toggleLanguage().catch(() => undefined) }}>
       {i18n.language === 'en' ? 'العربية' : 'English'}
     </Button>
   )  
