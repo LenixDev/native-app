@@ -8,7 +8,7 @@ export default function Tab() {
   const toggleLanguage = async () => {
     const next = i18n.language === 'en' ? 'ar' : 'en'
     await changeLanguage(next)
-    if (Platform.OS !== 'web') I18nManager.forceRTL(next === 'ar')
+    I18nManager.forceRTL(next === 'ar')
     if (Platform.OS !== 'web' && !__DEV__) await Updates.reloadAsync()
   }
   return (
@@ -16,4 +16,4 @@ export default function Tab() {
       {i18n.language === 'en' ? 'العربية' : 'English'}
     </Button>
   )  
-  }
+}
