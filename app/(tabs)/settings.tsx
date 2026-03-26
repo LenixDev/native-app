@@ -11,7 +11,7 @@ export default function Tab() {
     await Updates.reloadAsync()
   }
   return (
-    <View className='flex justify-center h-full'>
+    <View className="flex justify-center h-full">
       <Button
         onPress={() => {
           toggleLanguage()
