@@ -1,19 +1,29 @@
-import { KeyboardAvoidingView, Platform, Text } from 'react-native'
-import { useToast } from 'heroui-native/toast'
-import { Button } from 'heroui-native'
+import { KeyboardAvoidingView, Platform, View, I18nManager } from 'react-native'
+import { useTranslation } from 'react-i18next'
+import { Button, Description, Input, TextField } from 'heroui-native'
+import React, { useState } from 'react'
 
-// eslint-disable-next-line max-lines-per-function, max-statements
 export default function TabThreeScreen() {
-  const { toast } = useToast()
+  const { t } = useTranslation()
+  const [text, setText] = useState('')
+  const { isRTL } = I18nManager
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className='flex bg-background h-full justify-evenly'
-    >
-      <Text className='text-foreground'>
-        Hi
-      </Text>
-      <Button onPress={() => { toast.show('hello') }}>Toast</Button>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View className="flex h-full justify-center items-center w-full my-2">
+        <TextField className={`flex flex-row w-full items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <Input
+            className='flex-1'
+            placeholder={t('placeholder')}
+            keyboardType="phone-pad"
+            autoCapitalize="sentences"
+            value={text}
+            onChangeText={setText}
+          />
+          <Button>{t('send')}</Button>
+        </TextField>
+        <Description>{t('disclaimer')}</Description>
+      </View>
     </KeyboardAvoidingView>
   )
 }
