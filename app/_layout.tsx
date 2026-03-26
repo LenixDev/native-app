@@ -25,6 +25,9 @@ export default function RootLayout() {
         I18nManager.forceRTL(i18n.language === 'ar')
         setReady(true)
       })
+      .catch((err: unknown) => {
+        throw new Error(String(err))
+      })
   }, [])
 
   // if (!ready) return null // or a splash/loading screen
