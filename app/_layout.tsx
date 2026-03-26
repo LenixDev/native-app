@@ -28,7 +28,7 @@ export default function RootLayout() {
       .catch(() => undefined)
   }, [])
 
-  if (!ready) return null // or a splash/loading screen
+  // if (!ready) return null // or a splash/loading screen
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <HeroUINativeProvider>
