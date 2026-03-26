@@ -1,5 +1,5 @@
 import '../global.css'
-import '../i18n'
+import '@/i18n'
 import 'react-native-reanimated';
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
