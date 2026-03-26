@@ -6,6 +6,7 @@ const lint = require("lenix/lint")
 module.exports = defineConfig([
   expoConfig,
   {
+    extends: ['prettier'],
     ignores: ['dist/*'],
     languageOptions: {
       parserOptions: {
