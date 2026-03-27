@@ -2,4 +2,4 @@
 build
 coverage
 *.yaml
-**/*.d.ts
+*.d.ts

@@ -19,7 +19,7 @@ export default function Tab() {
           <Input
             className="flex-1"
             placeholder={t('placeholder')}
-            keyboardType="phone-pad"
+            keyboardType="default"
             autoCapitalize="sentences"
             value={text}
             onChangeText={setText}
