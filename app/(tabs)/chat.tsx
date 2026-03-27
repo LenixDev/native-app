@@ -71,10 +71,10 @@ export default function Tab() {
 
   return (
     <KeyboardAvoidingView className='flex-1' behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <View className="flex-1 justify-end items-stretch py-5 px-1 gap-4">
+      <View className="flex-1 justify-end items-stretch py-5 px-4 gap-4">
 
         <FlatList
-          contentContainerClassName="flex-grow p-1"
+          contentContainerClassName="flex-grow p-1 justify-end"
           ref={flatListRef}
           onContentSizeChange={() => setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100)}
           onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
@@ -83,7 +83,7 @@ export default function Tab() {
           keyExtractor={({ role }: Conversation, index) => role + index}
           renderItem={({ item: { role, content: text }, index }) => (
             <View
-              className={`${role === 'user' ? 'bg-muted self-end' : 'bg-surface self-start'} px-3 py-2 rounded-lg mb-2 max-w-[95%]`}>
+              className={`${role === 'user' ? 'bg-muted self-end' : 'bg-surface self-start'} px-3 py-2 rounded-lg mb-2 max-w-[90%]`}>
               {loading && role === 'assistant' && index === conversation.length - 1
                 ? <Spinner />
                 : <Markdown
@@ -99,12 +99,13 @@ export default function Tab() {
           )}
         />
 
-        <View className={`flex flex-row w-full items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <View className={`flex flex-row w-full items-center max-h-2/4 gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <Input
             className="flex-1"
+            multiline
             placeholder={t('placeholder')}
-            keyboardType="default"
             autoCapitalize="sentences"
+            submitBehavior='newline'
             value={content}
             onChangeText={setContent}
           />
