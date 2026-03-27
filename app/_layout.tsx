@@ -10,10 +10,11 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/hooks/use-theme'
 
 export default function RootLayout() {
-  const { i18n } = useTranslation()
   const theme = useTheme()
-  
+
+  const { i18n } = useTranslation()
   if (!i18n.isInitialized) return null
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <HeroUINativeProvider>
