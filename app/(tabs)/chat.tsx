@@ -1,6 +1,6 @@
 import { FlatList, KeyboardAvoidingView, Platform, Text, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { Button, Description, Input, useToast } from 'heroui-native'
+import { Button, Description, Input, Spinner, useToast } from 'heroui-native'
 import { useRef, useState } from 'react'
 import type { Conversation } from '@/types'
 import Groq from "groq-sdk"
@@ -20,16 +20,18 @@ export default function Tab() {
   const [conversation, setConversation] = useState<Conversation[]>([])
   const flatListRef = useRef<FlatList>(null)
   const { toast } = useToast()
+  const [loading, setLoading] = useState(false)
 
   const aiReply = async (content: string) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const completion = await groq.chat.completions.create({
         messages: [
-          {
-            role: "user",
-            content,
-          },
+          ...conversation.map(chat => ({
+            role: chat.role === 'user' ? 'user' : 'assistant',
+            content: chat.message,
+          } satisfies Conversation)),
+          { role: 'user' as const, content },
         ],
         model: "openai/gpt-oss-120b",
       })
@@ -41,26 +43,27 @@ export default function Tab() {
       }
       setConversation(prev => [
         ...prev.slice(0, -1),
-        { sender: 'ai', message },
+        { role: 'assistant', message },
       ])
+      
     } catch (err: unknown) {
       toast.show(String(err))
     }
   }
 
   const handleSend = async () => {
-    if (!text.trim()) return
+    if (!text.trim() || loading) return
+    setLoading(true)
     const content = text
     setConversation(prev => [
       ...prev,
-      { sender: 'human', message: text },
+      { role: 'user', message: text },
+      { role: 'assistant', message: '' },
     ])
     setText('')
-    setConversation(prev => [
-      ...prev,
-      { sender: 'ai', message: '...' },
-    ])
+    
     await aiReply(content)
+    setLoading(false)
   }
 
   return (
@@ -74,13 +77,20 @@ export default function Tab() {
           onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
           showsVerticalScrollIndicator={false}
           data={conversation}
-          keyExtractor={({ sender }: Conversation, index) => sender + index}
-          renderItem={({ item: { sender, message } }) => (
+          keyExtractor={({ role }: Conversation, index) => role + index}
+          renderItem={({ item: { role, message }, index }) => (
             <View
-              className={`${sender === 'human' ? 'bg-muted self-end' : 'bg-surface self-start'} px-3 py-2 rounded-lg mb-2 max-w-[95%]`}>
-              <Text className={sender === 'human' ? 'text-background' : 'text-muted'}>
-                {message}
-              </Text>
+              className={`${role === 'user' ? 'bg-muted self-end' : 'bg-surface self-start'} px-3 py-2 rounded-lg mb-2 max-w-[95%]`}>
+              {loading && role === 'assistant' && index === conversation.length - 1
+                ? (
+                  <Spinner>
+                    <Spinner.Indicator>
+                      <Text>⏳</Text>
+                    </Spinner.Indicator>
+                  </Spinner>
+                )
+                : <Text className={role === 'user' ? 'text-background' : 'text-muted'}>{message}</Text>
+              }
             </View>
           )}
         />
@@ -94,7 +104,7 @@ export default function Tab() {
             value={text}
             onChangeText={setText}
           />
-          <Button variant='primary' onPress={() => {
+          <Button variant='primary' isDisabled={loading} onPress={() => {
               handleSend().catch(raise)
             }}
           >{t('send')}</Button>
