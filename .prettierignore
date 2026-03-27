@@ -2,4 +2,4 @@
 build
 coverage
 *.yaml
-uniwind-types.d.ts
+**/*.d.ts
