@@ -10,13 +10,14 @@
     "web": "npx expo start --web",
     "lint": "npx expo lint",
     "host": "eas build --platform android --profile production",
-    "devhost": "eas build --platform android --profile development",
+    "preview": "eas build --platform android --profile preview",
     "net": "npx expo start --web --tunnel",
     "go": "npx expo start --go",
     "supacli": "npx supabase --help",
     "supalink": "supabase link",
     "supapull": "supabase db pull",
-    "format": "pnpm exec prettier . --write"
+    "format": "pnpm exec prettier . --write",
+    "push": "eas update"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
