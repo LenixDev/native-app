@@ -1,3 +1,4 @@
+import { raise } from '@/lib/utils'
 import type { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs'
 import { PlatformPressable } from '@react-navigation/elements'
 import * as Haptics from 'expo-haptics'
@@ -12,9 +13,7 @@ export const HapticTab = (props: BottomTabBarButtonProps) => (
           .then(() => {
             props.onPressIn?.(ev)
           })
-          .catch((error: unknown) => {
-            throw new Error(String(error))
-          })
+          .catch(raise)
     }}
   />
 )

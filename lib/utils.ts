@@ -1,0 +1,1 @@
+export const raise = (err: unknown) => { throw new Error(String(err)) }

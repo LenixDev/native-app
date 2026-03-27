@@ -6,6 +6,7 @@ import type { Lang } from '@/types'
 
 import en from './locales/en.json'
 import ar from './locales/ar.json'
+import { raise } from './lib/utils'
 
 const supportedLangs: Set<Lang> = new Set<Lang>(['en', 'ar'])
 const fallbackLng: Lang = 'en'
@@ -38,4 +39,4 @@ const getLang = async () => {
     fallbackLng,
     interpolation: { escapeValue: false },
   })
-})().catch((err: unknown) => { throw new Error(String(err)) })
+})().catch(raise)

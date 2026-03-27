@@ -1,4 +1,5 @@
 import { useToggleLang } from '@/hooks/use-toggle-lang'
+import { raise } from '@/lib/utils'
 import { Button } from 'heroui-native'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
@@ -10,7 +11,7 @@ export default function Tab() {
     <View className="flex justify-center h-full">
       <Button
         onPress={() => {
-          changeLang()
+          changeLang().catch(raise)
         }}
       >
         {i18n.language === 'en' ? 'العربية' : 'English'}
