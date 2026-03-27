@@ -1,10 +1,11 @@
-import { FlatList, KeyboardAvoidingView, Platform, Text, View } from 'react-native'
+import { FlatList, KeyboardAvoidingView, Platform, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
-import { Button, Description, Input, Spinner, useToast } from 'heroui-native'
+import { Button, Description, Input, Spinner, useThemeColor, useToast } from 'heroui-native'
 import { useRef, useState } from 'react'
 import type { Conversation } from '@/types'
 import Groq from "groq-sdk"
 import { raise } from '@/lib/utils'
+import Markdown from 'react-native-markdown-display'
 
 const apiKey = process.env.EXPO_PUBLIC_API_KEY
 if (typeof apiKey !== 'string') throw new Error('API_KEY environment variable is not defined')
@@ -12,7 +13,7 @@ if (typeof apiKey !== 'string') throw new Error('API_KEY environment variable is
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const groq = new Groq({ apiKey })
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, max-statements
 export default function Tab() {
   const { t, i18n } = useTranslation()
   const [content, setContent] = useState('')
@@ -22,7 +23,7 @@ export default function Tab() {
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
 
-  const aiReply = async (savedContent: string) => {
+  const aiReply = async (racedContent: string) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const completion = await groq.chat.completions.create({
@@ -31,7 +32,7 @@ export default function Tab() {
             role: chat.role === 'user' ? 'user' : 'assistant',
             content: chat.content,
           } satisfies Conversation)),
-          { role: 'user' as const, content: savedContent },
+          { role: 'user' as const, content: racedContent },
         ],
         model: "openai/gpt-oss-120b",
       })
@@ -43,7 +44,7 @@ export default function Tab() {
       }
       setConversation(prev => [
         ...prev.slice(0, -1),
-        { role: 'assistant', content },
+        { role: 'assistant', content: message },
       ])
       
     } catch (err: unknown) {
@@ -54,42 +55,45 @@ export default function Tab() {
   const handleSend = async () => {
     if (!content.trim() || loading) return
     setLoading(true)
-    const savedContent = content
+    const racedContent = content
     setConversation(prev => [
       ...prev,
-      { role: 'user', content: savedContent },
+      { role: 'user', content: racedContent },
       { role: 'assistant', content: '' },
     ])
     setContent('')
-    
-    await aiReply(content)
+
+    await aiReply(racedContent)
     setLoading(false)
   }
 
+  const [background, muted] = useThemeColor(['background', 'muted'])
+
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <View className="flex h-full justify-end items-stretch py-5 px-1 gap-4">
+    <KeyboardAvoidingView className='flex-1' behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View className="flex-1 justify-end items-stretch py-5 px-1 gap-4">
 
         <FlatList
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', padding: 4 }}
+          contentContainerClassName="flex-grow p-1"
           ref={flatListRef}
-          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+          onContentSizeChange={() => setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100)}
           onLayout={() => flatListRef.current?.scrollToEnd({ animated: true })}
           showsVerticalScrollIndicator={false}
           data={conversation}
           keyExtractor={({ role }: Conversation, index) => role + index}
-          renderItem={({ item: { role, content }, index }) => (
+          renderItem={({ item: { role, content: text }, index }) => (
             <View
               className={`${role === 'user' ? 'bg-muted self-end' : 'bg-surface self-start'} px-3 py-2 rounded-lg mb-2 max-w-[95%]`}>
               {loading && role === 'assistant' && index === conversation.length - 1
-                ? (
-                  <Spinner>
-                    <Spinner.Indicator>
-                      <Text>⏳</Text>
-                    </Spinner.Indicator>
-                  </Spinner>
-                )
-                : <Text className={role === 'user' ? 'content-background' : 'content-muted'}>{content}</Text>
+                ? <Spinner />
+                : <Markdown
+                    style={{
+                      body: { color: role === 'user' ? background : muted },
+                      paragraph: { marginTop: 0, marginBottom: 0 },
+                    }}
+                  >
+                    {text}
+                  </Markdown>
               }
             </View>
           )}
