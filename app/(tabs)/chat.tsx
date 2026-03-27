@@ -20,16 +20,16 @@ export default function Tab() {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <View className="flex h-full justify-end items-center py-2 px-1 gap-4">
+      <View className="flex h-full justify-end items-center py-5 px-1 gap-4">
         <FlatList
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', padding: 12 }}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', padding: 4 }}
           showsVerticalScrollIndicator={false}
           data={conversation}
           keyExtractor={({ sender }, index) => sender + index}
           renderItem={({ item: { sender, message } }) => (
             <View
               className={`${sender === 'human' ? 'bg-muted self-end' : 'bg-border self-start'} px-3 py-2 rounded-lg mb-2 max-w-[98%]`}>
-              <Text className={sender === 'human' ? 'text-background' : ''}>
+              <Text className={sender === 'human' ? 'text-background' : 'text-muted'}>
                 {message}
               </Text>
             </View>
