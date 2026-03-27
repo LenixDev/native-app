@@ -17,6 +17,7 @@ module.exports = defineConfig([
     },
     rules: {
       ...lint.strict,
+      "react/no-unescaped-entities": "off"
     },
   },
 ])
