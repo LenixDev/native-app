@@ -13,6 +13,7 @@ if (typeof apiKey !== 'string') throw new Error('API_KEY environment variable is
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const groq = new Groq({ apiKey })
 
+// TODO: upload photos, files, voice messages, changemodel, conversations sessions channels
 // eslint-disable-next-line max-lines-per-function, max-statements
 export default function Tab() {
   const { t, i18n } = useTranslation()
