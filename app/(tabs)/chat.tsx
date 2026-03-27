@@ -15,23 +15,23 @@ const groq = new Groq({ apiKey })
 // eslint-disable-next-line max-lines-per-function
 export default function Tab() {
   const { t, i18n } = useTranslation()
-  const [text, setText] = useState('')
+  const [content, setContent] = useState('')
   const isRTL = i18n.language === 'ar'
   const [conversation, setConversation] = useState<Conversation[]>([])
   const flatListRef = useRef<FlatList>(null)
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
 
-  const aiReply = async (content: string) => {
+  const aiReply = async (savedContent: string) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const completion = await groq.chat.completions.create({
         messages: [
           ...conversation.map(chat => ({
             role: chat.role === 'user' ? 'user' : 'assistant',
-            content: chat.message,
+            content: chat.content,
           } satisfies Conversation)),
-          { role: 'user' as const, content },
+          { role: 'user' as const, content: savedContent },
         ],
         model: "openai/gpt-oss-120b",
       })
@@ -43,7 +43,7 @@ export default function Tab() {
       }
       setConversation(prev => [
         ...prev.slice(0, -1),
-        { role: 'assistant', message },
+        { role: 'assistant', content },
       ])
       
     } catch (err: unknown) {
@@ -52,15 +52,15 @@ export default function Tab() {
   }
 
   const handleSend = async () => {
-    if (!text.trim() || loading) return
+    if (!content.trim() || loading) return
     setLoading(true)
-    const content = text
+    const savedContent = content
     setConversation(prev => [
       ...prev,
-      { role: 'user', message: text },
-      { role: 'assistant', message: '' },
+      { role: 'user', content: savedContent },
+      { role: 'assistant', content: '' },
     ])
-    setText('')
+    setContent('')
     
     await aiReply(content)
     setLoading(false)
@@ -78,7 +78,7 @@ export default function Tab() {
           showsVerticalScrollIndicator={false}
           data={conversation}
           keyExtractor={({ role }: Conversation, index) => role + index}
-          renderItem={({ item: { role, message }, index }) => (
+          renderItem={({ item: { role, content }, index }) => (
             <View
               className={`${role === 'user' ? 'bg-muted self-end' : 'bg-surface self-start'} px-3 py-2 rounded-lg mb-2 max-w-[95%]`}>
               {loading && role === 'assistant' && index === conversation.length - 1
@@ -89,7 +89,7 @@ export default function Tab() {
                     </Spinner.Indicator>
                   </Spinner>
                 )
-                : <Text className={role === 'user' ? 'text-background' : 'text-muted'}>{message}</Text>
+                : <Text className={role === 'user' ? 'content-background' : 'content-muted'}>{content}</Text>
               }
             </View>
           )}
@@ -101,8 +101,8 @@ export default function Tab() {
             placeholder={t('placeholder')}
             keyboardType="default"
             autoCapitalize="sentences"
-            value={text}
-            onChangeText={setText}
+            value={content}
+            onChangeText={setContent}
           />
           <Button variant='primary' isDisabled={loading} onPress={() => {
               handleSend().catch(raise)
