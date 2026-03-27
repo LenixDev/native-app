@@ -8,11 +8,11 @@ import { useThemeColor } from 'heroui-native/hooks'
 
 export default function TabLayout() {
   const colorScheme = useColorScheme()
-  const [background] = useThemeColor([ 'background' ])
+  const backgroundColor = useThemeColor('background')
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { backgroundColor: background },
+        tabBarStyle: { backgroundColor },
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
