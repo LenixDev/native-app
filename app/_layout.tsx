@@ -7,10 +7,13 @@ import { useColorScheme } from '@/hooks/use-color-scheme'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { HeroUINativeProvider } from 'heroui-native'
 import '@/i18next'
+import { useTranslation } from 'react-i18next'
 
 export default function RootLayout() {
   const colorScheme = useColorScheme()
-
+  const { i18n } = useTranslation()
+  
+  if (!i18n.isInitialized) return null
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <HeroUINativeProvider>
