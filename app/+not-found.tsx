@@ -1,4 +1,5 @@
 import { Text } from 'react-native'
 
-const NotFound = () => <Text>Not Found</Text>
-export default NotFound
+export default function Tab() {
+  return <Text>Not Found</Text>
+}
