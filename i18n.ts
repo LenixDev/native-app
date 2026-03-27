@@ -28,5 +28,3 @@ export const changeLanguage = async (lang: string) => {
   await SecureStore.setItemAsync('lang', lang)
   await i18n.changeLanguage(lang)
 }
-
-export default i18n
