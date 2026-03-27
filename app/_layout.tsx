@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar'
 import { useColorScheme } from '@/hooks/use-color-scheme'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { HeroUINativeProvider } from 'heroui-native'
-import '@/i18n'
+import '@/i18next'
 
 export default function RootLayout() {
   const colorScheme = useColorScheme()
