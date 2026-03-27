@@ -12,7 +12,7 @@ export default function Tab() {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <View className="flex h-full justify-center items-center w-full my-2">
+      <View className="flex h-full justify-end items-center w-full py-2">
         <TextField
           className={`flex flex-row w-full items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
         >
