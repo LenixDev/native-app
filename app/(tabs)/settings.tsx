@@ -1,5 +1,5 @@
 import { Button } from 'heroui-native'
-import { I18nManager, View } from 'react-native'
+import { View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 
 export default function Tab() {
@@ -7,8 +7,7 @@ export default function Tab() {
   const toggleLanguage = async () => {
     const next = i18n.language === 'en' ? 'ar' : 'en'
     await i18n.changeLanguage(next)
-    I18nManager.forceRTL(next === 'ar')
-  } 
+  }
   return (
     <View className="flex justify-center h-full">
       <Button
