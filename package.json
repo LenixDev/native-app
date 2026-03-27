@@ -38,6 +38,7 @@
     "expo-status-bar": "~3.0.9",
     "expo-symbols": "~1.0.8",
     "expo-system-ui": "~6.0.9",
+    "groq-sdk": "^1.1.2",
     "heroui-native": "^1.0.0",
     "i18next": "^25.10.9",
     "lenix": "^1.4.4",
