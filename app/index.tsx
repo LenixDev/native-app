@@ -1,4 +1,6 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
+import { supabase } from '@/lib/supabase'
+import { raise } from '@/lib/utils'
 import { Redirect } from 'expo-router'
 import { navigate } from 'expo-router/build/global-state/routing'
 import { Button, InputGroup, Separator, useThemeColor } from 'heroui-native'
@@ -9,11 +11,19 @@ import { Pressable, type TextInput } from 'react-native-gesture-handler'
 
 // TODO: registeration
 // eslint-disable-next-line max-lines-per-function
-export default function Tab() {
+export default function Page() {
   const muted = useThemeColor('muted')
   const { t } = useTranslation()
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const passwordRef = useRef<TextInput>(null)
+  const [{ phone, password }, setForm] = useState({ phone: '', password: '' })
+
+  const login = () => {
+    supabase.auth.signInWithPassword({ phone, password })
+    .then(({ error, data }) => {
+      console.log(error, data)
+    }).catch(raise)
+  }
 
   // return <Redirect href="/(tabs)/home" />
 
@@ -25,15 +35,14 @@ export default function Tab() {
       <View className="w-full flex gap-4 flex-1">
         <InputGroup>
           <InputGroup.Prefix isDecorative>
-            <IconSymbol color={muted} name="envelope.fill" size={16} />
+            <IconSymbol color={muted} name="phone.fill" size={16} />
           </InputGroup.Prefix>
           <InputGroup.Input
             onSubmitEditing={() => passwordRef.current?.focus()}
             returnKeyType='next'
-            placeholder={t("email")}
-            keyboardType='email-address'
-            autoCapitalize='none'
-            autoCorrect={false}
+            placeholder={t("phone")}
+            keyboardType='phone-pad'
+            onChangeText={self => { setForm(form => ({ ...form, phone: self })); }}
           />
         </InputGroup>
         <InputGroup>
@@ -47,6 +56,7 @@ export default function Tab() {
             autoCapitalize='none'
             autoCorrect={false}
             secureTextEntry={!isPasswordVisible}
+            onChangeText={self => { setForm(form => ({ ...form, password: self })); }}
           />
           <InputGroup.Suffix>
             <Pressable hitSlop={20}
@@ -56,7 +66,7 @@ export default function Tab() {
             </Pressable>
           </InputGroup.Suffix>
         </InputGroup>
-        <Button variant="primary">
+        <Button variant="primary" onPress={login}>
           <Button.Label className='dark:text-background text-foreground'>{t("login")}</Button.Label>
         </Button>
       </View>
