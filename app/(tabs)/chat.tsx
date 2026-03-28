@@ -13,7 +13,13 @@ if (typeof apiKey !== 'string') throw new Error('API_KEY environment variable is
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const groq = new Groq({ apiKey })
 
-// TODO: upload photos, files, voice messages, changemodel, conversations sessions channels
+// TODO:
+// - upload photos,
+// - files,
+// - voice messages,
+// - changemodel,
+// - conversations sessions channels,
+// - show usage stats, tokens, reequests
 // eslint-disable-next-line max-lines-per-function, max-statements
 export default function Tab() {
   const { t, i18n } = useTranslation()
@@ -39,16 +45,13 @@ export default function Tab() {
       })
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const message = completion.choices[0].message.content
-      if (typeof message !== 'string') {
-        toast.show("something went wrong")
-        return
-      }
+      if (typeof message !== 'string') return
       setConversation(prev => [
         ...prev.slice(0, -1),
         { role: 'assistant', content: message },
       ])
-      
     } catch (err: unknown) {
+      setConversation(prev => prev.slice(0, -1))
       toast.show(String(err))
     }
   }
