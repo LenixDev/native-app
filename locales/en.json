@@ -6,5 +6,6 @@
   "signup": "Sign up",
   "password": "Password",
   "or": "Or",
-  "phone": "Phone number"
+  "phone": "Phone number",
+  "signin_success" : "Signed in successfully"
 }
