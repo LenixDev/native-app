@@ -1,4 +1,4 @@
-import { FlatList, KeyboardAvoidingView, Platform, View } from 'react-native'
+import { FlatList, KeyboardAvoidingView, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { Button, Description, Input, Spinner, useThemeColor, useToast } from 'heroui-native'
 import { useRef, useState } from 'react'
@@ -71,7 +71,7 @@ export default function Tab() {
   const [background, muted] = useThemeColor(['background', 'muted'])
 
   return (
-    <KeyboardAvoidingView className='flex-1' behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView className='flex-1' behavior='padding'>
       <View className="flex-1 justify-end items-stretch py-5 px-4 gap-4">
 
         <FlatList
