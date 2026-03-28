@@ -6,5 +6,6 @@
   "register": "Create account",
   "email": "Email",
   "password": "Password",
-  "or": "Or"
+  "or": "Or",
+  "phone": "Phone number"
 }
