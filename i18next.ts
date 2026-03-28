@@ -32,8 +32,8 @@ const getLang = async () => {
   const lng = await getLang()
   await i18nUse(initReactI18next).init({
     resources: {
-      en: { translation: en },
-      ar: { translation: ar },
+      en: { translation: en satisfies typeof ar },
+      ar: { translation: ar satisfies typeof en },
     },
     lng,
     fallbackLng,

@@ -20,6 +20,7 @@ const MAPPING: IconMapping = {
   'paperplane.fill': 'send',
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
+  'envelope.fill': 'email',
 }
 
 /**
