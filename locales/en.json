@@ -2,8 +2,8 @@
   "placeholder": "Type...",
   "send": "Send",
   "disclaimer": "AI can make mistakes, double-check the responses",
-  "login": "Login",
-  "register": "Create account",
+  "signin": "Sign in",
+  "signup": "Sign up",
   "password": "Password",
   "or": "Or",
   "phone": "Phone number"
