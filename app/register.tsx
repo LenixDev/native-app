@@ -1,7 +1,9 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
+import { supabase } from '@/lib/supabase'
+import { raise } from '@/lib/utils'
 import { Redirect } from 'expo-router'
 import { navigate } from 'expo-router/build/global-state/routing'
-import { Button, InputGroup, Separator, useThemeColor } from 'heroui-native'
+import { Button, InputGroup, Separator, Spinner, useThemeColor } from 'heroui-native'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyboardAvoidingView, Text, View } from 'react-native'
@@ -14,6 +16,14 @@ export default function Tab() {
   const { t } = useTranslation()
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const passwordRef = useRef<TextInput>(null)
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState(false)
+  const [{
+    phone, password
+  }, setForm] = useState({
+    phone: '',
+    password: ''
+  })
 
   // return <Redirect href="/(tabs)/home" />
 
@@ -58,8 +68,30 @@ export default function Tab() {
           </InputGroup>
       </KeyboardAvoidingView>
       <View className='flex-1/4 justify-center w-full'>
-        <Button variant="primary">
-          <Button.Label className='dark:text-background text-foreground'>{t("register")}</Button.Label>
+        <Button variant="primary"
+          onPress={() => {
+            setLoading(true)
+            supabase.auth.signUp({
+              phone, password
+            }).then(retVal => {
+              const { error } = retVal
+              if (error) setResult(false)
+              setResult(true)
+              setLoading(false)
+            }).catch(raise)
+          }}
+        >
+          <Button.Label disabled={loading} className='dark:text-background text-foreground'>
+            {
+              // eslint-disable-next-line no-nested-ternary
+              loading
+              ? <Spinner />
+              : result
+              ? <IconSymbol color="green" name="checkmark.circle.fill" size={24} />
+              : <IconSymbol color="red" name="xmark.circle.fill" size={24} />
+              // t("register")
+            }
+          </Button.Label>
         </Button>
       </View>
     </View>
