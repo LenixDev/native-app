@@ -12,7 +12,7 @@ import { useTheme } from '@/hooks/use-theme'
 export default function RootLayout() {
   const theme = useTheme()
 
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   if (!i18n.isInitialized) return null
 
   return (
@@ -22,6 +22,10 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="register" options={{
+              title: t("register"),
+              headerBackTitle: t("login"),
+            }} />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>

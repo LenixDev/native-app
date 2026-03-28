@@ -11,7 +11,7 @@
     "lint": "npx expo lint",
     "host": "eas build --platform android --profile production",
     "preview": "eas build --platform android --profile preview",
-    "net": "npx expo start --web --tunnel",
+    "net": "npx expo start --tunnel",
     "go": "npx expo start --go",
     "supacli": "npx supabase --help",
     "supalink": "supabase link",

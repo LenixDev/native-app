@@ -1,5 +1,6 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { Redirect } from 'expo-router'
+import { navigate } from 'expo-router/build/global-state/routing'
 import { Button, InputGroup, Separator, useThemeColor } from 'heroui-native'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -14,8 +15,7 @@ export default function Tab() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const passwordRef = useRef<TextInput>(null)
 
-  const loggedIn = false
-  if (loggedIn) return <Redirect href="/(tabs)/home" />
+  // return <Redirect href="/(tabs)/home" />
 
   return (
     <View className='flex justify-evenly items-center h-full px-4'>
@@ -66,8 +66,8 @@ export default function Tab() {
           <Text>Or</Text>
           <Separator className='bg-black flex-1' />
         </View>
-        <Button variant="secondary" className='w-full'>
-          <Button.Label className='dark:text-background text-foreground'>{t("register")}</Button.Label>
+        <Button variant="outline" className='w-full' onPress={() => { navigate('/register') }}>
+          <Button.Label className='text-foreground'>{t("register")}</Button.Label>
         </Button>
       </View>
     </View>
