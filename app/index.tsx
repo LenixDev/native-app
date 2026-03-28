@@ -62,9 +62,9 @@ export default function Tab() {
       </View>
       <View className='w-full flex justify-evenly items-center flex-1'>
         <View className='flex flex-row items-center gap-4 w-2/3'>
-          <Separator className='bg-black flex-1' />
-          <Text>Or</Text>
-          <Separator className='bg-black flex-1' />
+          <Separator className='bg-muted flex-1' />
+          <Text className='text-foreground'>{t("or")}</Text>
+          <Separator className='bg-muted flex-1' />
         </View>
         <Button variant="outline" className='w-full' onPress={() => { navigate('/register') }}>
           <Button.Label className='text-foreground'>{t("register")}</Button.Label>
