@@ -17,29 +17,20 @@ import countries from '@/lib/countries.json' with { type: 'json' }
 import { router } from 'expo-router'
 
 // eslint-disable-next-line max-lines-per-function
-const SigninForm = () => {
+const SigninForm = ({
+  onPhone, 
+  onPassword,
+}: {
+  onPhone: (phone: string) => void
+  onPassword: (password: string) => void
+}) => {
   const { t } = useTranslation()
   const muted = useThemeColor('muted')
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const passwordRef = useRef<TextInput>(null)
-  const [{ phone, password }, setForm] = useState({ phone: '', password: '' })
-  const { toast } = useToast()
-
-  const handleSignin = async () => {
-    const { error } = await signin(phone, password)
-    if (error) {
-      if (error.code === 'phone_not_confirmed')
-        router.push(`/verify?phone=${encodeURIComponent(phone)}`)
-      else toast.show(error.message)
-      return
-    }
-
-    toast.show(t('signin_success'))
-    router.replace('/(tabs)/home')
-  }
 
   return (
-    <View className="w-full flex gap-4 flex-1">
+    <View className="w-full justify-center flex gap-4 flex-1">
       <InputGroup>
         {/* <InputGroup.Prefix>
           <Select presentation="bottom-sheet" onValueChange={self => { setForm(form => ({ ...form, code: self?.value ?? '' })) }}>
@@ -62,9 +53,7 @@ const SigninForm = () => {
           returnKeyType="next"
           placeholder={t('phone')}
           keyboardType="phone-pad"
-          onChangeText={(self) => {
-            setForm((form) => ({ ...form, phone: self }))
-          }}
+          onChangeText={onPhone}
         />
       </InputGroup>
       <InputGroup>
@@ -78,9 +67,7 @@ const SigninForm = () => {
           autoCapitalize="none"
           autoCorrect={false}
           secureTextEntry={!isPasswordVisible}
-          onChangeText={(self) => {
-            setForm((form) => ({ ...form, password: self }))
-          }}
+          onChangeText={onPassword}
         />
         <InputGroup.Suffix>
           <Pressable
@@ -97,30 +84,55 @@ const SigninForm = () => {
           </Pressable>
         </InputGroup.Suffix>
       </InputGroup>
-      <Button
-        variant="primary"
-        onPress={() => {
-          handleSignin().catch(raise)
-        }}
-      >
-        <Button.Label className="dark:text-background text-foreground">
-          {t('signin')}
-        </Button.Label>
-      </Button>
     </View>
   )
 }
 
+// eslint-disable-next-line max-lines-per-function
 export default function Page() {
   const { t } = useTranslation()
+  const [{ phone, password }, setForm] = useState({ phone: '', password: '' })
+  const { toast } = useToast()
 
+  const handleSignin = async () => {
+    const { error } = await signin(phone, password)
+    if (error) {
+      if (error.code === 'phone_not_confirmed')
+        router.push(`/verify?phone=${encodeURIComponent(phone)}`)
+      else toast.show(error.message)
+      return
+    }
+
+    toast.show(t('signin_success'))
+    router.replace('/(tabs)/home')
+  }
   return (
     <View className="flex justify-evenly items-center h-full px-4">
       <View className="flex-1 flex justify-center">
         <Text className="text-foreground text-5xl">Thrivenix</Text>
       </View>
 
-      <SigninForm />
+      <SigninForm 
+        onPhone={(self) => {
+          setForm((form) => ({ ...form, phone: self }))
+        }}
+        onPassword={(self) => {
+          setForm((form) => ({ ...form, password: self }))
+        }}
+      />
+      
+      <View className="justify-center w-full">
+        <Button
+          variant="primary"
+          onPress={() => {
+            handleSignin().catch(raise)
+          }}
+        >
+          <Button.Label className="dark:text-background text-foreground">
+            {t('signin')}
+          </Button.Label>
+        </Button>
+      </View>
 
       <View className="w-full flex justify-evenly items-center flex-1">
         <View className="flex flex-row items-center gap-4 w-2/3">
@@ -131,7 +143,7 @@ export default function Page() {
         <Button
           variant="outline"
           onPress={() => {
-            router.push('/signup')
+            router.replace('/signup')
           }}
         >
           <Button.Label className="text-foreground">{t('signup')}</Button.Label>

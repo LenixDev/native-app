@@ -4,6 +4,7 @@ import { verify } from '@/services/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
+import { Button } from 'heroui-native'
 import { InputOTP, type InputOTPRef } from 'heroui-native/input-otp'
 import { LinkButton } from 'heroui-native/link-button'
 import { useToast } from 'heroui-native/toast'
@@ -56,7 +57,11 @@ export default function Page() {
           <InputOTP.Slot index={5} />
         </InputOTP.Group>
       </InputOTP>
-      <Text className='text-danger max-w-3/4 text-center'>t("account_not_verified")</Text>
+      <Text className='text-danger max-w-3/4 text-center'>{t("account_not_verified")}</Text>
+      <Button variant='outline' onPress={() => {
+        router.replace('/signin')
+        AsyncStorage.removeItem(verificationKey).catch(raise)
+      }}>{t("signout")}</Button>
     </KeyboardAvoidingView>
   )
 }

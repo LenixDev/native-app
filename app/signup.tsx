@@ -6,6 +6,7 @@ import {
   Button,
   FieldError,
   InputGroup,
+  Separator,
   Spinner,
   useThemeColor,
   useToast,
@@ -35,7 +36,7 @@ const Signup = ({
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      className="w-full flex-2/4 flex gap-4 justify-center"
+      className="w-full flex gap-4 justify-center flex-1"
     >
       <InputGroup>
         <InputGroup.Prefix isDecorative>
@@ -124,7 +125,7 @@ export default function Page() {
 
   return (
     <View className="flex justify-evenly items-center h-full px-4">
-      <View className="flex-1/4 flex justify-center">
+      <View className="flex justify-center flex-1">
         <Text className="text-foreground text-5xl">Thrivenix</Text>
       </View>
 
@@ -138,7 +139,7 @@ export default function Page() {
         }}
       />
 
-      <View className="flex-1/4 justify-center w-full">
+      <View className="justify-center w-full">
         <Button
           variant="primary"
           onPress={() => {
@@ -151,6 +152,22 @@ export default function Page() {
           >
             {renderLabel()}
           </Button.Label>
+        </Button>
+      </View>
+
+      <View className="w-full flex justify-evenly items-center flex-1">
+        <View className="flex flex-row items-center gap-4 w-2/3">
+          <Separator className="bg-muted flex-1" />
+          <Text className="text-foreground">{t('or')}</Text>
+          <Separator className="bg-muted flex-1" />
+        </View>
+        <Button
+          variant="outline"
+          onPress={() => {
+            router.replace('/signin')
+          }}
+        >
+          <Button.Label className="text-foreground">{t('signin')}</Button.Label>
         </Button>
       </View>
     </View>
