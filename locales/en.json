@@ -7,5 +7,7 @@
   "password": "Password",
   "or": "Or",
   "phone": "Phone number",
-  "signin_success" : "Signed in successfully"
+  "signin_success" : "Signed in successfully",
+  "signup_success" : "Signed up successfully",
+  "password_short" : "Password must be at least 6 characters long"
 }
