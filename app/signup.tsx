@@ -26,8 +26,8 @@ export default function Page() {
         auth,
         authLabel: t('signup'),
         exMethodLabel: t('signin'),
-        exMethod: '/signin'
-
+        exMethod: '/signin',
+        passwordLength: 6
       }}
     />
   )

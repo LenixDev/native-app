@@ -1,10 +1,11 @@
 import { signin } from "@/services/auth";
 import { router } from "expo-router";
 import { useToast } from "heroui-native";
-import { t } from "i18next";
 import { Auth } from "../components/auth";
+import { useTranslation } from "react-i18next";
 
 export default function Page() {
+  const { t } = useTranslation()
   const { toast } = useToast()
 
   const auth = async (phone: string, password: string) => {

@@ -10,7 +10,6 @@ import type { TextInput } from 'react-native-gesture-handler'
 
 type Country = typeof countries
 
-// eslint-disable-next-line max-lines-per-function
 export const Auth = ({
   auth, authLabel, exMethodLabel, exMethod, passwordLength
 }: {
@@ -33,7 +32,6 @@ export const Auth = ({
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
 
-   
   const handleAuth = async () => {
     setLoading(true)
     if (typeof country?.dial !== 'string') {
