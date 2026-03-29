@@ -11,7 +11,7 @@ export default function Page() {
   const ref = useRef<InputOTPRef>(null);
   const { toast } = useToast()
   const { phone } = useLocalSearchParams<{ phone: string }>()
-  
+
   const onComplete = async (code: string) => {
     const [success, response] = await verify(phone, code)
     if (!success) {
