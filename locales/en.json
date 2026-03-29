@@ -12,5 +12,6 @@
   "password_short": "Password must be at least 6 characters long",
   "verify": "Verify",
   "account_verified": "Account verified successfully",
-  "signout": "Sign out"
+  "signout": "Sign out",
+  "end_session": "End session"
 }
