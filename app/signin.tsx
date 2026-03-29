@@ -39,11 +39,12 @@ const SigninForm = () => {
     <>
       <View className="w-full justify-center flex gap-4 flex-1">
         <InputGroup>
-          <InputGroup.Prefix>
-            <Pressable onPress={() => { setIsCountryOpen(true); }}>
-              <Text className="text-foreground">
-                {country ? `${flag[country.code]} ${country.dial}` : '🌐'}
+          <InputGroup.Prefix className='px-0'>
+            <Pressable className='flex-1 w-full px-4 justify-center' onPress={() => { setIsCountryOpen(true); }}>
+              {country ? <Text className="text-foreground">
+                {`${flag[country.code]} ${country.dial}`}
               </Text>
+              : <IconSymbol color={muted} name={`chevron.${isCountryOpen ? 'up' : 'down'}`} size={16} />}
             </Pressable>
           </InputGroup.Prefix>
           <InputGroup.Input
