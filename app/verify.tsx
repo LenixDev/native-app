@@ -5,12 +5,19 @@ import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { InputOTP, type InputOTPRef } from 'heroui-native/input-otp'
 import { useToast } from 'heroui-native/toast'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { KeyboardAvoidingView } from 'react-native'
 
 export default function Page() {
   const ref = useRef<InputOTPRef>(null)
   const { toast } = useToast()
-  const { phone } = useLocalSearchParams<{ phone: string }>()
+  const  { t } = useTranslation()
+
+  const { phone } = useLocalSearchParams()
+  if (typeof phone !== 'string') {
+    router.replace('/signin')
+    return null
+  }
 
   const onComplete = async (code: string) => {
     const [success, response] = await verify(phone, code)
@@ -19,7 +26,7 @@ export default function Page() {
       ref.current?.clear()
       return
     }
-    toast.show('Verified')
+    toast.show(t("account_verified"))
     router.replace('/(tabs)/home')
   }
   return (

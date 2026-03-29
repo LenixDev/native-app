@@ -10,5 +10,6 @@
   "signin_success": "Signed in successfully",
   "signup_success": "Account created successfully",
   "password_short": "Password must be at least 6 characters long",
-  "verify": "Verify"
+  "verify": "Verify",
+  "account_verified": "Account verified successfully"
 }
