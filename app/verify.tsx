@@ -13,7 +13,6 @@ export default function Page() {
   const { phone } = useLocalSearchParams<{ phone: string }>()
   
   const onComplete = async (code: string) => {
-    console.log('phone:', phone, 'otp:', code)
     const [success, response] = await verify(phone, code)
     if (!success) {
       toast.show(response)
