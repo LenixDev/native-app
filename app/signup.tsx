@@ -147,9 +147,9 @@ export default function Page() {
           onPress={() => {
             handleRegister().catch(raise)
           }}
+          isDisabled={loading}
         >
           <Button.Label
-            disabled={loading}
             className="dark:text-background text-foreground"
           >
             {renderLabel()}
