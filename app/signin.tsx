@@ -63,6 +63,7 @@ const SigninForm = () => {
             placeholder={t('phone')}
             keyboardType="phone-pad"
             onChangeText={self => { setForm((form) => ({ ...form, phone: self })); }}
+            value={phone}
           />
         </InputGroup>
         <InputGroup>
@@ -77,6 +78,7 @@ const SigninForm = () => {
             autoCorrect={false}
             secureTextEntry={!isPasswordVisible}
             onChangeText={self => { setForm((form) => ({ ...form, password: self })); }}
+            value={password}
           />
           <InputGroup.Suffix>
             <Pressable

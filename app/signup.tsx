@@ -36,7 +36,7 @@ const Signup = ({
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      className="w-full flex gap-4 justify-center flex-1 mb-5"
+      className="w-full flex gap-4 justify-center flex-1"
     >
       <InputGroup>
         <InputGroup.Prefix isDecorative>
@@ -84,7 +84,7 @@ const Signup = ({
             </Pressable>
           </InputGroup.Suffix>
         </InputGroup>
-        <FieldError isInvalid={password.length > 0 && password.length < 6}>
+        <FieldError className='mb-5' isInvalid={password.length > 0 && password.length < 6}>
           {t('password_short')}
         </FieldError>
       </View>
