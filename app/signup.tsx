@@ -99,6 +99,7 @@ export default function Page() {
   const [result, setResult] = useState<boolean | null>(null)
   const [{ phone, password }, setForm] = useState({ phone: '', password: '' })
   const { toast } = useToast()
+  const [accent, danger] = useThemeColor(['accent', 'danger'])
 
   const handleRegister = async () => {
     setLoading(true)
@@ -119,9 +120,9 @@ export default function Page() {
   const renderLabel = () => {
     if (loading) return <Spinner color="success" />
     if (result === true)
-      return <IconSymbol color="green" name="checkmark.circle.fill" size={24} />
+      return <IconSymbol color={accent} name="checkmark.circle" size={24} />
     if (result === false)
-      return <IconSymbol color="red" name="xmark.circle.fill" size={24} />
+      return <IconSymbol color={danger} name="xmark.circle" size={24} />
     return t('signup')
   }
 
