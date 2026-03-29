@@ -4,12 +4,10 @@ import { signin } from '@/services/auth'
 import { Button, InputGroup, Separator, useThemeColor, useToast } from 'heroui-native'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, Modal, Pressable, ScrollView, Text, View } from 'react-native'
-import { type TextInput } from 'react-native-gesture-handler'
+import { FlatList, Modal, Pressable, Text, View } from 'react-native'
+import type { TextInput } from 'react-native-gesture-handler'
 import countries from '@/lib/countries.json' with { type: 'json' }
 import { router } from 'expo-router'
-
-type Country = { name: string; dial: string; code: string }
 
 // eslint-disable-next-line max-lines-per-function
 const SigninForm = () => {
@@ -20,7 +18,7 @@ const SigninForm = () => {
   const [{ phone, password, country }, setForm] = useState<{
     phone: string
     password: string
-    country: Country | null
+    country: typeof countries[number] | null
   }>({ phone: '', password: '', country: null })
   const [isCountryOpen, setIsCountryOpen] = useState(false)
   const { toast } = useToast()
@@ -42,7 +40,7 @@ const SigninForm = () => {
       <View className="w-full justify-center flex gap-4 flex-1">
         <InputGroup>
           <InputGroup.Prefix>
-            <Pressable onPress={() => setIsCountryOpen(true)}>
+            <Pressable onPress={() => { setIsCountryOpen(true); }}>
               <Text className="text-foreground">
                 {country ? `${flag[country.code]} ${country.dial}` : '🌐'}
               </Text>
@@ -73,7 +71,7 @@ const SigninForm = () => {
             onChangeText={self => { setForm(form => ({ ...form, password: self })); }}
           />
           <InputGroup.Suffix>
-            <Pressable hitSlop={20} onPress={() => { setIsPasswordVisible(v => !v); }}>
+            <Pressable hitSlop={20} onPress={() => { setIsPasswordVisible(visible => !visible); }}>
               <IconSymbol
                 size={16}
                 name={`eye.${isPasswordVisible ? 'slash.' : ''}fill`}
@@ -96,9 +94,9 @@ const SigninForm = () => {
         visible={isCountryOpen}
         transparent
         animationType="slide"
-        onRequestClose={() => setIsCountryOpen(false)}
+        onRequestClose={() => { setIsCountryOpen(false); }}
       >
-        <Pressable style={{ flex: 1 }} onPress={() => setIsCountryOpen(false)} />
+        <Pressable style={{ flex: 1 }} onPress={() => { setIsCountryOpen(false); }} />
         <View className='h-1/2 bg-segment'>
           <FlatList
             data={countries as Country[]}
