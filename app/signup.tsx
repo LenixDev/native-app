@@ -36,7 +36,7 @@ const Signup = ({
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      className="w-full flex gap-4 justify-center flex-1"
+      className="w-full flex gap-4 justify-center flex-1 mb-5"
     >
       <InputGroup>
         <InputGroup.Prefix isDecorative>
@@ -54,38 +54,40 @@ const Signup = ({
         />
       </InputGroup>
 
-      <InputGroup>
-        <InputGroup.Prefix isDecorative>
-          <IconSymbol color={muted} name="lock.fill" size={16} />
-        </InputGroup.Prefix>
-        <InputGroup.Input
-          autoCorrect={false}
-          value={password}
-          ref={passwordRef}
-          returnKeyType="done"
-          placeholder={t('password')}
-          secureTextEntry={!isPasswordVisible}
-          onChangeText={onPassword}
-          isInvalid={password.length > 0 && password.length < 6}
-        />
-        <InputGroup.Suffix>
-          <Pressable
-            hitSlop={20}
-            onPress={() => {
-              setIsPasswordVisible((visible) => !visible)
-            }}
-          >
-            <IconSymbol
-              size={16}
-              name={`eye.${isPasswordVisible ? 'slash.' : ''}fill`}
-              color={muted}
-            />
-          </Pressable>
-        </InputGroup.Suffix>
-      </InputGroup>
-      <FieldError isInvalid={password.length > 0 && password.length < 6}>
-        {t('password_short')}
-      </FieldError>
+      <View className='flex gap-2'>
+        <InputGroup>
+          <InputGroup.Prefix isDecorative>
+            <IconSymbol color={muted} name="lock.fill" size={16} />
+          </InputGroup.Prefix>
+          <InputGroup.Input
+            autoCorrect={false}
+            value={password}
+            ref={passwordRef}
+            returnKeyType="done"
+            placeholder={t('password')}
+            secureTextEntry={!isPasswordVisible}
+            onChangeText={onPassword}
+            isInvalid={password.length > 0 && password.length < 6}
+          />
+          <InputGroup.Suffix>
+            <Pressable
+              hitSlop={20}
+              onPress={() => {
+                setIsPasswordVisible((visible) => !visible)
+              }}
+            >
+              <IconSymbol
+                size={16}
+                name={`eye.${isPasswordVisible ? 'slash.' : ''}fill`}
+                color={muted}
+              />
+            </Pressable>
+          </InputGroup.Suffix>
+        </InputGroup>
+        <FieldError isInvalid={password.length > 0 && password.length < 6}>
+          {t('password_short')}
+        </FieldError>
+      </View>
     </KeyboardAvoidingView>
   )
 }

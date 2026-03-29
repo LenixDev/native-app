@@ -98,7 +98,7 @@ export default function Page() {
     const { error } = await signin(phone, password)
     if (error) {
       if (error.code === 'phone_not_confirmed')
-        router.push(`/verify?phone=${encodeURIComponent(phone)}`)
+        router.replace(`/verify?phone=${encodeURIComponent(phone)}`)
       else toast.show(error.message)
       return
     }
