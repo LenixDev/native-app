@@ -9,9 +9,10 @@ import { KeyboardAvoidingView, Text, View } from 'react-native'
 import { Pressable, type TextInput } from 'react-native-gesture-handler'
 
 // eslint-disable-next-line max-lines-per-function
-const Signup = ({ phone, password, setForm }: {
+const Signup = ({ phone, password, onPhone, onPassword }: {
   phone: string, password: string,
-  setForm: React.Dispatch<React.SetStateAction<{ phone: string, password: string }>>
+  onPhone: (phone: string) => void,
+  onPassword: (password: string) => void
 }) => {
   const muted = useThemeColor('muted')
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -32,7 +33,7 @@ const Signup = ({ phone, password, setForm }: {
           autoCapitalize='none'
           autoCorrect={false}
           value={phone}
-          onChangeText={(text) => { setForm(prev => ({ ...prev, phone: text })) }}
+          onChangeText={onPhone}
         />
       </InputGroup>
 
@@ -48,7 +49,7 @@ const Signup = ({ phone, password, setForm }: {
           autoCorrect={false}
           secureTextEntry={!isPasswordVisible}
           value={password}
-          onChangeText={(text) => { setForm(prev => ({ ...prev, password: text })) }}
+          onChangeText={onPassword}
           isInvalid={password.length > 0 && password.length < 6}
         />
         <InputGroup.Suffix>
@@ -83,26 +84,28 @@ export default function Tab() {
     navigate(`/verify?phone=${encodeURIComponent(phone)}`)
   }
 
+  const renderLabel = () => {
+    if (loading) return <Spinner color="success" />
+    if (result === true) return <IconSymbol color="green" name="checkmark.circle.fill" size={24} />
+    if (result === false) return <IconSymbol color="red" name="xmark.circle.fill" size={24} />
+    return t("signup")
+  }
+
   return (
     <View className='flex justify-evenly items-center h-full px-4'>
       <View className='flex-1/4 flex justify-center'>
         <Text className='text-foreground text-5xl'>Thrivenix</Text>
       </View>
 
-      <Signup {...{ phone, password, setForm }} />
+      <Signup {...{ phone, password }}
+        onPassword={(text) => { setForm(prev => ({ ...prev, password: text })) }}
+        onPhone={(text) => { setForm(prev => ({ ...prev, phone: text })) }}
+      />
 
       <View className='flex-1/4 justify-center w-full'>
         <Button variant="primary" onPress={() => { handleRegister().catch(raise) }}>
           <Button.Label disabled={loading} className='dark:text-background text-foreground'>
-            {/* eslint-disable-next-line no-nested-ternary */}
-            {loading
-              ? <Spinner color="success" />
-              : result === true
-                ? <IconSymbol color="green" name="checkmark.circle.fill" size={24} />
-                : result === false
-                  ? <IconSymbol color="red" name="xmark.circle.fill" size={24} />
-                  : t("signup")
-            }
+            {renderLabel()}
           </Button.Label>
         </Button>
       </View>
