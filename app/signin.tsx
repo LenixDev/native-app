@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { Text, View } from 'react-native'
 import { Pressable, type TextInput } from 'react-native-gesture-handler'
 import countries from '@/lib/countries.json' with { type: 'json' }
+import { router } from 'expo-router'
 
 // eslint-disable-next-line max-lines-per-function
 const SigninForm = () => {
@@ -29,13 +30,13 @@ const SigninForm = () => {
     const { error } = await signin(phone, password)
     if (error) {
       if (error.code === 'phone_not_confirmed')
-        navigate(`/verify?phone=${encodeURIComponent(phone)}`)
+        router.replace(`/verify?phone=${encodeURIComponent(phone)}`)
       else toast.show(error.message)
       return
     }
 
     toast.show(t('signin_success'))
-    navigate('/(tabs)/home')
+    router.replace('/(tabs)/home')
   }
 
   return (

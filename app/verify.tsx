@@ -1,6 +1,6 @@
 import { raise } from '@/lib/utils'
 import { verify } from '@/services/auth'
-import { navigate } from 'expo-router/build/global-state/routing'
+import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { InputOTP, type InputOTPRef } from 'heroui-native/input-otp'
 import { useToast } from 'heroui-native/toast'
@@ -20,7 +20,7 @@ export default function Page() {
       return
     }
     toast.show('Verified')
-    navigate('/(tabs)/home')
+    router.replace('/(tabs)/home')
   }
   return (
     <KeyboardAvoidingView

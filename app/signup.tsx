@@ -1,7 +1,7 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { raise } from '@/lib/utils'
 import { signup } from '@/services/auth'
-import { navigate } from 'expo-router/build/global-state/routing'
+import { router } from 'expo-router'
 import {
   Button,
   FieldError,
@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { KeyboardAvoidingView, Text, View } from 'react-native'
 import { Pressable, type TextInput } from 'react-native-gesture-handler'
 
+// eslint-disable-next-line max-lines-per-function
 const Signup = ({
   phone,
   password,
@@ -88,6 +89,7 @@ const Signup = ({
   )
 }
 
+// eslint-disable-next-line max-lines-per-function
 export default function Page() {
   const { t } = useTranslation()
   const [loading, setLoading] = useState(false)
@@ -108,7 +110,7 @@ export default function Page() {
       return
     }
     toast.show(t('signup_success'))
-    navigate(`/verify?phone=${encodeURIComponent(phone)}`)
+    router.replace(`/verify?phone=${encodeURIComponent(phone)}`)
   }
 
   const renderLabel = () => {
