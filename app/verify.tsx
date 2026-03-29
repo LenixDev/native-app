@@ -1,13 +1,17 @@
+import { verificationKey } from '@/constants'
 import { raise } from '@/lib/utils'
 import { verify } from '@/services/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { InputOTP, type InputOTPRef } from 'heroui-native/input-otp'
+import { LinkButton } from 'heroui-native/link-button'
 import { useToast } from 'heroui-native/toast'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyboardAvoidingView } from 'react-native'
 
+// eslint-disable-next-line max-lines-per-function
 export default function Page() {
   const ref = useRef<InputOTPRef>(null)
   const { toast } = useToast()
@@ -30,9 +34,8 @@ export default function Page() {
     router.replace('/(tabs)/home')
   }
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      className="flex items-center justify-center w-full h-full"
+    <KeyboardAvoidingView behavior="padding"
+      className="flex items-center justify-evenly w-full h-full"
     >
       <InputOTP
         ref={ref}
@@ -53,6 +56,15 @@ export default function Page() {
           <InputOTP.Slot index={5} />
         </InputOTP.Group>
       </InputOTP>
+      <LinkButton
+        onPress={() => {
+          AsyncStorage.removeItem(verificationKey).then(() => {
+            router.replace('/signin')
+          }).catch(raise)
+        }}
+      >
+        <LinkButton.Label>{t("end_session")}</LinkButton.Label>
+      </LinkButton>
     </KeyboardAvoidingView>
   )
 }
