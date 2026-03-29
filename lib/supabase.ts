@@ -1,17 +1,35 @@
-import { createClient } from '@supabase/supabase-js'
+import { AppState, Platform } from 'react-native'
+import 'react-native-url-polyfill/auto'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { createClient, processLock } from '@supabase/supabase-js'
+import { raise } from './utils'
 
-export const supabase = (() => {
-  const { EXPO_PUBLIC_SUPABASE_ANON_KEY, EXPO_PUBLIC_SUPABASE_PROJECT_ID } =
-    process.env
-  if (!EXPO_PUBLIC_SUPABASE_ANON_KEY)
-    throw new Error('missing .env > EXPO_PUBLIC_SUPABASE_ANON_KEY', {
-      cause: { EXPO_PUBLIC_SUPABASE_ANON_KEY },
-    })
-  if (!EXPO_PUBLIC_SUPABASE_PROJECT_ID)
-    throw new Error('missing .env > EXPO_PUBLIC_SUPABASE_PROJECT_ID', {
-      cause: { EXPO_PUBLIC_SUPABASE_PROJECT_ID },
-    })
-
-  const SUPABASE_URL = `https://${EXPO_PUBLIC_SUPABASE_PROJECT_ID}.supabase.co`
-  return createClient(SUPABASE_URL, EXPO_PUBLIC_SUPABASE_ANON_KEY)
+const supabaseUrl = (() => { 
+  const url = process.env.EXPO_PUBLIC_SUPABASE_URL
+  if (typeof url !== 'string') throw new Error('Missing Supabase URL')
+  return url
 })()
+
+const supabaseAnonKey = (() => {
+  const key = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY
+  if (typeof key !== 'string') throw new Error('Missing Supabase Anon Key')
+  return key
+})()
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    ...(Platform.OS !== 'web' && { storage: AsyncStorage }),
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false,
+    lock: processLock,
+  },
+})
+
+if (Platform.OS !== 'web')
+AppState.addEventListener('change', (state) => {
+  if (state === 'active')
+    supabase.auth.startAutoRefresh().catch(raise)
+  else
+    supabase.auth.stopAutoRefresh().catch(raise)
+})
