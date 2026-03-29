@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase"
+import { supabase } from '@/lib/supabase'
 
 export const signin = async (phone: string, password: string) => {
   const result = await supabase.auth.signInWithPassword({ phone, password })
@@ -10,7 +10,10 @@ export const signup = async (phone: string, password: string) => {
   return result
 }
 
-export const verify = async (phone: string, token: string): Promise<[true] | [false, string]> => {
+export const verify = async (
+  phone: string,
+  token: string,
+): Promise<[true] | [false, string]> => {
   const { error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' })
   if (error) return [false, error.message]
   return [true]

@@ -18,10 +18,7 @@ module.exports = defineConfig([
     rules: {
       ...lint.strict,
       'react/no-unescaped-entities': 'off',
-      "id-length": [
-        "error",
-        { "exceptions": [ "_", "t" ] }
-      ],
+      'id-length': ['error', { exceptions: ['_', 't'] }],
     },
   },
 ])

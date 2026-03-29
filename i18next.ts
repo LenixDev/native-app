@@ -19,16 +19,16 @@ const getLang = async () => {
   const saved = await AsyncStorage.getItem('lang')
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   if (supportedLangs.has(saved as Lang))
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  return saved as Lang
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    return saved as Lang
   // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
   if (supportedLangs.has(deviceLang as Lang))
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  return deviceLang as Lang
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+    return deviceLang as Lang
   return fallbackLng
 }
 
-(async () => {
+;(async () => {
   const lng = await getLang()
   await i18nUse(initReactI18next).init({
     resources: {
