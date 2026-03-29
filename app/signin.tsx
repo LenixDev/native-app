@@ -21,11 +21,8 @@ const SigninForm = () => {
   const handleSignin = async () => {
     const { error } = await signin(phone, password)
     if (error) {
-      if (error.code === 'phone_not_confirmed') {
-        navigate(`/verify?phone=${encodeURIComponent(phone)}`)
-        return
-      }
-      toast.show(error.message)
+      if (error.code === 'phone_not_confirmed') navigate(`/verify?phone=${encodeURIComponent(phone)}`)
+      else toast.show(error.message)
       return
     }
 
@@ -94,7 +91,9 @@ export default function Page() {
       <View className='flex-1 flex justify-center'>
         <Text className='text-foreground text-5xl'>Thrivenix</Text>
       </View>
+
       <SigninForm />
+
       <View className='w-full flex justify-evenly items-center flex-1'>
         <View className='flex flex-row items-center gap-4 w-2/3'>
           <Separator className='bg-muted flex-1' />
