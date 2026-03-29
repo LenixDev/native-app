@@ -1,7 +1,6 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { raise } from '@/lib/utils'
 import { signin } from '@/services/auth'
-import { navigate } from 'expo-router/build/global-state/routing'
 import {
   Button,
   InputGroup,
@@ -132,7 +131,7 @@ export default function Page() {
         <Button
           variant="outline"
           onPress={() => {
-            navigate('/signup')
+            router.replace('/signup')
           }}
         >
           <Button.Label className="text-foreground">{t('signup')}</Button.Label>

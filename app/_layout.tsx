@@ -22,7 +22,6 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="signin" options={{ title: t('signin') }} />
             <Stack.Screen
               name="signup"
               options={{
@@ -30,6 +29,8 @@ export default function RootLayout() {
                 headerBackTitle: t('signin'),
               }}
             />
+            <Stack.Screen name="signin" options={{ title: t('signin') }} />
+            <Stack.Screen name="verify" options={{ title: t('verify') }} />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
