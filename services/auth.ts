@@ -12,9 +12,6 @@ export const signup = async (phone: string, password: string) => {
 
 export const verify = async (phone: string, token: string): Promise<[true] | [false, string]> => {
   const { error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' })
-  if (error) {
-    console.error(phone, token, error)
-    return [false, error.message]
-  }
+  if (error) return [false, error.message]
   return [true]
 }
