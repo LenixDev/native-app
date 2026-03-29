@@ -34,8 +34,9 @@ export default function Tab() {
       </Button>
       <Button
         onPress={() => {
-          supabase.auth.signOut().catch(raise)
-          router.replace('/')
+          supabase.auth.signOut().then(res => {
+            router.replace('/signin')
+          }).catch(raise)
         }}
       >
         {t("signout")}
