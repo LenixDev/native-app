@@ -1,35 +1,38 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Redirect, router } from 'expo-router'
-import { raise } from '@/lib/utils'
+import { type Href, Redirect} from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { verificationKey } from '@/constants'
 
 export default function Page() {
+  const [route, setRoute] = useState<Href | null>(null)
+
   useEffect(() => {
     // eslint-disable-next-line max-statements
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, authSession) => {
-      console.log(event, authSession)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === 'SIGNED_IN') {
-        router.replace('/(tabs)/home')
+        setRoute('/(tabs)/home')
         return
       }
       const phone = await AsyncStorage.getItem(verificationKey)
       if (typeof phone === 'string') {
-        router.replace(`/verify?phone=${encodeURIComponent(phone)}`)
+        setRoute(`/verify?phone=${encodeURIComponent(phone)}`)
         return
       }
       if (event === 'INITIAL_SESSION') {
-        router.replace('/signin')
+        setRoute('/signin')
         return
       }
       if (event === 'SIGNED_OUT') {
-        router.replace('/signin')
+        setRoute('/signin')
         return
       }
+      setRoute('/+not-found')
     })
     return () => { subscription.unsubscribe() }
   }, [])
+
+  if (route === null) return null
   
-  // return <Redirect href={'/signin'}/>
+  return <Redirect href={route}/>
 }
