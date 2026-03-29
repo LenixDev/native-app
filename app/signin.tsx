@@ -9,6 +9,8 @@ import type { TextInput } from 'react-native-gesture-handler'
 import countries from '@/lib/countries.json' with { type: 'json' }
 import { router } from 'expo-router'
 
+type Country = typeof countries
+
 // eslint-disable-next-line max-lines-per-function
 const SigninForm = () => {
   const { t } = useTranslation()
@@ -18,7 +20,7 @@ const SigninForm = () => {
   const [{ phone, password, country }, setForm] = useState<{
     phone: string
     password: string
-    country: typeof countries[number] | null
+    country: Country[number] | null
   }>({ phone: '', password: '', country: null })
   const [isCountryOpen, setIsCountryOpen] = useState(false)
   const { toast } = useToast()
@@ -100,20 +102,20 @@ const SigninForm = () => {
         <Pressable style={{ flex: 1 }} onPress={() => { setIsCountryOpen(false); }} />
         <View className='h-1/2 bg-segment'>
           <FlatList
-            data={countries as Country[]}
-            keyExtractor={c => c.code}
-            renderItem={({ item: c }) => (
+            data={countries}
+            keyExtractor={country => country.code}
+            renderItem={({ item: country }) => (
               <>
                 <Pressable
                   className="flex flex-row items-center gap-3 p-4 active:bg-muted"
                   onPress={() => {
-                    setForm(form => ({ ...form, country: c }))
+                    setForm(form => ({ ...form, country: country }))
                     setIsCountryOpen(false)
                   }}
                 >
-                  <Text>{flag[c.code]}</Text>
-                  <Text className="text-foreground">{c.dial}</Text>
-                  <Text className="text-foreground">{c.name}</Text>
+                  <Text>{flag[country.code]}</Text>
+                  <Text className="text-foreground">{country.dial}</Text>
+                  <Text className="text-foreground">{country.name}</Text>
                 </Pressable>
                 <Separator className='w-full h-px' orientation='vertical' />
               </>
