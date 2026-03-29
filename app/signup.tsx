@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import { KeyboardAvoidingView, Text, View } from 'react-native'
 import { Pressable, type TextInput } from 'react-native-gesture-handler'
 
-// eslint-disable-next-line max-lines-per-function
 const Signup = ({ phone, password, onPhone, onPassword }: {
   phone: string, password: string,
   onPhone: (phone: string) => void,
@@ -25,14 +24,12 @@ const Signup = ({ phone, password, onPhone, onPassword }: {
         <InputGroup.Prefix isDecorative>
           <IconSymbol color={muted} name="phone.fill" size={16} />
         </InputGroup.Prefix>
-        <InputGroup.Input
+        <InputGroup.Input autoCorrect={false} value={phone}
           onSubmitEditing={() => passwordRef.current?.focus()}
           returnKeyType='next'
           placeholder={t("phone")}
           keyboardType='phone-pad'
           autoCapitalize='none'
-          autoCorrect={false}
-          value={phone}
           onChangeText={onPhone}
         />
       </InputGroup>
@@ -41,14 +38,11 @@ const Signup = ({ phone, password, onPhone, onPassword }: {
         <InputGroup.Prefix isDecorative>
           <IconSymbol color={muted} name="lock.fill" size={16} />
         </InputGroup.Prefix>
-        <InputGroup.Input
+        <InputGroup.Input autoCorrect={false} value={password}
           ref={passwordRef}
           returnKeyType='done'
           placeholder={t("password")}
-          autoCapitalize='none'
-          autoCorrect={false}
           secureTextEntry={!isPasswordVisible}
-          value={password}
           onChangeText={onPassword}
           isInvalid={password.length > 0 && password.length < 6}
         />
