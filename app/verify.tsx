@@ -9,7 +9,7 @@ import { LinkButton } from 'heroui-native/link-button'
 import { useToast } from 'heroui-native/toast'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAvoidingView, Text } from 'react-native'
 
 // eslint-disable-next-line max-lines-per-function
 export default function Page() {
@@ -56,15 +56,7 @@ export default function Page() {
           <InputOTP.Slot index={5} />
         </InputOTP.Group>
       </InputOTP>
-      <LinkButton
-        onPress={() => {
-          AsyncStorage.removeItem(verificationKey).then(() => {
-            router.replace('/signin')
-          }).catch(raise)
-        }}
-      >
-        <LinkButton.Label>{t("end_session")}</LinkButton.Label>
-      </LinkButton>
+      <Text className='text-danger max-w-3/4 text-center'>t("account_not_verified")</Text>
     </KeyboardAvoidingView>
   )
 }

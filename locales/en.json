@@ -13,5 +13,5 @@
   "verify": "Verify",
   "account_verified": "Account verified successfully",
   "signout": "Sign out",
-  "end_session": "End session"
+  "account_not_verified": "If this account doesn't get verified within the next 30 minutes, it will get erased from our database"
 }
