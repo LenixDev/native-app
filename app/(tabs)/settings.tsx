@@ -1,5 +1,7 @@
 import { useToggleLang } from '@/hooks/use-toggle-lang'
+import { supabase } from '@/lib/supabase'
 import { raise } from '@/lib/utils'
+import { router } from 'expo-router'
 import { Button } from 'heroui-native'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
@@ -19,7 +21,7 @@ import { View } from 'react-native'
 // - decrease conversation by deleting unused topics in tthe same chat session
 // - help
 export default function Tab() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const changeLang = useToggleLang()
   return (
     <View className="flex justify-center h-full">
@@ -29,6 +31,14 @@ export default function Tab() {
         }}
       >
         {i18n.language === 'en' ? 'العربية' : 'English'}
+      </Button>
+      <Button
+        onPress={() => {
+          supabase.auth.signOut().catch(raise)
+          router.replace('/')
+        }}
+      >
+        {t("signout")}
       </Button>
     </View>
   )
