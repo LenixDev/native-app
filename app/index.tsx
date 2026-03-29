@@ -9,19 +9,35 @@ export default function Page() {
   const [phone, setPhone] = useState('')
 
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session: authSession } }) => {
+      if (!authSession) {
+        setSession('unauthenticated')
+        return
+      }
+      setPhone(authSession.user.phone ?? '')
+      if (typeof authSession.user.confirmed_at !== 'string') {
+        setSession('unverified')
+        return
+      }
+      setSession('authenticated')
+    }).catch(() => {
+      setSession('unauthenticated')
+    })
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, authSession) => {
       if (!authSession) {
         setSession('unauthenticated')
         return
       }
+      setPhone(authSession.user.phone ?? '')
       if (typeof authSession.user.confirmed_at !== 'string') {
-        setPhone(authSession.user.phone ?? '')
         setSession('unverified')
         return
       }
       setSession('authenticated')
     })
-    return () => { subscription.unsubscribe(); }
+
+    return () => { subscription.unsubscribe() }
   }, [])
 
   if (session === null) return null

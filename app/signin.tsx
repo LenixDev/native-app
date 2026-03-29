@@ -15,6 +15,7 @@ import { Text, View } from 'react-native'
 import { Pressable, type TextInput } from 'react-native-gesture-handler'
 import countries from '@/lib/countries.json' with { type: 'json' }
 import { router } from 'expo-router'
+import { navigate } from 'expo-router/build/global-state/routing'
 
 // eslint-disable-next-line max-lines-per-function
 const SigninForm = () => {
@@ -29,7 +30,7 @@ const SigninForm = () => {
     const { error } = await signin(phone, password)
     if (error) {
       if (error.code === 'phone_not_confirmed')
-        router.replace(`/verify?phone=${encodeURIComponent(phone)}`)
+        navigate(`/verify?phone=${encodeURIComponent(phone)}`)
       else toast.show(error.message)
       return
     }
@@ -131,7 +132,7 @@ export default function Page() {
         <Button
           variant="outline"
           onPress={() => {
-            router.replace('/signup')
+             navigate('/signup')
           }}
         >
           <Button.Label className="text-foreground">{t('signup')}</Button.Label>
