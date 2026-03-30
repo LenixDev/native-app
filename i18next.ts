@@ -10,16 +10,13 @@ import es from './locales/es.json'
 import { guard, raise } from './lib/utils'
 
 const supportedLangs: readonly Lang[] = ['en', 'ar', 'es']
-const fallbackLng: Lang = 'en'
-
-const deviceLang = getLocales()[0].languageCode
+const fallbackLng: Lang = 'en' as const
+const deviceLang = getLocales()[0].languageTag.slice(0, 2)
 
 const getLang = async () => {
   const saved = await AsyncStorage.getItem('lang')
-  if (guard(saved, supportedLangs))
-    return saved
-  if (guard(deviceLang, supportedLangs))
-    return deviceLang
+  if (guard(saved, supportedLangs)) return saved
+  if (guard(deviceLang, supportedLangs)) return deviceLang
   return fallbackLng
 }
 
