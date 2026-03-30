@@ -12,7 +12,7 @@ export default function Page() {
     const {
       data: { subscription },
       // eslint-disable-next-line max-statements
-    } = supabase.auth.onAuthStateChange(async (event) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN') {
         setRoute('/(tabs)/home')
         return
@@ -22,7 +22,7 @@ export default function Page() {
         setRoute(`/verify?phone=${encodeURIComponent(phone)}`)
         return
       }
-      if (event === 'INITIAL_SESSION') {
+      if (event === 'INITIAL_SESSION' && !session) {
         setRoute('/signin')
         return
       }
