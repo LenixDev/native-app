@@ -30,6 +30,10 @@ export default function Page() {
         setRoute('/signin')
         return
       }
+      if (event === 'INITIAL_SESSION' && session) {
+        setRoute('/(tabs)/home')
+        return
+      }
       setRoute('/+not-found')
     })
     return () => {
