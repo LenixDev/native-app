@@ -12,7 +12,7 @@ import {
 } from 'heroui-native'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, Modal, Pressable, Text, View } from 'react-native'
+import { FlatList, KeyboardAvoidingView, Modal, Pressable, Text, View } from 'react-native'
 import type { TextInput } from 'react-native-gesture-handler'
 
 type Country = typeof countries
@@ -32,7 +32,7 @@ export const Auth = ({
   passwordLength?: number
 }) => {
   const { t } = useTranslation()
-  const muted = useThemeColor('muted')
+  const [muted, danger] = useThemeColor(['muted', 'danger'])
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const passwordRef = useRef<TextInput>(null)
   const [{ phone, password, country }, setForm] = useState<{
@@ -61,39 +61,45 @@ export const Auth = ({
         <Text className="text-foreground text-5xl">Thrivenix</Text>
       </View>
 
-      <View className="w-full justify-center flex gap-4 flex-1">
-        <InputGroup>
-          <InputGroup.Prefix className="px-0">
-            <Pressable
-              className="flex-1 w-full px-4 justify-center"
-              onPress={() => {
-                setIsCountryOpen(true)
+      <KeyboardAvoidingView behavior='padding' className="w-full justify-center flex gap-4 flex-1">
+        <View className='flex gap-2'>
+          <InputGroup>
+            <InputGroup.Prefix className="px-0">
+              <Pressable
+                className={`flex-1 w-full px-4 justify-center ${phone.length > 0 && 'border-danger'}`}
+                onPress={() => {
+                  setIsCountryOpen(true)
+                }}
+              >
+                {country ? (
+                  <Text className="text-foreground">
+                    {`${flag[country.code]} ${country.dial}`}
+                  </Text>
+                ) : (
+                  <IconSymbol
+                    color={phone.length > 0 ? danger : muted}
+                    name={`chevron.${isCountryOpen ? 'up' : 'down'}`}
+                    size={16}
+                  />
+                )}
+              </Pressable>
+            </InputGroup.Prefix>
+            <InputGroup.Input
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              returnKeyType="next"
+              placeholder={t('phone')}
+              keyboardType="number-pad"
+              value={phone}
+              onChangeText={(self) => {
+                setForm((form) => ({ ...form, phone: self }))
               }}
-            >
-              {country ? (
-                <Text className="text-foreground">
-                  {`${flag[country.code]} ${country.dial}`}
-                </Text>
-              ) : (
-                <IconSymbol
-                  color={muted}
-                  name={`chevron.${isCountryOpen ? 'up' : 'down'}`}
-                  size={16}
-                />
-              )}
-            </Pressable>
-          </InputGroup.Prefix>
-          <InputGroup.Input
-            onSubmitEditing={() => passwordRef.current?.focus()}
-            returnKeyType="next"
-            placeholder={t('phone')}
-            keyboardType="number-pad"
-            value={phone}
-            onChangeText={(self) => {
-              setForm((form) => ({ ...form, phone: self }))
-            }}
-          />
-        </InputGroup>
+              isInvalid={phone.length > 0 && country === null}
+            />
+          </InputGroup>
+          <FieldError isInvalid={phone.length > 0 && country === null}>
+            {t("country_code_error")}
+          </FieldError>
+        </View>
 
         <InputGroup>
           <InputGroup.Prefix isDecorative>
@@ -133,13 +139,13 @@ export const Auth = ({
         </InputGroup>
         {typeof passwordLength === 'number' && (
           <FieldError
-            className="mb-5"
+            className="mb-10"
             isInvalid={password.length > 0 && password.length < 6}
           >
             {t('password_short')}
           </FieldError>
         )}
-      </View>
+      </KeyboardAvoidingView>
 
       <View className="justify-center w-full">
         <Button

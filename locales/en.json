@@ -13,5 +13,7 @@
   "verify": "Verify",
   "account_verified": "Account verified successfully",
   "signout": "Sign out",
-  "account_not_verified": "If this account doesn't get verified within the next 30 minutes, it will get erased from our database"
+  "account_not_verified": "If this account doesn't get verified within the next 30 minutes, it will get erased from our database",
+  "unretrievable_country_code": "Could not identify the phone number country code",
+  "country_code_error": "Phone number country code not selected"
 }
