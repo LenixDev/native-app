@@ -8,7 +8,7 @@ import type { OpaqueColorValue, StyleProp, TextStyle } from 'react-native'
 type IconMapping = Partial<
   Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>
 >
-type IconSymbolName = keyof typeof MAPPING
+export type IconSymbolName = keyof typeof MAPPING
 
 /**
  * Add your SF Symbols to Material Icons mappings here.
