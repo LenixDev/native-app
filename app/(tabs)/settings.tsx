@@ -3,19 +3,19 @@ import { useToggleLang } from '@/hooks/use-toggle-lang'
 import { raise } from '@/lib/utils'
 import { signout } from '@/services/auth'
 import { router } from 'expo-router'
-import { Button, Description, ListGroup, PressableFeedback, Separator, useThemeColor, useToast } from 'heroui-native'
-import React from 'react'
+import { BottomSheet, Button, Description, ListGroup, PressableFeedback, Separator, useThemeColor, useToast } from 'heroui-native'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Text, View } from 'react-native'
 
 const ListItem = ({
-  icon, title, context
+  icon, title, context, onPress
 }: {
-  icon: IconSymbolName, title: string, context: string
+  icon: IconSymbolName, title: string, context: string, onPress?: () => void
 }) => {
   const foreground = useThemeColor('foreground')
   return (
-    <PressableFeedback animation={false} onPress={() => {}}>
+    <PressableFeedback animation={false} onPress={onPress}>
       <PressableFeedback.Scale>
         <ListGroup.Item>
           <ListGroup.ItemPrefix>
@@ -38,6 +38,23 @@ const ListItem = ({
   )
 }
 
+const BottomModal = ({
+  children, open, setOpen
+}: {
+  children: React.ReactNode
+  open: boolean
+  setOpen: (open: boolean) => void
+}) => (
+  <BottomSheet isOpen={open} onOpenChange={setOpen}>
+    <BottomSheet.Portal>
+      <BottomSheet.Overlay />
+      <BottomSheet.Content>
+        {children}
+      </BottomSheet.Content>
+    </BottomSheet.Portal>
+  </BottomSheet>
+)
+
 // TODO:
 // - theme,
 // - lang selection not toggle,
@@ -49,6 +66,7 @@ export default function Tab() {
   const { i18n, t } = useTranslation()
   const changeLang = useToggleLang()
   const { toast } = useToast()
+  const [open, setOpen] = useState(false)
 
   return (
     <View className="flex justify-between h-full p-5">
@@ -66,7 +84,7 @@ export default function Tab() {
       <ListGroup className="flex-2 p-0">
         <ListItem icon='person' title='Account' context='Name, phone, password, email, devices, deletion' />
         <Separator className="mx-4" />
-        <ListItem icon='pencil' title='Appearance' context='Theme, language, font size, font style, display animations' />
+        <ListItem onPress={() => { setOpen(true); }} icon='pencil' title='Appearance' context='Theme, language, font size, font style, display animations' />
         <Separator className="mx-4" />
         <ListItem icon='cpu' title='AI' context='Memory management, Credits' />
       </ListGroup>
@@ -87,6 +105,14 @@ export default function Tab() {
           {t('signout')}
         </Button>
       </View>
+      <BottomModal {...{
+        open,
+        setOpen
+      }}>
+        <View className="">
+          
+        </View>
+      </BottomModal>
     </View>
   )
 }

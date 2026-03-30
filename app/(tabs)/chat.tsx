@@ -18,7 +18,6 @@ const apiKey = process.env.EXPO_PUBLIC_API_KEY
 if (typeof apiKey !== 'string')
   throw new Error('API_KEY environment variable is not defined')
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
 const groq = new Groq({ apiKey })
 
 // TODO:
