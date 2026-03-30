@@ -6,7 +6,7 @@ import type { ComponentProps } from 'react'
 import type { OpaqueColorValue, StyleProp, TextStyle } from 'react-native'
 
 type IconMapping = Partial<
-  Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>
+	Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>
 >
 export type IconSymbolName = keyof typeof MAPPING
 
@@ -16,11 +16,11 @@ export type IconSymbolName = keyof typeof MAPPING
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING: IconMapping = {
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-  'envelope.fill': 'email',
+	'house.fill': 'home',
+	'paperplane.fill': 'send',
+	'chevron.left.forwardslash.chevron.right': 'code',
+	'chevron.right': 'chevron-right',
+	'envelope.fill': 'email',
 }
 
 /**
@@ -29,16 +29,16 @@ const MAPPING: IconMapping = {
  * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
  */
 export const IconSymbol = ({
-  name,
-  size = 24,
-  color,
-  style,
+	name,
+	size = 24,
+	color,
+	style,
 }: {
-  name: IconSymbolName
-  size?: number
-  color: string | OpaqueColorValue
-  style?: StyleProp<TextStyle>
-  weight?: SymbolWeight
+	name: IconSymbolName
+	size?: number
+	color: string | OpaqueColorValue
+	style?: StyleProp<TextStyle>
+	weight?: SymbolWeight
 }) => (
-  <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />
+	<MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />
 )

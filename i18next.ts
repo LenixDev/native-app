@@ -14,22 +14,22 @@ const fallbackLng: Lang = 'en' as const
 const deviceLang = getLocales()[0].languageTag.slice(0, 2)
 
 const getLang = async () => {
-  const saved = await AsyncStorage.getItem('lang')
-  if (guard(saved, supportedLangs)) return saved
-  if (guard(deviceLang, supportedLangs)) return deviceLang
-  return fallbackLng
+	const saved = await AsyncStorage.getItem('lang')
+	if (guard(saved, supportedLangs)) return saved
+	if (guard(deviceLang, supportedLangs)) return deviceLang
+	return fallbackLng
 }
 
 ;(async () => {
-  const lng = await getLang()
-  await i18nUse(initReactI18next).init({
-    resources: {
-      en: { translation: en satisfies typeof ar & typeof es },
-      ar: { translation: ar satisfies typeof en & typeof es },
-      es: { translation: es satisfies typeof en & typeof ar },
-    },
-    lng,
-    fallbackLng,
-    interpolation: { escapeValue: false },
-  })
+	const lng = await getLang()
+	await i18nUse(initReactI18next).init({
+		resources: {
+			en: { translation: en satisfies typeof ar & typeof es },
+			ar: { translation: ar satisfies typeof en & typeof es },
+			es: { translation: es satisfies typeof en & typeof ar },
+		},
+		lng,
+		fallbackLng,
+		interpolation: { escapeValue: false },
+	})
 })().catch(raise)
