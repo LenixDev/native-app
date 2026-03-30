@@ -43,7 +43,7 @@ export const Auth = ({
 }) => {
   const { t } = useTranslation()
   const [muted, danger] = useThemeColor(['muted', 'danger'])
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const { toast } = useToast()
   const passwordRef = useRef<TextInput>(null)
   const phoneRef = useRef<TextInput>(null)
   interface Form {
@@ -52,9 +52,9 @@ export const Auth = ({
     country: Country[number] | null
     name: string
   }
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [{ phone, password, country, name }, setForm] = useState<Form>({ phone: '', password: '', country: null, name: '' })
   const [isCountryOpen, setIsCountryOpen] = useState(false)
-  const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [invalid, setInvalid] = useState<Record<keyof Form, boolean>>({ phone: false, password: false, country: false, name: false })
 
@@ -72,6 +72,10 @@ export const Auth = ({
 
   const handleValid = (condition: boolean, key: keyof Form) => { setInvalid(prev => ({ ...prev, [key]: !condition })); }
 
+  const isSignup = typeof passwordLength === 'number' && typeof nameLength === 'number' && exMethod === '/signin'
+  const isValidName = /^[\p{L}\s]+$/u.test(name) && name.length >= nameLength!
+  const isValidPassword = (target: string) => typeof passwordLength === 'number' ? self.length >= passwordLength : password.length > 0
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -87,7 +91,7 @@ export const Auth = ({
           behavior="padding"
           className="w-full justify-center flex gap-4 flex-1"
         >
-          {typeof nameLength === 'number' && (
+          {isSignup && (
             <View className="flex gap-2">
               <InputGroup>
                 <InputGroup.Prefix>
@@ -99,18 +103,10 @@ export const Auth = ({
                   placeholder={t('fake_name')}
                   autoCorrect={false}
                   value={name}
-                  onBlur={() => {
-                    handleValid(
-                      /^[\p{L}\s]+$/u.test(name) && name.length >= nameLength,
-                      'name'
-                    )
-                  }}
+                  onBlur={() => { handleValid(isValidName, 'name') }}
                   onChangeText={(self) => {
                     setForm((form) => ({ ...form, name: self }))
-                    handleValid(
-                      /^[\p{L}\s]+$/u.test(self) && self.length >= nameLength,
-                      'name'
-                    )
+                    handleValid(isValidName, 'name')
                   }}
                   isInvalid={invalid.name}
                 />
@@ -124,7 +120,7 @@ export const Auth = ({
             <InputGroup>
               <InputGroup.Prefix className="px-0">
                 <Pressable
-                  className={`flex-1 w-full px-4 justify-center ${phone.length > 0 && 'border-danger'}`}
+                  className={`flex-1 w-full px-4 justify-center ${invalid.country && 'border-danger'}`}
                   onPress={() => {
                     setIsCountryOpen(true)
                   }}
@@ -178,27 +174,16 @@ export const Auth = ({
               secureTextEntry={!isPasswordVisible}
               value={password}
               onBlur={() => {
-                handleValid(
-                  typeof passwordLength === 'number' ? password.length >= passwordLength : password.length > 0,
-                  'password'
-                )
+                handleValid(isValidPassword(password), 'password')
               }}
               onChangeText={(self) => {
                 setForm((form) => ({ ...form, password: self }))
-                handleValid(
-                  typeof passwordLength === 'number' ? self.length >= passwordLength : self.length > 0,
-                  'password'
-                )
+                handleValid(isValidPassword(self), 'password')
               }}
               isInvalid={invalid.password}
             />
             <InputGroup.Suffix>
-              <Pressable
-                hitSlop={20}
-                onPress={() => {
-                  setIsPasswordVisible((visible) => !visible)
-                }}
-              >
+              <Pressable hitSlop={20} onPress={() => { setIsPasswordVisible(!isPasswordVisible) }}>
                 <IconSymbol
                   size={16}
                   name={`eye.${isPasswordVisible ? 'slash.' : ''}fill`}
@@ -207,8 +192,8 @@ export const Auth = ({
               </Pressable>
             </InputGroup.Suffix>
           </InputGroup>
-          {typeof passwordLength === 'number' && (
-            <FieldError isInvalid={password.length > 0 && password.length < passwordLength}>
+          {isSignup && (
+            <FieldError isInvalid={invalid.password}>
               {t('password_short')}
             </FieldError>
           )}
@@ -222,9 +207,7 @@ export const Auth = ({
             }}
             isDisabled={loading || invalid.phone || invalid.country || invalid.password || typeof nameLength === 'number' && invalid.name || password.length < 0 || phone.length < 0 || name.length < 0 || country === null}
           >
-            <Button.Label className="dark:text-background text-foreground">
-              {authLabel}
-            </Button.Label>
+            <Button.Label className="dark:text-background text-foreground">{authLabel}</Button.Label>
           </Button>
         </View>
 
@@ -281,9 +264,7 @@ export const Auth = ({
               router.replace(exMethod)
             }}
           >
-            <Button.Label className="text-foreground">
-              {exMethodLabel}
-            </Button.Label>
+            <Button.Label className="text-foreground">{exMethodLabel}</Button.Label>
           </Button>
         </View>
       </View>
