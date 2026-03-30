@@ -3,12 +3,13 @@ import { raise } from '@/lib/utils'
 import { verify } from '@/services/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
-import { Button } from 'heroui-native'
+import { Button, Description, Label, LinkButton } from 'heroui-native'
 import { InputOTP, type InputOTPRef } from 'heroui-native/input-otp'
 import { useToast } from 'heroui-native/toast'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { KeyboardAvoidingView, Text } from 'react-native'
+import { Text, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 // eslint-disable-next-line max-lines-per-function
 export default function Page() {
@@ -40,41 +41,55 @@ export default function Page() {
     router.replace('/(tabs)/home')
   }
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      className="flex items-center justify-evenly w-full h-full"
-    >
-      <InputOTP
-        ref={ref}
-        maxLength={6}
-        onComplete={(self) => {
-          onComplete(self).catch(raise)
-        }}
-      >
-        <InputOTP.Group>
-          {[0, 1, 2].map((iter) => (
-            <InputOTP.Slot key={iter} index={iter} />
-          ))}
-        </InputOTP.Group>
-        <InputOTP.Separator />
-        <InputOTP.Group>
-          {[3, 4, 5].map((iter) => (
-            <InputOTP.Slot key={iter} index={iter} />
-          ))}
-        </InputOTP.Group>
-      </InputOTP>
-      <Text className="text-danger max-w-3/4 text-center">
-        {t('account_not_verified')}
-      </Text>
-      <Button
-        variant="outline"
-        onPress={() => {
-          router.replace('/signin')
-          AsyncStorage.removeItem(verificationKey).catch(raise)
-        }}
-      >
-        {t('signout')}
-      </Button>
-    </KeyboardAvoidingView>
+    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View className='flex-1 items-center justify-between w-full px-5 py-20'>
+        <View className="px-5 justify-center gap-3">
+          <View>
+            <Label>Verify account</Label>
+            <Description>
+              We've sent a code to a****@gmail.com
+            </Description>
+          </View>
+          <InputOTP
+            ref={ref}
+            maxLength={6}
+            onComplete={(self) => {
+              onComplete(self).catch(raise)
+            }}
+          >
+            <InputOTP.Group>
+              {[0, 1, 2].map((iter) => (
+                <InputOTP.Slot key={iter} index={iter} />
+              ))}
+            </InputOTP.Group>
+            <InputOTP.Separator />
+            <InputOTP.Group>
+              {[3, 4, 5].map((iter) => (
+                <InputOTP.Slot key={iter} index={iter} />
+              ))}
+            </InputOTP.Group>
+          </InputOTP>
+          <View className='flex-row items-center gap-2'>
+            <Description>Didn't receive a code?</Description>
+            <LinkButton>
+              <LinkButton.Label className='text-accent'>Resend</LinkButton.Label>
+            </LinkButton>
+          </View>
+          <Text className="text-danger text-center">
+            {t('account_not_verified')}
+          </Text>
+        </View>
+        <Button
+          className='w-full'
+          variant="danger-soft"
+          onPress={() => {
+            router.replace('/signin')
+            AsyncStorage.removeItem(verificationKey).catch(raise)
+          }}
+        >
+          {t('signout')}
+        </Button>
+      </View>
+    </KeyboardAwareScrollView>
   )
 }
