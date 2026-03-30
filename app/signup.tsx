@@ -8,8 +8,8 @@ export default function Page() {
   const { t } = useTranslation()
   const { toast } = useToast()
 
-  const auth = async (phone: string, password: string) => {
-    const { error } = await signup(phone, password)
+  const auth = async (phone: string, password: string, name: string) => {
+    const { error } = await signup(phone, password, name)
     if (error) {
       toast.show(error.message)
       return
@@ -26,6 +26,7 @@ export default function Page() {
         exMethodLabel: t('signin'),
         exMethod: '/signin',
         passwordLength: 6,
+        nameLength: 3,
       }}
     />
   )
