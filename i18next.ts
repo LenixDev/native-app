@@ -6,12 +6,12 @@ import type { Lang } from '@/types'
 
 import en from './locales/en.json'
 import ar from './locales/ar.json'
+import es from './locales/es.json'
 import { guard, raise } from './lib/utils'
 
 const supportedLangs: readonly Lang[] = ['en', 'ar', 'es']
 const fallbackLng: Lang = 'en'
 
-// TODO: make fallback to the user input instetad of hardcoded 'en'
 const deviceLang = getLocales()[0].languageCode
 
 const getLang = async () => {
@@ -27,9 +27,9 @@ const getLang = async () => {
   const lng = await getLang()
   await i18nUse(initReactI18next).init({
     resources: {
-      en: { translation: en satisfies typeof ar },
-      ar: { translation: ar satisfies typeof en },
-      es: { translation: en satisfies typeof en },
+      en: { translation: en satisfies typeof ar & typeof es },
+      ar: { translation: ar satisfies typeof en & typeof es },
+      es: { translation: es satisfies typeof en & typeof ar },
     },
     lng,
     fallbackLng,

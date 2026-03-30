@@ -2,7 +2,7 @@ import { IconSymbol, type IconSymbolName } from '@/components/ui/icon-symbol'
 import { useChangeLang } from '@/hooks/use-change-lang'
 import { raise } from '@/lib/utils'
 import { signout } from '@/services/auth'
-import { Lang } from '@/types'
+import type { Lang } from '@/types'
 import { router } from 'expo-router'
 import { BottomSheet, Button, Description, Label, ListGroup, PressableFeedback, Radio, RadioGroup, Separator, Surface, Switch, useThemeColor, useToast } from 'heroui-native'
 import React, { useState } from 'react'
@@ -10,6 +10,24 @@ import { useTranslation } from 'react-i18next'
 import { Text, View } from 'react-native'
 
 type Theme = 'light' | 'dark' | 'system'
+
+// faq accordittion
+// chat avatart 
+// other settings checkbox
+// controlfield
+// menu
+// radio
+// scroll shadow chat
+
+// surface chat
+// switch
+
+// TODO:
+// - theme,
+// - lang selection not toggle,
+// - Generate memory from chat history to improve response quality
+// - decrease conversation by deleting unused topics in tthe same chat session
+// - help
 
 const ListItem = ({
   icon, title, context, onPress
