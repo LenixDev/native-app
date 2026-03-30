@@ -8,7 +8,6 @@ export const useToggleLang = () => {
   return async () => {
     const next: Lang = i18n.language === 'en' ? 'ar' : 'en'
     await i18n.changeLanguage(next)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     await AsyncStorage.setItem('lang', next)
   }
 }

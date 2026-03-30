@@ -8,10 +8,9 @@ export default function Page() {
   const [route, setRoute] = useState<Href | null>(null)
 
   useEffect(() => {
-    // eslint-disable-next-line max-statements
     const {
       data: { subscription },
-      // eslint-disable-next-line max-statements
+    // eslint-disable-next-line max-statements
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN') {
         setRoute('/(tabs)/home')
