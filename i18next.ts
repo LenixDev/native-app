@@ -6,25 +6,20 @@ import type { Lang } from '@/types'
 
 import en from './locales/en.json'
 import ar from './locales/ar.json'
-import { raise } from './lib/utils'
+import { guard, raise } from './lib/utils'
 
-const supportedLangs: Set<Lang> = new Set<Lang>(['en', 'ar'])
+const supportedLangs: readonly Lang[] = ['en', 'ar']
 const fallbackLng: Lang = 'en'
 
 // TODO: make fallback to the user input instetad of hardcoded 'en'
 const deviceLang = getLocales()[0].languageCode
 
 const getLang = async () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   const saved = await AsyncStorage.getItem('lang')
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  if (supportedLangs.has(saved as Lang))
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-    return saved as Lang
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-  if (supportedLangs.has(deviceLang as Lang))
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-    return deviceLang as Lang
+  if (guard(saved, supportedLangs))
+    return saved
+  if (guard(deviceLang, supportedLangs))
+    return deviceLang
   return fallbackLng
 }
 

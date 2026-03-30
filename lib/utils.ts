@@ -12,3 +12,5 @@ export const flag = Object.fromEntries(
       .replace(/./g, (sub) => String.fromCodePoint(127397 + sub.charCodeAt(0))),
   ]),
 )
+
+export const guard = <T>(value: unknown, from: readonly T[]): value is T => (from as readonly unknown[]).includes(value)
