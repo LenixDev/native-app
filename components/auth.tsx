@@ -12,7 +12,14 @@ import {
 } from 'heroui-native'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, KeyboardAvoidingView, Modal, Pressable, Text, View } from 'react-native'
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  Modal,
+  Pressable,
+  Text,
+  View,
+} from 'react-native'
 import type { TextInput } from 'react-native-gesture-handler'
 
 type Country = typeof countries
@@ -61,8 +68,11 @@ export const Auth = ({
         <Text className="text-foreground text-5xl">Thrivenix</Text>
       </View>
 
-      <KeyboardAvoidingView behavior='padding' className="w-full justify-center flex gap-4 flex-1">
-        <View className='flex gap-2'>
+      <KeyboardAvoidingView
+        behavior="padding"
+        className="w-full justify-center flex gap-4 flex-1"
+      >
+        <View className="flex gap-2">
           <InputGroup>
             <InputGroup.Prefix className="px-0">
               <Pressable
@@ -97,7 +107,7 @@ export const Auth = ({
             />
           </InputGroup>
           <FieldError isInvalid={phone.length > 0 && country === null}>
-            {t("country_code_error")}
+            {t('country_code_error')}
           </FieldError>
         </View>
 

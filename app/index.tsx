@@ -11,7 +11,7 @@ export default function Page() {
     // eslint-disable-next-line max-statements
     const {
       data: { subscription },
-    // eslint-disable-next-line max-statements
+      // eslint-disable-next-line max-statements
     } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === 'SIGNED_IN') {
         setRoute('/(tabs)/home')
