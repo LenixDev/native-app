@@ -18,6 +18,5 @@
   "country_code_error": "Phone number country code not selected",
   "signout_success": "Signed out successfully",
   "fake_name": "Lenix Dev",
-  "name_short": "Display name must be at least 3 characters long",
-  "name_error": "Display name must contain only letters"
+  "name_error": "Display name must be at least 3 characters long and contain only letters"
 }
