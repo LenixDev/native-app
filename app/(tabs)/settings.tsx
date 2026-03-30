@@ -3,7 +3,7 @@ import { useToggleLang } from '@/hooks/use-toggle-lang'
 import { raise } from '@/lib/utils'
 import { signout } from '@/services/auth'
 import { router } from 'expo-router'
-import { Button, ListGroup, Separator, useToast } from 'heroui-native'
+import { Button, ListGroup, Separator, useThemeColor, useToast } from 'heroui-native'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Text, View } from 'react-native'
@@ -12,24 +12,26 @@ const ListItem = ({
   icon, title, context
 }: {
   icon: IconSymbolName, title: string, context: string
-}) => (
-    <ListGroup.Item>
-      <ListGroup.ItemPrefix>
-        <IconSymbol
-          name={icon}
-          size={22}
-          color="white"
-        />
-      </ListGroup.ItemPrefix>
-      <ListGroup.ItemContent>
-        <ListGroup.ItemTitle>{title}</ListGroup.ItemTitle>
-        <ListGroup.ItemDescription>
-          {context}
-        </ListGroup.ItemDescription>
-      </ListGroup.ItemContent>
-      <ListGroup.ItemSuffix />
-    </ListGroup.Item>
-  )
+}) => {
+  const foreground = useThemeColor('foreground')
+    return (
+      <ListGroup.Item>
+        <ListGroup.ItemPrefix>
+          <IconSymbol
+            name={icon}
+            size={22}
+            color={foreground} />
+        </ListGroup.ItemPrefix>
+        <ListGroup.ItemContent>
+          <ListGroup.ItemTitle>{title}</ListGroup.ItemTitle>
+          <ListGroup.ItemDescription>
+            {context}
+          </ListGroup.ItemDescription>
+        </ListGroup.ItemContent>
+        <ListGroup.ItemSuffix />
+      </ListGroup.Item>
+    )
+  }
 
 // TODO:
 // - theme,
