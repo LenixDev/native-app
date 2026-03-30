@@ -17,9 +17,6 @@
   "unretrievable_country_code": "Could not identify the phone number country code",
   "country_code_error": "Phone number country code not selected",
   "signout_success": "Signed out successfully",
-  "onboarding": "Onboarding",
-  "finish": "Finish",
-  "whats_ur_name": "What should we call you?",
   "fake_name": "Lenix Dev",
   "name_short": "Display name must be at least 3 characters long",
   "name_error": "Display name must contain only letters"
