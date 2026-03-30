@@ -18,5 +18,19 @@
   "country_code_error": "Phone number country code not selected",
   "signout_success": "Signed out successfully",
   "fake_name": "Lenix Dev",
-  "name_error": "Display name must be at least 3 characters long and contain only letters"
+  "name_error": "Display name must be at least 3 characters long and contain only letters",
+  "preferences": "Preferences",
+  "manage_preferences": "Manage your account preferences",
+  "account": "Account",
+  "appearance": "Appearance",
+  "ai": "Artificial Intelligence",
+  "account_context": "Name, phone, password, email, devices, deletion",
+  "appearance_context": "Theme, language, reduce motion",
+  "ai_context": "Memory management, Credits",
+  "language": "Language",
+  "reduce_motion": "Reduce motion",
+  "theme": "Theme",
+  "dark": "Dark",
+  "light": "Light",
+  "system": "System"
 }
