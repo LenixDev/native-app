@@ -17,7 +17,7 @@ export default function Page() {
       return
     }
     toast.show(t('signup_success'))
-    router.replace(`/verify?phone=${encodeURIComponent(phone)}`)
+    router.replace('/verify')
   }
 
   return (

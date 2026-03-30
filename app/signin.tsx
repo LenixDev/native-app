@@ -11,7 +11,7 @@ export default function Page() {
   const auth = async (phone: string, password: string) => {
     const { error } = await signin(phone, password)
     if (error) {
-      if (error.code === 'phone_not_confirmed') router.replace(`/verify?phone=${encodeURIComponent(phone)}`)
+      if (error.code === 'phone_not_confirmed') router.replace('/verify')
       else toast.show(error.message)
       return
     }
