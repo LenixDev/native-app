@@ -25,14 +25,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 type Country = typeof countries
 
-// eslint-disable-next-line max-lines-per-function, max-statements
+// eslint-disable-next-line max-lines-per-function, max-statements, max-lines
 export const Auth = ({
   auth,
   authLabel,
   exMethodLabel,
   exMethod,
   passwordLength,
-  nameLength
+  nameLength,
 }: {
   auth: (phone: string, password: string, name?: string) => Promise<void>
   authLabel: string
@@ -53,10 +53,20 @@ export const Auth = ({
     name: string
   }
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-  const [{ phone, password, country, name }, setForm] = useState<Form>({ phone: '', password: '', country: null, name: '' })
+  const [{ phone, password, country, name }, setForm] = useState<Form>({
+    phone: '',
+    password: '',
+    country: null,
+    name: '',
+  })
   const [isCountryOpen, setIsCountryOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [invalid, setInvalid] = useState<Record<keyof Form, boolean>>({ phone: false, password: false, country: false, name: false })
+  const [invalid, setInvalid] = useState<Record<keyof Form, boolean>>({
+    phone: false,
+    password: false,
+    country: false,
+    name: false,
+  })
 
   const handleAuth = async () => {
     setLoading(true)
@@ -70,11 +80,19 @@ export const Auth = ({
     setLoading(false)
   }
 
-  const handleValid = (condition: boolean, key: keyof Form) => { setInvalid(prev => ({ ...prev, [key]: !condition })); }
+  const handleValid = (condition: boolean, key: keyof Form) => {
+    setInvalid((prev) => ({ ...prev, [key]: !condition }))
+  }
 
-  const isSignup = typeof passwordLength === 'number' && typeof nameLength === 'number' && exMethod === '/signin'
+  const isSignup =
+    typeof passwordLength === 'number' &&
+    typeof nameLength === 'number' &&
+    exMethod === '/signin'
   const isValidName = /^[\p{L}\s]+$/u.test(name) && name.length >= nameLength!
-  const isValidPassword = (self: string) => typeof passwordLength === 'number' ? self.length >= passwordLength : password.length > 0
+  const isValidPassword = (self: string) =>
+    typeof passwordLength === 'number'
+      ? self.length >= passwordLength
+      : password.length > 0
 
   return (
     <KeyboardAwareScrollView
@@ -103,7 +121,9 @@ export const Auth = ({
                   placeholder={t('fake_name')}
                   autoCorrect={false}
                   value={name}
-                  onBlur={() => { handleValid(isValidName, 'name') }}
+                  onBlur={() => {
+                    handleValid(isValidName, 'name')
+                  }}
                   onChangeText={(self) => {
                     setForm((form) => ({ ...form, name: self }))
                     handleValid(isValidName, 'name')
@@ -183,7 +203,12 @@ export const Auth = ({
               isInvalid={invalid.password}
             />
             <InputGroup.Suffix>
-              <Pressable hitSlop={20} onPress={() => { setIsPasswordVisible(!isPasswordVisible) }}>
+              <Pressable
+                hitSlop={20}
+                onPress={() => {
+                  setIsPasswordVisible(!isPasswordVisible)
+                }}
+              >
                 <IconSymbol
                   size={16}
                   name={`eye.${isPasswordVisible ? 'slash.' : ''}fill`}
@@ -205,9 +230,21 @@ export const Auth = ({
             onPress={() => {
               handleAuth().catch(raise)
             }}
-            isDisabled={loading || invalid.phone || invalid.country || invalid.password || typeof nameLength === 'number' && invalid.name || password.length < 0 || phone.length < 0 || name.length < 0 || country === null}
+            isDisabled={
+              loading ||
+              invalid.phone ||
+              invalid.country ||
+              invalid.password ||
+              (typeof nameLength === 'number' && invalid.name) ||
+              password.length < 0 ||
+              phone.length < 0 ||
+              name.length < 0 ||
+              country === null
+            }
           >
-            <Button.Label className="dark:text-background text-foreground">{authLabel}</Button.Label>
+            <Button.Label className="dark:text-background text-foreground">
+              {authLabel}
+            </Button.Label>
           </Button>
         </View>
 
@@ -264,7 +301,9 @@ export const Auth = ({
               router.replace(exMethod)
             }}
           >
-            <Button.Label className="text-foreground">{exMethodLabel}</Button.Label>
+            <Button.Label className="text-foreground">
+              {exMethodLabel}
+            </Button.Label>
           </Button>
         </View>
       </View>

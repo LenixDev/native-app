@@ -13,4 +13,5 @@ export const flag = Object.fromEntries(
   ]),
 )
 
-export const guard = <T>(value: unknown, from: readonly T[]): value is T => (from as readonly unknown[]).includes(value)
+export const guard = <T>(value: unknown, from: readonly T[]): value is T =>
+  (from as readonly unknown[]).includes(value)

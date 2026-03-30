@@ -42,13 +42,11 @@ export default function Page() {
   }
   return (
     <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className='flex-1 items-center justify-between w-full px-5 py-20'>
+      <View className="flex-1 items-center justify-between w-full px-5 py-20">
         <View className="px-5 justify-center gap-3">
           <View>
             <Label>Verify account</Label>
-            <Description>
-              We've sent a code to a****@gmail.com
-            </Description>
+            <Description>We've sent a code to a****@gmail.com</Description>
           </View>
           <InputOTP
             ref={ref}
@@ -69,10 +67,12 @@ export default function Page() {
               ))}
             </InputOTP.Group>
           </InputOTP>
-          <View className='flex-row items-center gap-2'>
+          <View className="flex-row items-center gap-2">
             <Description>Didn't receive a code?</Description>
             <LinkButton>
-              <LinkButton.Label className='text-accent'>Resend</LinkButton.Label>
+              <LinkButton.Label className="text-accent">
+                Resend
+              </LinkButton.Label>
             </LinkButton>
           </View>
           <Text className="text-danger text-center">
@@ -80,7 +80,7 @@ export default function Page() {
           </Text>
         </View>
         <Button
-          className='w-full'
+          className="w-full"
           variant="danger-soft"
           onPress={() => {
             router.replace('/signin')
