@@ -2,7 +2,14 @@ import { IconSymbol } from '@/components/ui/icon-symbol'
 import countries from '@/lib/countries.json' with { type: 'json' }
 import { flag, raise } from '@/lib/utils'
 import { type Href, router } from 'expo-router'
-import { Button, FieldError, InputGroup, Separator, useThemeColor, useToast } from 'heroui-native'
+import {
+  Button,
+  FieldError,
+  InputGroup,
+  Separator,
+  useThemeColor,
+  useToast,
+} from 'heroui-native'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlatList, Modal, Pressable, Text, View } from 'react-native'
@@ -10,8 +17,13 @@ import type { TextInput } from 'react-native-gesture-handler'
 
 type Country = typeof countries
 
+// eslint-disable-next-line max-lines-per-function
 export const Auth = ({
-  auth, authLabel, exMethodLabel, exMethod, passwordLength
+  auth,
+  authLabel,
+  exMethodLabel,
+  exMethod,
+  passwordLength,
 }: {
   auth: (phone: string, password: string) => Promise<void>
   authLabel: string
@@ -51,12 +63,24 @@ export const Auth = ({
 
       <View className="w-full justify-center flex gap-4 flex-1">
         <InputGroup>
-          <InputGroup.Prefix className='px-0'>
-            <Pressable className='flex-1 w-full px-4 justify-center' onPress={() => { setIsCountryOpen(true); }}>
-              {country ? <Text className="text-foreground">
-                {`${flag[country.code]} ${country.dial}`}
-              </Text>
-              : <IconSymbol color={muted} name={`chevron.${isCountryOpen ? 'up' : 'down'}`} size={16} />}
+          <InputGroup.Prefix className="px-0">
+            <Pressable
+              className="flex-1 w-full px-4 justify-center"
+              onPress={() => {
+                setIsCountryOpen(true)
+              }}
+            >
+              {country ? (
+                <Text className="text-foreground">
+                  {`${flag[country.code]} ${country.dial}`}
+                </Text>
+              ) : (
+                <IconSymbol
+                  color={muted}
+                  name={`chevron.${isCountryOpen ? 'up' : 'down'}`}
+                  size={16}
+                />
+              )}
             </Pressable>
           </InputGroup.Prefix>
           <InputGroup.Input
@@ -65,7 +89,9 @@ export const Auth = ({
             placeholder={t('phone')}
             keyboardType="number-pad"
             value={phone}
-            onChangeText={self => { setForm(form => ({ ...form, phone: self })); }}
+            onChangeText={(self) => {
+              setForm((form) => ({ ...form, phone: self }))
+            }}
           />
         </InputGroup>
 
@@ -81,11 +107,22 @@ export const Auth = ({
             autoCorrect={false}
             secureTextEntry={!isPasswordVisible}
             value={password}
-            onChangeText={self => { setForm(form => ({ ...form, password: self })); }}
-            isInvalid={typeof passwordLength === 'number' && password.length > 0 && password.length < passwordLength}
+            onChangeText={(self) => {
+              setForm((form) => ({ ...form, password: self }))
+            }}
+            isInvalid={
+              typeof passwordLength === 'number' &&
+              password.length > 0 &&
+              password.length < passwordLength
+            }
           />
           <InputGroup.Suffix>
-            <Pressable hitSlop={20} onPress={() => { setIsPasswordVisible(visible => !visible); }}>
+            <Pressable
+              hitSlop={20}
+              onPress={() => {
+                setIsPasswordVisible((visible) => !visible)
+              }}
+            >
               <IconSymbol
                 size={16}
                 name={`eye.${isPasswordVisible ? 'slash.' : ''}fill`}
@@ -95,7 +132,10 @@ export const Auth = ({
           </InputGroup.Suffix>
         </InputGroup>
         {typeof passwordLength === 'number' && (
-          <FieldError className='mb-5' isInvalid={password.length > 0 && password.length < 6}>
+          <FieldError
+            className="mb-5"
+            isInvalid={password.length > 0 && password.length < 6}
+          >
             {t('password_short')}
           </FieldError>
         )}
@@ -104,7 +144,9 @@ export const Auth = ({
       <View className="justify-center w-full">
         <Button
           variant="primary"
-          onPress={() => { handleAuth().catch(raise) }}
+          onPress={() => {
+            handleAuth().catch(raise)
+          }}
           isDisabled={loading}
         >
           <Button.Label className="dark:text-background text-foreground">
@@ -117,19 +159,26 @@ export const Auth = ({
         visible={isCountryOpen}
         transparent
         animationType="slide"
-        onRequestClose={() => { setIsCountryOpen(false); }}
+        onRequestClose={() => {
+          setIsCountryOpen(false)
+        }}
       >
-        <Pressable style={{ flex: 1 }} onPress={() => { setIsCountryOpen(false); }} />
-        <View className='h-1/2 bg-segment'>
+        <Pressable
+          style={{ flex: 1 }}
+          onPress={() => {
+            setIsCountryOpen(false)
+          }}
+        />
+        <View className="h-1/2 bg-segment">
           <FlatList
             data={countries}
-            keyExtractor={countryItem => countryItem.code}
+            keyExtractor={(countryItem) => countryItem.code}
             renderItem={({ item: countryItem }) => (
               <>
                 <Pressable
                   className="flex flex-row items-center gap-3 p-4 active:bg-muted"
                   onPress={() => {
-                    setForm(form => ({ ...form, country: countryItem }))
+                    setForm((form) => ({ ...form, country: countryItem }))
                     setIsCountryOpen(false)
                   }}
                 >
@@ -137,7 +186,7 @@ export const Auth = ({
                   <Text className="text-foreground">{countryItem.dial}</Text>
                   <Text className="text-foreground">{countryItem.name}</Text>
                 </Pressable>
-                <Separator className='w-full h-px' orientation='vertical' />
+                <Separator className="w-full h-px" orientation="vertical" />
               </>
             )}
           />
@@ -150,8 +199,15 @@ export const Auth = ({
           <Text className="text-foreground">{t('or')}</Text>
           <Separator className="bg-muted flex-1" />
         </View>
-        <Button variant="outline" onPress={() => { router.replace(exMethod) }}>
-          <Button.Label className="text-foreground">{exMethodLabel}</Button.Label>
+        <Button
+          variant="outline"
+          onPress={() => {
+            router.replace(exMethod)
+          }}
+        >
+          <Button.Label className="text-foreground">
+            {exMethodLabel}
+          </Button.Label>
         </Button>
       </View>
     </View>

@@ -1,8 +1,8 @@
-import { signin } from "@/services/auth";
-import { router } from "expo-router";
-import { useToast } from "heroui-native";
-import { Auth } from "../components/auth";
-import { useTranslation } from "react-i18next";
+import { signin } from '@/services/auth'
+import { router } from 'expo-router'
+import { useToast } from 'heroui-native'
+import { Auth } from '../components/auth'
+import { useTranslation } from 'react-i18next'
 
 export default function Page() {
   const { t } = useTranslation()
@@ -24,7 +24,7 @@ export default function Page() {
         auth,
         authLabel: t('signin'),
         exMethodLabel: t('signup'),
-        exMethod: '/signup'
+        exMethod: '/signup',
       }}
     />
   )

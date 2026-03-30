@@ -5,7 +5,10 @@ export const raise = (err: unknown) => {
 }
 
 export const flag = Object.fromEntries(
-  countries.map(country => [country.code, country.code.toUpperCase().replace(/./g, ch =>
-    String.fromCodePoint(127397 + ch.charCodeAt(0))
-  )])
+  countries.map((country) => [
+    country.code,
+    country.code
+      .toUpperCase()
+      .replace(/./g, (sub) => String.fromCodePoint(127397 + sub.charCodeAt(0))),
+  ]),
 )

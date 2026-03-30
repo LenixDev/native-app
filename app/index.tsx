@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import { type Href, Redirect} from 'expo-router'
+import { type Href, Redirect } from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { verificationKey } from '@/constants'
 
@@ -9,7 +9,10 @@ export default function Page() {
 
   useEffect(() => {
     // eslint-disable-next-line max-statements
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+    const {
+      data: { subscription },
+    // eslint-disable-next-line max-statements
+    } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === 'SIGNED_IN') {
         setRoute('/(tabs)/home')
         return
@@ -29,10 +32,12 @@ export default function Page() {
       }
       setRoute('/+not-found')
     })
-    return () => { subscription.unsubscribe() }
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [])
 
   if (route === null) return null
-  
-  return <Redirect href={route}/>
+
+  return <Redirect href={route} />
 }

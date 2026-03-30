@@ -1,8 +1,6 @@
 import { signup } from '@/services/auth'
 import { router } from 'expo-router'
-import {
-  useToast,
-} from 'heroui-native'
+import { useToast } from 'heroui-native'
 import { useTranslation } from 'react-i18next'
 import { Auth } from '../components/auth'
 
@@ -27,7 +25,7 @@ export default function Page() {
         authLabel: t('signup'),
         exMethodLabel: t('signin'),
         exMethod: '/signin',
-        passwordLength: 6
+        passwordLength: 6,
       }}
     />
   )

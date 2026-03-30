@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createClient, processLock } from '@supabase/supabase-js'
 import { raise } from './utils'
 
-const supabaseUrl = (() => { 
+const supabaseUrl = (() => {
   const url = process.env.EXPO_PUBLIC_SUPABASE_URL
   if (typeof url !== 'string') throw new Error('Missing Supabase URL')
   return url
@@ -25,9 +25,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 })
 
 if (Platform.OS !== 'web')
-AppState.addEventListener('change', (state) => {
-  if (state === 'active')
-    supabase.auth.startAutoRefresh().catch(raise)
-  else
-    supabase.auth.stopAutoRefresh().catch(raise)
-})
+  AppState.addEventListener('change', (state) => {
+    if (state === 'active') supabase.auth.startAutoRefresh().catch(raise)
+    else supabase.auth.stopAutoRefresh().catch(raise)
+  })

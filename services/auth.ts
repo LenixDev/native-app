@@ -9,8 +9,7 @@ export const signin = async (phone: string, password: string) => {
 
 export const signup = async (phone: string, password: string) => {
   const result = await supabase.auth.signUp({ phone, password })
-  if (!result.error)
-    await AsyncStorage.setItem(verificationKey, phone)
+  if (!result.error) await AsyncStorage.setItem(verificationKey, phone)
   return result
 }
 
