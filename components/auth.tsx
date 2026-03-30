@@ -74,7 +74,7 @@ export const Auth = ({
 
   const isSignup = typeof passwordLength === 'number' && typeof nameLength === 'number' && exMethod === '/signin'
   const isValidName = /^[\p{L}\s]+$/u.test(name) && name.length >= nameLength!
-  const isValidPassword = (target: string) => typeof passwordLength === 'number' ? self.length >= passwordLength : password.length > 0
+  const isValidPassword = (self: string) => typeof passwordLength === 'number' ? self.length >= passwordLength : password.length > 0
 
   return (
     <KeyboardAwareScrollView
