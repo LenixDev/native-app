@@ -13,6 +13,12 @@ export const signup = async (phone: string, password: string) => {
   return result
 }
 
+export const signout = async (): Promise<[true] | [false, string]> => {
+  const { error } = await supabase.auth.signOut()
+  if (error) return [false, error.message]
+  return [true]
+}
+
 export const verify = async (
   phone: string,
   token: string,
