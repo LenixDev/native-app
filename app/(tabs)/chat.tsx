@@ -40,7 +40,6 @@ export default function Tab() {
 
   const aiReply = async (racedContent: string) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       const completion = await groq.chat.completions.create({
         messages: [
           ...conversation.map(
@@ -54,7 +53,6 @@ export default function Tab() {
         ],
         model: 'openai/gpt-oss-120b',
       })
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const message = completion.choices[0].message.content
       if (typeof message !== 'string') return
       setConversation((prev) => [
