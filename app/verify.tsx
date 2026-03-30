@@ -37,7 +37,7 @@ export default function Page() {
       return
     }
     toast.show(t('account_verified'))
-    router.replace('/(tabs)/home')
+    router.replace('/onboarding')
   }
   return (
     <KeyboardAvoidingView

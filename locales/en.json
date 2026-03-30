@@ -16,5 +16,9 @@
   "account_not_verified": "If this account doesn't get verified within the next 30 minutes, it will get erased from our database",
   "unretrievable_country_code": "Could not identify the phone number country code",
   "country_code_error": "Phone number country code not selected",
-  "signout_success": "Signed out successfully"
+  "signout_success": "Signed out successfully",
+  "onboarding": "Onboarding",
+  "finish": "Finish",
+  "whats_ur_name": "What should we call you?",
+  "fake_name": "Lenix Dev"
 }

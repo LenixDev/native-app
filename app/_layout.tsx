@@ -31,6 +31,7 @@ export default function RootLayout() {
             />
             <Stack.Screen name="signin" options={{ title: t('signin') }} />
             <Stack.Screen name="verify" options={{ title: t('verify') }} />
+            <Stack.Screen name="onboarding" options={{ title: t('onboarding') }} />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
