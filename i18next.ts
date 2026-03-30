@@ -8,7 +8,7 @@ import en from './locales/en.json'
 import ar from './locales/ar.json'
 import { guard, raise } from './lib/utils'
 
-const supportedLangs: readonly Lang[] = ['en', 'ar']
+const supportedLangs: readonly Lang[] = ['en', 'ar', 'es']
 const fallbackLng: Lang = 'en'
 
 // TODO: make fallback to the user input instetad of hardcoded 'en'
@@ -29,6 +29,7 @@ const getLang = async () => {
     resources: {
       en: { translation: en satisfies typeof ar },
       ar: { translation: ar satisfies typeof en },
+      es: { translation: en satisfies typeof en },
     },
     lng,
     fallbackLng,
