@@ -5,6 +5,10 @@ import { HelloWave } from '@/components/hello-wave'
 import ParallaxScrollView from '@/components/parallax-scroll-view'
 import { ThemedText } from '@/components/themed-text'
 import { ThemedView } from '@/components/themed-view'
+import { supabase } from '@/lib/supabase'
+import { router } from 'expo-router'
+import { useEffect, useState } from 'react'
+import { raise } from '@/lib/utils'
 
 const styles = StyleSheet.create({
   titleContainer: {
@@ -26,17 +30,30 @@ const styles = StyleSheet.create({
 })
 
 export default function Tab() {
+  const [displayName, setDisplayName] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ error, data }) => {
+      const name = data.user?.user_metadata.display_name
+      if (error || typeof name !== 'string') {
+        router.replace('/+not-found')
+        return
+      }
+      setDisplayName(name)
+    }).catch(raise)
+  }, [])
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={<Image source={reactLogo} style={styles.reactLogo} />}
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">Hi {displayName}!</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">This is the home screen</ThemedText>
+        <ThemedText type="subtitle">Welcome onboard!, this is Thrivenix</ThemedText>
       </ThemedView>
     </ParallaxScrollView>
   )
