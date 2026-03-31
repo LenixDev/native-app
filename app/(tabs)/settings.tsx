@@ -7,9 +7,12 @@ import { router } from 'expo-router'
 import {
 	BottomSheet,
 	Button,
-	Description, ListGroup,
-	PressableFeedback, Separator, useThemeColor,
-	useToast
+	Description,
+	ListGroup,
+	PressableFeedback,
+	Separator,
+	useThemeColor,
+	useToast,
 } from 'heroui-native'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -54,9 +57,11 @@ const ListItem = ({
 					</ListGroup.ItemPrefix>
 					<ListGroup.ItemContent className={rtl('flex items-start')}>
 						<ListGroup.ItemTitle>{title}</ListGroup.ItemTitle>
-						<ListGroup.ItemDescription className={rtl('text-left')}>{context}</ListGroup.ItemDescription>
+						<ListGroup.ItemDescription className={rtl('text-left')}>
+							{context}
+						</ListGroup.ItemDescription>
 					</ListGroup.ItemContent>
-					<ListGroup.ItemSuffix style={{ transform: rtl('rotate(180deg)') }}  />
+					<ListGroup.ItemSuffix style={{ transform: rtl('rotate(180deg)') }} />
 				</ListGroup.Item>
 			</PressableFeedback.Scale>
 			<PressableFeedback.Ripple />
@@ -90,15 +95,15 @@ export default function Tab() {
 
 	const handleSignout = () => {
 		signout()
-		.then(([success, response]) => {
-			if (!success) {
-				toast.show(response)
-				return
-			}
-			router.replace('/signin')
-			toast.show(t('signout_success'))
-		})
-		.catch(raise)
+			.then(([success, response]) => {
+				if (!success) {
+					toast.show(response)
+					return
+				}
+				router.replace('/signin')
+				toast.show(t('signout_success'))
+			})
+			.catch(raise)
 	}
 
 	return (
