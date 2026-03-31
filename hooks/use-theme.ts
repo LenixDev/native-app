@@ -1,5 +1,5 @@
 import { useThemeColor } from 'heroui-native/hooks'
-import { useColorScheme } from './use-color-scheme'
+import { useColorScheme } from 'react-native'
 import type { ThemeProvider } from '@react-navigation/native'
 
 export const useTheme = () => {
