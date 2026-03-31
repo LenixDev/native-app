@@ -3,3 +3,4 @@ build
 coverage
 *.yaml
 *.d.ts
+_db.ts

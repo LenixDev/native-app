@@ -40,54 +40,60 @@ export const Appearance = () => {
 	const toggleMotion = useToggleMotion()
 
 	useEffect(() => {
-		supabase.auth.getUser().then(({ error: errorUser, data: dataUser }) => {
-			if (errorUser) {
-				toast.show(errorUser.message)
-				return
-			}
-			supabase
-				.from('accounts')
-				.select('theme, lang, motion')
-				.eq('id', dataUser.user.id)
-				.single<Account>()
-			.then(({ error, data }) => {
-				if (error) {
-					toast.show(error.message)
+		supabase.auth
+			.getUser()
+			.then(({ error: errorUser, data: dataUser }) => {
+				if (errorUser) {
+					toast.show(errorUser.message)
 					return
 				}
-				setTheme(data.theme)
-				setMotion(data.motion)
-				setLang(data.lang)
+				supabase
+					.from('accounts')
+					.select('theme, lang, motion')
+					.eq('id', dataUser.user.id)
+					.single<Account>()
+					.then(({ error, data }) => {
+						if (error) {
+							toast.show(error.message)
+							return
+						}
+						setTheme(data.theme)
+						setMotion(data.motion)
+						setLang(data.lang)
+					})
 			})
-		}).catch(raise)
+			.catch(raise)
 	}, [toast])
 
 	const handleTheme = (changedTheme: string) => {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-			changeTheme(changedTheme as Theme)
-		.then((success) => {
-			if (!success) return
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-			setTheme(changedTheme as Theme)
-		}).catch(raise)
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+		changeTheme(changedTheme as Theme)
+			.then(success => {
+				if (!success) return
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+				setTheme(changedTheme as Theme)
+			})
+			.catch(raise)
 	}
 
 	const handleLang = (changedLang: string) => {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
 		changeLang(changedLang as Lang)
-		.then((success) => {
-			if (!success) return 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
-			setLang(changedLang as Lang)
-		}).catch(raise)
+			.then(success => {
+				if (!success) return
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+				setLang(changedLang as Lang)
+			})
+			.catch(raise)
 	}
 
 	const handleMotion = (changedMotion: Account['motion']) => {
 		toggleMotion(changedMotion)
-		.then((success) => {
-			if (!success) return
-			setMotion(changedMotion)
-		}).catch(raise)
+			.then(success => {
+				if (!success) return
+				setMotion(changedMotion)
+			})
+			.catch(raise)
 	}
 
 	return (
@@ -101,10 +107,7 @@ export const Appearance = () => {
 						{t('theme')}
 					</Text>
 					<Surface>
-						<RadioGroup
-							value={theme}
-							onValueChange={handleTheme}
-						>
+						<RadioGroup value={theme} onValueChange={handleTheme}>
 							<RadioGroup.Item value={'light' satisfies Theme}>
 								<Label>{t('light')}</Label>
 								<Radio />
@@ -128,10 +131,7 @@ export const Appearance = () => {
 						{t('language')}
 					</Text>
 					<Surface>
-						<RadioGroup
-							value={lang}
-							onValueChange={handleLang}
-						>
+						<RadioGroup value={lang} onValueChange={handleLang}>
 							<RadioGroup.Item value={'en' satisfies Lang}>
 								<Label>🇺🇸 English</Label>
 								<Radio />
@@ -170,10 +170,7 @@ export const Appearance = () => {
 								</ListGroup.ItemTitle>
 							</ListGroup.ItemContent>
 							<ListGroup.ItemSuffix>
-								<Switch
-									isSelected={motion}
-									onSelectedChange={handleMotion}
-								/>
+								<Switch isSelected={motion} onSelectedChange={handleMotion} />
 							</ListGroup.ItemSuffix>
 						</ListGroup.Item>
 					</ListGroup>

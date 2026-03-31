@@ -21,27 +21,32 @@ export default function RootLayout() {
 	const { t, i18n } = useTranslation()
 
 	useEffect(() => {
-		supabase.auth.getUser().then(({ data: { user } }) => {
-			if (!user) {
-				setMounted(true)
-				return
-			}
-			supabase
-				.from('accounts')
-				.select('lang')
-				.eq('id', user.id)
-				.single<{ lang: Lang }>()
-			.then(({ error: errorLang, data: dataLang }) => {
-				if (errorLang) {
-					router.replace('/+not-found')
+		supabase.auth
+			.getUser()
+			.then(({ data: { user } }) => {
+				if (!user) {
+					setMounted(true)
 					return
 				}
-				i18n.changeLanguage(dataLang.lang)
-				.then(() => {
-					setMounted(true)
-				}).catch(raise)
+				supabase
+					.from('accounts')
+					.select('lang')
+					.eq('id', user.id)
+					.single<{ lang: Lang }>()
+					.then(({ error: errorLang, data: dataLang }) => {
+						if (errorLang) {
+							router.replace('/+not-found')
+							return
+						}
+						i18n
+							.changeLanguage(dataLang.lang)
+							.then(() => {
+								setMounted(true)
+							})
+							.catch(raise)
+					})
 			})
-		}).catch(raise)
+			.catch(raise)
 	}, [i18n])
 
 	if (!i18n.isInitialized) return null
