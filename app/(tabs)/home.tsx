@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import { supabase } from '@/lib/supabase'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
@@ -22,6 +22,8 @@ export default function Tab() {
 	}, [])
 
 	return (
-		<View>Hi {displayName}!</View>
+		<View className='flex-1 justify-center items-center'>
+			<Text className='text-4xl'>Hi {displayName}!</Text>
+		</View>
 	)
 }
