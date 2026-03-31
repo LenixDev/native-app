@@ -1,11 +1,12 @@
 import { BottomSheet } from 'heroui-native'
+import type { ReactNode } from 'react'
 
 export const BottomModal = ({
 	children,
 	open,
 	setOpen,
 }: {
-	children: React.ReactNode
+	children: ReactNode
 	open: boolean
 	setOpen: (open: boolean) => void
 }) => (
