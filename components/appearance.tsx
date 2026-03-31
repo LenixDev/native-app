@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
 import { useChangeTheme } from '@/hooks/use-change-theme'
+import { useToggleMotion } from '@/hooks/use-toggle-motion'
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 export const Appearance = () => {
@@ -36,6 +37,7 @@ export const Appearance = () => {
 
 	const changeLang = useChangeLang()
 	const changeTheme = useChangeTheme()
+	const toggleMotion = useToggleMotion()
 
 	useEffect(() => {
 		supabase.auth.getUser().then(({ error: errorUser, data: dataUser }) => {
@@ -77,6 +79,14 @@ export const Appearance = () => {
 			if (!success) return 
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
 			setLang(changedLang as Lang)
+		}).catch(raise)
+	}
+
+	const handleMotion = (changedMotion: Account['motion']) => {
+		toggleMotion(changedMotion)
+		.then((success) => {
+			if (!success) return
+			setMotion(changedMotion)
 		}).catch(raise)
 	}
 
@@ -162,7 +172,7 @@ export const Appearance = () => {
 							<ListGroup.ItemSuffix>
 								<Switch
 									isSelected={motion}
-									onSelectedChange={setMotion}
+									onSelectedChange={handleMotion}
 								/>
 							</ListGroup.ItemSuffix>
 						</ListGroup.Item>
