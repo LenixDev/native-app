@@ -5,9 +5,9 @@ import { createClient, processLock } from '@supabase/supabase-js'
 import { raise } from './utils'
 
 const supabaseUrl = (() => {
-	const url = process.env.EXPO_PUBLIC_SUPABASE_URL
-	if (typeof url !== 'string') throw new Error('Missing Supabase URL')
-	return url
+	const url = process.env.EXPO_PUBLIC_SUPABASE_ID
+	if (typeof url !== 'string') throw new Error('Missing Supabase ID')
+	return `https://${url}.supabase.co`
 })()
 
 const supabaseAnonKey = (() => {
