@@ -109,17 +109,26 @@ export const Appearance = () => {
 					<Surface>
 						<RadioGroup value={theme} onValueChange={handleTheme}>
 							<RadioGroup.Item value={'light' satisfies Theme}>
-								<Label>{t('light')}</Label>
+								<View className='flex-row gap-2'>
+									<IconSymbol name='sun.max' size={20} color={foreground} />
+									<Label>{t('light')}</Label>
+								</View>
 								<Radio />
 							</RadioGroup.Item>
 							<Separator className='my-1' />
 							<RadioGroup.Item value={'dark' satisfies Theme}>
-								<Label>{t('dark')}</Label>
+								<View className='flex-row gap-2'>
+									<IconSymbol name='moon' size={20} color={foreground} />
+									<Label>{t('dark')}</Label>
+								</View>
 								<Radio />
 							</RadioGroup.Item>
 							<Separator className='my-1' />
 							<RadioGroup.Item value={'system' satisfies Theme}>
-								<Label>{t('system')}</Label>
+								<View className='flex-row gap-2'>
+									<IconSymbol name='gearshape' size={20} color={foreground} />
+									<Label>{t('system')}</Label>
+								</View>
 								<Radio />
 							</RadioGroup.Item>
 						</RadioGroup>
@@ -133,22 +142,34 @@ export const Appearance = () => {
 					<Surface>
 						<RadioGroup value={lang} onValueChange={handleLang}>
 							<RadioGroup.Item value={'en' satisfies Lang}>
-								<Label>🇺🇸 English</Label>
+								<View className='flex-row gap-2'>
+									<IconSymbol name='globe.europe.africa' size={20} color={foreground} />
+									<Label>English</Label>
+								</View>
 								<Radio />
 							</RadioGroup.Item>
 							<Separator className='my-1' />
 							<RadioGroup.Item value={'ar' satisfies Lang}>
-								<Label>🇸🇦 العربية</Label>
+								<View className='flex-row gap-2'>
+									<IconSymbol name='globe.asia.australia' size={20} color={foreground} />
+									<Label>العربية</Label>
+								</View>
 								<Radio />
 							</RadioGroup.Item>
 							<Separator className='my-1' />
 							<RadioGroup.Item value={'es' satisfies Lang}>
-								<Label>🇪🇸 Español</Label>
+								<View className='flex-row gap-2'>
+									<IconSymbol name='globe.americas' size={20} color={foreground} />
+									<Label>Español</Label>
+								</View>
 								<Radio />
 							</RadioGroup.Item>
 							<Separator className='my-1' />
 							<RadioGroup.Item value={'system' satisfies Lang}>
-								<Label>🌐 System</Label>
+								<View className='flex-row gap-2'>
+									<IconSymbol name='gearshape' size={20} color={foreground} />
+									<Label>System</Label>
+								</View>
 								<Radio />
 							</RadioGroup.Item>
 						</RadioGroup>
@@ -162,7 +183,7 @@ export const Appearance = () => {
 					<ListGroup>
 						<ListGroup.Item>
 							<ListGroup.ItemPrefix>
-								<IconSymbol name='bolt.slash' size={20} color={foreground} />
+								<IconSymbol name='sparkles' size={20} color={foreground} />
 							</ListGroup.ItemPrefix>
 							<ListGroup.ItemContent>
 								<ListGroup.ItemTitle className={rtl('text-left')}>
