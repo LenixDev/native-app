@@ -1,9 +1,8 @@
 import { supabase } from '@/lib/supabase'
-import { deviceTheme } from '@/lib/theme'
 import { raise } from '@/lib/utils'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { Button, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 
 export default function Tab() {
 	const [displayName, setDisplayName] = useState<string | null>(null)

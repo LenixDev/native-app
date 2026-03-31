@@ -8,7 +8,7 @@ module.exports = defineConfig([
 	expoConfig,
 	{
 		extends: [prettier],
-		ignores: ['dist/*'],
+		ignores: ['dist/*', '*/_db.ts'],
 		languageOptions: {
 			parserOptions: {
 				projectService: true,

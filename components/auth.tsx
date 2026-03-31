@@ -18,8 +18,8 @@ import {
 	Pressable,
 	Text,
 	View,
+	type TextInput,
 } from 'react-native'
-import type { TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 type Country = typeof countries
