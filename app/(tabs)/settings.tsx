@@ -33,6 +33,7 @@ import { Text, View } from 'react-native'
 // - Generate memory from chat history to improve response quality
 // - decrease conversation by deleting unused topics in tthe same chat session
 // - help
+// - profile
 
 const ListItem = ({
 	icon,

@@ -25,7 +25,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 type Country = typeof countries
 
-// eslint-disable-next-line max-lines-per-function, max-statements, max-lines
+// HARD & COMPLEXE :)
+
+// eslint-disable-next-line max-lines-per-function, max-statements
 export const Auth = ({
 	auth,
 	authLabel,
@@ -88,7 +90,7 @@ export const Auth = ({
 		typeof passwordLength === 'number'
 		&& typeof nameLength === 'number'
 		&& exMethod === '/signin'
-	const isValidName = /^[\p{L}\s]+$/u.test(name) && name.length >= nameLength!
+	const isValidName = /^[\p{L}\s]+$/u.test(name) && name.length >= (nameLength ?? 3)
 	const isValidPassword = (self: string) =>
 		typeof passwordLength === 'number' ?
 			self.length >= passwordLength
