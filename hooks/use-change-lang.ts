@@ -1,6 +1,6 @@
-import { deviceLang } from '@/i18next'
 import { supabase } from '@/lib/supabase'
 import type { Lang } from '@/types'
+import { getLocales } from 'expo-localization'
 import { useToast } from 'heroui-native/toast'
 import { useTranslation } from 'react-i18next'
 
@@ -19,7 +19,7 @@ export const useChangeLang = () => {
 			toast.show(error.message)
 			return false
 		}
-		await i18n.changeLanguage(lang === 'system' ? deviceLang() : lang)
+		await i18n.changeLanguage(lang === 'system' ? getLocales()[0].languageTag.slice(0, 2) : lang)
 		return true
 	}
 }
