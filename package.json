@@ -16,6 +16,7 @@
 		"supacli": "npx supabase --help",
 		"supalink": "supabase link",
 		"supapull": "supabase db pull",
+		"supatypes": "supabase gen types typescript --project-id lghbeurdpwyiuxgiruys > types/_db.ts",
 		"format": "pnpm exec prettier . --write",
 		"push": "eas update"
 	},
