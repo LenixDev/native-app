@@ -18,7 +18,7 @@ export default function Page() {
 			}
 			const phone = await AsyncStorage.getItem(verificationKey)
 			if (typeof phone === 'string') {
-				setRoute(`/verify?phone=${encodeURIComponent(phone)}`)
+				setRoute('/verify')
 				return
 			}
 			if (event === 'INITIAL_SESSION' && !session) {
