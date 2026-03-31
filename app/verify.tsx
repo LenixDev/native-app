@@ -1,9 +1,11 @@
+import { BottomModal } from '@/components/bottom-modal'
+import { IconSymbol } from '@/components/ui/icon-symbol'
 import { verificationKey } from '@/constants'
 import { raise } from '@/lib/utils'
 import { verify } from '@/services/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
-import { Button, Description, Label, LinkButton } from 'heroui-native'
+import { BottomSheet, Button, Description, Label, LinkButton } from 'heroui-native'
 import { InputOTP, type InputOTPRef } from 'heroui-native/input-otp'
 import { useToast } from 'heroui-native/toast'
 import { useEffect, useRef, useState } from 'react'
@@ -13,11 +15,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 // eslint-disable-next-line max-lines-per-function
 export default function Page() {
-	const ref = useRef<InputOTPRef>(null)
 	const { toast } = useToast()
 	const { t } = useTranslation()
 
+	const ref = useRef<InputOTPRef>(null)
 	const [phone, setPhone] = useState<string | null>(null)
+	const [open, setOpen] = useState(false)
 
 	useEffect(() => {
 		AsyncStorage.getItem(verificationKey)
@@ -44,6 +47,13 @@ export default function Page() {
 	return (
 		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
 			<View className='flex-1 items-center justify-between w-full px-5 py-20'>
+				<Button
+					variant='ghost'
+					isIconOnly className='absolute top-5 right-5'
+					onPress={() => { setOpen(true) }}
+				>
+					<IconSymbol color={'red'} name='info.circle' size={18} />
+				</Button>
 				<View className='px-5 justify-center gap-3'>
 					<View>
 						<Label>Verify account</Label>
@@ -76,9 +86,19 @@ export default function Page() {
 							</LinkButton.Label>
 						</LinkButton>
 					</View>
-					<Text className='text-danger text-center'>
-						{t('account_not_verified')}
-					</Text>
+					<BottomModal open={open} setOpen={setOpen}>
+						<View className='gap-8'>
+							<BottomSheet.Title>
+								Important
+							</BottomSheet.Title>
+							<Description>
+								{t('account_not_verified', { amount: 30 })}
+							</Description>
+							<Button variant='tertiary' onPress={() => { setOpen(false) }}>
+								Understood
+							</Button>
+						</View>
+					</BottomModal>
 				</View>
 				<Button
 					className='w-full'
