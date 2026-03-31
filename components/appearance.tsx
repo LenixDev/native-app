@@ -9,24 +9,70 @@ import {
 	ListGroup,
 	useThemeColor,
 	BottomSheet,
+	useToast,
 } from 'heroui-native'
 import { View, Text } from 'react-native'
 import { IconSymbol } from './ui/icon-symbol'
-import type { Lang, Theme } from '@/types'
+import type { Account, Lang, Theme } from '@/types'
 import { useChangeLang } from '@/hooks/use-change-lang'
 import { useIsRTL, useRTL } from '@/hooks/use-rtl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { supabase } from '@/lib/supabase'
+import { useChangeTheme } from '@/hooks/use-change-theme'
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, max-statements
 export const Appearance = () => {
-	const [theme, setTheme] = useState<Theme>('system')
-	const [reduceMotion, setReduceMotion] = useState(false)
-	const changeLang = useChangeLang()
-	const foreground = useThemeColor('foreground')
 	const isRtl = useIsRTL()
 	const rtl = useRTL()
-	const { t, i18n } = useTranslation()
+
+	const { t } = useTranslation()
+	const { toast } = useToast()
+	const foreground = useThemeColor('foreground')
+
+	const [theme, setTheme] = useState<Theme>('system')
+	const [motion, setMotion] = useState(false)
+	const [lang, setLang] = useState<Lang>('system')
+
+	const changeLang = useChangeLang()
+	const changeTheme = useChangeTheme()
+
+	useEffect(() => {
+		supabase
+			.from('accounts')
+			.select('theme, lang, motion')
+			.single<Account>()
+		.then(({ error, data }) => {
+			if (error) {
+				toast.show(error.message)
+				return
+			}
+			setTheme(data.theme)
+			setMotion(data.motion)
+			setLang(data.lang)
+		})
+	})
+
+	const handleTheme = (changedTheme: string) => {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+			changeTheme(changedTheme as Theme)
+		.then((success) => {
+			if (!success) return
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+			setTheme(changedTheme as Theme)
+		}).catch(raise)
+	}
+
+	const handleLang = (changedLang: string) => {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+		changeLang(changedLang as Lang)
+		.then((success) => {
+			if (!success) return 
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+			setLang(changedLang as Lang)
+		}).catch(raise)
+	}
+
 	return (
 		<>
 			<BottomSheet.Title className={`mb-6 ${rtl('text-right')}`}>
@@ -40,9 +86,7 @@ export const Appearance = () => {
 					<Surface>
 						<RadioGroup
 							value={theme}
-							onValueChange={self => {
-								setTheme(self)
-							}}
+							onValueChange={handleTheme}
 						>
 							<RadioGroup.Item value={'light' satisfies Theme}>
 								<Label>{t('light')}</Label>
@@ -68,10 +112,8 @@ export const Appearance = () => {
 					</Text>
 					<Surface>
 						<RadioGroup
-							value={i18n.language}
-							onValueChange={self => {
-								changeLang(self).catch(raise)
-							}}
+							value={lang}
+							onValueChange={handleLang}
 						>
 							<RadioGroup.Item value={'en' satisfies Lang}>
 								<Label>🇺🇸 English</Label>
@@ -85,6 +127,11 @@ export const Appearance = () => {
 							<Separator className='my-1' />
 							<RadioGroup.Item value={'es' satisfies Lang}>
 								<Label>🇪🇸 Español</Label>
+								<Radio />
+							</RadioGroup.Item>
+							<Separator className='my-1' />
+							<RadioGroup.Item value={'system' satisfies Lang}>
+								<Label>🌐 System</Label>
 								<Radio />
 							</RadioGroup.Item>
 						</RadioGroup>
@@ -107,8 +154,8 @@ export const Appearance = () => {
 							</ListGroup.ItemContent>
 							<ListGroup.ItemSuffix>
 								<Switch
-									isSelected={reduceMotion}
-									onSelectedChange={setReduceMotion}
+									isSelected={motion}
+									onSelectedChange={setMotion}
 								/>
 							</ListGroup.ItemSuffix>
 						</ListGroup.Item>

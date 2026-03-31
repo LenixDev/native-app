@@ -10,7 +10,7 @@ import { guard, raise } from './lib/utils'
 
 const supportedLangs: readonly Lang[] = ['en', 'ar', 'es']
 const fallbackLng: Lang = 'en' as const
-const deviceLang = getLocales()[0].languageTag.slice(0, 2)
+export const deviceLang = () => getLocales()[0].languageTag.slice(0, 2)
 
 i18nUse(initReactI18next)
 	.init({
@@ -19,7 +19,7 @@ i18nUse(initReactI18next)
 			ar: { translation: ar satisfies typeof en & typeof es },
 			es: { translation: es satisfies typeof en & typeof ar },
 		},
-		lng: guard(deviceLang, supportedLangs) ? deviceLang : fallbackLng,
+		lng: guard(deviceLang(), supportedLangs) ? deviceLang() : fallbackLng,
 		fallbackLng,
 		interpolation: { escapeValue: false },
 	})

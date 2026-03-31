@@ -23,7 +23,7 @@ export default function Tab() {
 
 	return (
 		<View className='flex-1 justify-center items-center'>
-			<Text className='text-4xl'>Hi {displayName}!</Text>
+			<Text className='text-4xl text-foreground'>Hi {displayName}!</Text>
 		</View>
 	)
 }
