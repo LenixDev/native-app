@@ -9,7 +9,12 @@ export const useChangeLang = () => {
 	const { toast } = useToast()
 
 	return async (lang: Lang) => {
-		const { error } = await supabase.from('accounts').update({ lang })
+		const { error: userError, data } = await supabase.auth.getUser()
+		if (userError) {
+			toast.show(userError.message)
+			return false
+		}
+		const { error } = await supabase.from('accounts').update({ lang }).eq('id', data.user.id)
 		if (error) {
 			toast.show(error.message)
 			return false

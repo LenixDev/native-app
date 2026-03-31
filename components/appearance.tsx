@@ -38,20 +38,27 @@ export const Appearance = () => {
 	const changeTheme = useChangeTheme()
 
 	useEffect(() => {
-		supabase
-			.from('accounts')
-			.select('theme, lang, motion')
-			.single<Account>()
-		.then(({ error, data }) => {
-			if (error) {
-				toast.show(error.message)
+		supabase.auth.getUser().then(({ error: errorUser, data: dataUser }) => {
+			if (errorUser) {
+				toast.show(errorUser.message)
 				return
 			}
-			setTheme(data.theme)
-			setMotion(data.motion)
-			setLang(data.lang)
-		})
-	})
+			supabase
+				.from('accounts')
+				.select('theme, lang, motion')
+				.eq('id', dataUser.user.id)
+				.single<Account>()
+			.then(({ error, data }) => {
+				if (error) {
+					toast.show(error.message)
+					return
+				}
+				setTheme(data.theme)
+				setMotion(data.motion)
+				setLang(data.lang)
+			})
+		}).catch(raise)
+	}, [toast])
 
 	const handleTheme = (changedTheme: string) => {
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
