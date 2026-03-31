@@ -31,5 +31,6 @@
 	"theme": "Theme",
 	"dark": "Dark",
 	"light": "Light",
-	"system": "System"
+	"system": "System",
+	"theme_error": "Could not identify the device theme"
 }
