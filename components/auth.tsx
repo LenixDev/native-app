@@ -4,7 +4,6 @@ import { flag, raise } from '@/lib/utils'
 import { type Href, router } from 'expo-router'
 import {
 	Button,
-	FieldError,
 	InputGroup,
 	Separator,
 	useThemeColor,
@@ -44,7 +43,7 @@ export const Auth = ({
 	nameLength?: number
 }) => {
 	const { t } = useTranslation()
-	const [muted, danger] = useThemeColor(['muted', 'danger'])
+	const muted = useThemeColor('muted')
 	const { toast } = useToast()
 	const passwordRef = useRef<TextInput>(null)
 	const phoneRef = useRef<TextInput>(null)
@@ -63,38 +62,30 @@ export const Auth = ({
 	})
 	const [isCountryOpen, setIsCountryOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
-	const [invalid, setInvalid] = useState<Record<keyof Form, boolean>>({
-		phone: false,
-		password: false,
-		country: false,
-		name: false,
-	})
 
+	// eslint-disable-next-line max-statements
 	const handleAuth = async () => {
-		setLoading(true)
-		if (typeof country?.dial !== 'string') {
-			toast.show(t('unretrievable_country_code'))
-			setLoading(false)
+		if (typeof nameLength === 'number' && (!/^[\p{L}\s]+$/u.test(name) || name.length <= nameLength)) {
+			toast.show(t("name_error"))
 			return
 		}
-		const phoneNumber = `${country.dial}${phone}`
-		await auth(phoneNumber, password, name)
+		if (country === null) {
+			toast.show(t('country_code_error'))
+			return
+		}
+		if (typeof passwordLength === 'number' && password.length < passwordLength) {
+			toast.show(t('password_short'))
+			return
+		}
+		setLoading(true)
+		await auth(`${country.dial}${phone}`, password, name)
 		setLoading(false)
-	}
-
-	const handleValid = (condition: boolean, key: keyof Form) => {
-		setInvalid(prev => ({ ...prev, [key]: !condition }))
 	}
 
 	const isSignup =
 		typeof passwordLength === 'number'
 		&& typeof nameLength === 'number'
 		&& exMethod === '/signin'
-	const isValidName = /^[\p{L}\s]+$/u.test(name) && name.length >= (nameLength ?? 3)
-	const isValidPassword = (self: string) =>
-		typeof passwordLength === 'number' ?
-			self.length >= passwordLength
-		:	password.length > 0
 
 	return (
 		<KeyboardAwareScrollView
@@ -123,26 +114,16 @@ export const Auth = ({
 									placeholder={t('fake_name')}
 									autoCorrect={false}
 									value={name}
-									onBlur={() => {
-										handleValid(isValidName, 'name')
-									}}
-									onChangeText={self => {
-										setForm(form => ({ ...form, name: self }))
-										handleValid(isValidName, 'name')
-									}}
-									isInvalid={invalid.name}
+									onChangeText={self => { setForm(form => ({ ...form, name: self }))	}}
 								/>
 							</InputGroup>
-							<FieldError isInvalid={invalid.name}>
-								{t('name_error')}
-							</FieldError>
 						</View>
 					)}
 					<View className='flex gap-2'>
 						<InputGroup>
 							<InputGroup.Prefix className='px-0'>
 								<Pressable
-									className={`flex-1 w-full px-4 justify-center ${invalid.country && 'border-danger'}`}
+									className='flex-1 w-full px-4 justify-center'
 									onPress={() => {
 										setIsCountryOpen(true)
 									}}
@@ -152,7 +133,7 @@ export const Auth = ({
 											{`${flag[country.code]} ${country.dial}`}
 										</Text>
 									:	<IconSymbol
-											color={invalid.phone ? danger : muted}
+											color={muted}
 											name={`chevron.${isCountryOpen ? 'up' : 'down'}`}
 											size={16}
 										/>
@@ -166,20 +147,9 @@ export const Auth = ({
 								placeholder={t('phone')}
 								keyboardType='number-pad'
 								value={phone}
-								onBlur={() => {
-									handleValid(phone.length > 0, 'phone')
-									handleValid(country !== null, 'country')
-								}}
-								onChangeText={self => {
-									setForm(form => ({ ...form, phone: self }))
-									handleValid(self.length > 0, 'phone')
-								}}
-								isInvalid={invalid.phone || invalid.country}
+								onChangeText={self => {	setForm(form => ({ ...form, phone: self }))	}}
 							/>
 						</InputGroup>
-						<FieldError isInvalid={invalid.country}>
-							{t('country_code_error')}
-						</FieldError>
 					</View>
 
 					<InputGroup>
@@ -194,14 +164,7 @@ export const Auth = ({
 							autoCorrect={false}
 							secureTextEntry={!isPasswordVisible}
 							value={password}
-							onBlur={() => {
-								handleValid(isValidPassword(password), 'password')
-							}}
-							onChangeText={self => {
-								setForm(form => ({ ...form, password: self }))
-								handleValid(isValidPassword(self), 'password')
-							}}
-							isInvalid={invalid.password}
+							onChangeText={self => {	setForm(form => ({ ...form, password: self })) }}
 						/>
 						<InputGroup.Suffix>
 							<Pressable
@@ -218,11 +181,6 @@ export const Auth = ({
 							</Pressable>
 						</InputGroup.Suffix>
 					</InputGroup>
-					{isSignup && (
-						<FieldError isInvalid={invalid.password}>
-							{t('password_short')}
-						</FieldError>
-					)}
 				</KeyboardAvoidingView>
 
 				<View className='justify-center w-full'>
@@ -233,14 +191,10 @@ export const Auth = ({
 						}}
 						isDisabled={
 							loading
-							|| invalid.phone
-							|| invalid.country
-							|| invalid.password
-							|| (typeof nameLength === 'number' && invalid.name)
-							|| password.length < 0
-							|| phone.length < 0
-							|| name.length < 0
+							|| phone.length === 0
 							|| country === null
+							|| password.length === 0
+							|| typeof nameLength === 'number' && name.length === 0
 						}
 					>
 						<Button.Label className='dark:text-background text-foreground'>
@@ -253,17 +207,11 @@ export const Auth = ({
 					visible={isCountryOpen}
 					transparent
 					animationType='slide'
-					onRequestClose={() => {
-						setIsCountryOpen(false)
-						handleValid(country !== null, 'country')
-					}}
+					onRequestClose={() => {	setIsCountryOpen(false) }}
 				>
 					<Pressable
 						style={{ flex: 1 }}
-						onPress={() => {
-							setIsCountryOpen(false)
-							handleValid(country !== null, 'country')
-						}}
+						onPress={() => { setIsCountryOpen(false) }}
 					/>
 					<View className='h-1/2 bg-segment'>
 						<FlatList
@@ -276,7 +224,6 @@ export const Auth = ({
 										onPress={() => {
 											setForm(form => ({ ...form, country: countryItem }))
 											setIsCountryOpen(false)
-											handleValid(true, 'country')
 										}}
 									>
 										<Text>{flag[countryItem.code]}</Text>

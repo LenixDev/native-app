@@ -14,7 +14,6 @@
 	"account_verified": "Cuenta verificada correctamente",
 	"signout": "Cerrar sesión",
 	"account_not_verified": "Si esta cuenta no se verifica en los próximos 30 minutos, será eliminada de nuestra base de datos",
-	"unretrievable_country_code": "No se pudo identificar el código de país del número de teléfono",
 	"country_code_error": "Código de país del número de teléfono no seleccionado",
 	"signout_success": "Sesión cerrada correctamente",
 	"fake_name": "Lenix Dev",
