@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native'
+import { Appearance, Button, Text, View } from 'react-native'
 import { supabase } from '@/lib/supabase'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
@@ -24,6 +24,10 @@ export default function Tab() {
 	return (
 		<View className='flex-1 justify-center items-center'>
 			<Text className='text-4xl text-foreground'>Hi {displayName}!</Text>
+			<Button
+				title='Press'
+				onPress={() => {console.debug(Appearance.getColorScheme())}}
+			></Button>
 		</View>
 	)
 }

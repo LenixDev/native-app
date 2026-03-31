@@ -2,14 +2,18 @@ import { supabase } from "@/lib/supabase"
 import type { Theme } from "@/types"
 import { useToast } from "heroui-native"
 import { useTranslation } from "react-i18next";
-import { useColorScheme } from "react-native";
+import { Appearance } from "react-native";
 import { Uniwind } from 'uniwind';
 
 export const useChangeTheme = () => {
   const { toast } = useToast()
   const { t } = useTranslation()
-  const deviceTheme = useColorScheme()
-  if (!deviceTheme) toast.show(t("theme_error"))
+  let deviceTheme = Appearance.getColorScheme()
+  if (!deviceTheme) {
+    toast.show(t("theme_error"))
+    console.warn('Theme error')
+    deviceTheme = 'light'
+  }
 
   return async (theme: Theme) => {
     const { error: userError, data } = await supabase.auth.getUser()
@@ -22,7 +26,7 @@ export const useChangeTheme = () => {
       toast.show(error.message)
       return false
     }
-    Uniwind.setTheme(theme === 'system' ? deviceTheme ?? 'light' : theme)
-  return true
+    Uniwind.setTheme(theme === 'system' ? deviceTheme : theme)
+    return true
   }
 }
