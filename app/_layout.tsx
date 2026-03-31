@@ -1,19 +1,50 @@
 import '../global.css'
 import 'react-native-reanimated'
 import { ThemeProvider } from '@react-navigation/native'
-import { Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { HeroUINativeProvider } from 'heroui-native'
 import '@/i18next'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/hooks/use-theme'
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import type { Lang } from '@/types'
+import { raise } from '@/lib/utils'
 
+// eslint-disable-next-line max-lines-per-function
 export default function RootLayout() {
 	const theme = useTheme()
-
+	const [mounted, setMounted] = useState(false)
 	const { t, i18n } = useTranslation()
+
+	useEffect(() => {
+		supabase.auth.getUser().then(({ data: { user } }) => {
+			if (!user) {
+				setMounted(true)
+				return
+			}
+			supabase
+				.from('accounts')
+				.select('lang')
+				.eq('id', user.id)
+				.single<{ lang: Lang }>()
+			.then(({ error: errorLang, data: dataLang }) => {
+				if (errorLang) {
+					router.replace('/+not-found')
+					return
+				}
+				i18n.changeLanguage(dataLang.lang)
+				.then(() => {
+					setMounted(true)
+				}).catch(raise)
+			})
+		}).catch(raise)
+	}, [i18n])
+
 	if (!i18n.isInitialized) return null
+	if (!mounted) return null
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
