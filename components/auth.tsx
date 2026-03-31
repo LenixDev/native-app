@@ -65,15 +65,21 @@ export const Auth = ({
 
 	// eslint-disable-next-line max-statements
 	const handleAuth = async () => {
-		if (typeof nameLength === 'number' && (!/^[\p{L}\s]+$/u.test(name) || name.length <= nameLength)) {
-			toast.show(t("name_error"))
+		if (
+			typeof nameLength === 'number'
+			&& (!/^[\p{L}\s]+$/u.test(name) || name.length <= nameLength)
+		) {
+			toast.show(t('name_error'))
 			return
 		}
 		if (country === null) {
 			toast.show(t('country_code_error'))
 			return
 		}
-		if (typeof passwordLength === 'number' && password.length < passwordLength) {
+		if (
+			typeof passwordLength === 'number'
+			&& password.length < passwordLength
+		) {
 			toast.show(t('password_short'))
 			return
 		}
@@ -114,7 +120,9 @@ export const Auth = ({
 									placeholder={t('fake_name')}
 									autoCorrect={false}
 									value={name}
-									onChangeText={self => { setForm(form => ({ ...form, name: self }))	}}
+									onChangeText={self => {
+										setForm(form => ({ ...form, name: self }))
+									}}
 								/>
 							</InputGroup>
 						</View>
@@ -147,7 +155,9 @@ export const Auth = ({
 								placeholder={t('phone')}
 								keyboardType='number-pad'
 								value={phone}
-								onChangeText={self => {	setForm(form => ({ ...form, phone: self }))	}}
+								onChangeText={self => {
+									setForm(form => ({ ...form, phone: self }))
+								}}
 							/>
 						</InputGroup>
 					</View>
@@ -164,7 +174,9 @@ export const Auth = ({
 							autoCorrect={false}
 							secureTextEntry={!isPasswordVisible}
 							value={password}
-							onChangeText={self => {	setForm(form => ({ ...form, password: self })) }}
+							onChangeText={self => {
+								setForm(form => ({ ...form, password: self }))
+							}}
 						/>
 						<InputGroup.Suffix>
 							<Pressable
@@ -194,7 +206,7 @@ export const Auth = ({
 							|| phone.length === 0
 							|| country === null
 							|| password.length === 0
-							|| typeof nameLength === 'number' && name.length === 0
+							|| (typeof nameLength === 'number' && name.length === 0)
 						}
 					>
 						<Button.Label className='dark:text-background text-foreground'>
@@ -207,11 +219,15 @@ export const Auth = ({
 					visible={isCountryOpen}
 					transparent
 					animationType='slide'
-					onRequestClose={() => {	setIsCountryOpen(false) }}
+					onRequestClose={() => {
+						setIsCountryOpen(false)
+					}}
 				>
 					<Pressable
 						style={{ flex: 1 }}
-						onPress={() => { setIsCountryOpen(false) }}
+						onPress={() => {
+							setIsCountryOpen(false)
+						}}
 					/>
 					<View className='h-1/2 bg-segment'>
 						<FlatList

@@ -12,13 +12,15 @@ const supportedLangs: readonly Lang[] = ['en', 'ar', 'es']
 const fallbackLng: Lang = 'en' as const
 const deviceLang = getLocales()[0].languageTag.slice(0, 2)
 
-i18nUse(initReactI18next).init({
-	resources: {
-		en: { translation: en satisfies typeof ar & typeof es },
-		ar: { translation: ar satisfies typeof en & typeof es },
-		es: { translation: es satisfies typeof en & typeof ar },
-	},
-	lng: guard(deviceLang, supportedLangs) ? deviceLang : fallbackLng,
-	fallbackLng,
-	interpolation: { escapeValue: false },
-}).catch(raise)
+i18nUse(initReactI18next)
+	.init({
+		resources: {
+			en: { translation: en satisfies typeof ar & typeof es },
+			ar: { translation: ar satisfies typeof en & typeof es },
+			es: { translation: es satisfies typeof en & typeof ar },
+		},
+		lng: guard(deviceLang, supportedLangs) ? deviceLang : fallbackLng,
+		fallbackLng,
+		interpolation: { escapeValue: false },
+	})
+	.catch(raise)
