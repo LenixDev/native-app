@@ -1,17 +1,17 @@
-import { signin } from '@/services/auth'
 import { router } from 'expo-router'
 import { useToast } from 'heroui-native'
-import { Auth } from '../components/auth'
+import { Auth } from '@/components/auth'
 import { useTranslation } from 'react-i18next'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { verificationKey } from '@/constants'
+import { supabase } from '@/lib/supabase'
 
 export default function Page() {
 	const { t } = useTranslation()
 	const { toast } = useToast()
 
 	const auth = async (phone: string, password: string) => {
-		const { error } = await signin(phone, password)
+		const { error } = await supabase.auth.signInWithPassword({ phone, password })
 		if (error) {
 			if (error.code === 'phone_not_confirmed') {
 				await AsyncStorage.setItem(verificationKey, phone)

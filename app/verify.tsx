@@ -1,8 +1,8 @@
 import { BottomModal } from '@/components/bottom-modal'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { changeKey, verificationKey } from '@/constants'
+import { supabase } from '@/lib/supabase'
 import { raise } from '@/lib/utils'
-import { verify } from '@/services/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { router } from 'expo-router'
 import {
@@ -48,13 +48,14 @@ export default function Page() {
 
 	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(Math.max(0, phone.length - 7))}${phone[phone.length - 1]}`
 
-	const onComplete = async (code: string) => {
-		const [success, response] = await verify(phone, code)
-		if (!success) {
-			toast.show(response)
+	const onComplete = async (token: string) => {
+		const { error } = await supabase.auth.verifyOtp({ phone, token, type: isChange ? 'phone_change' : 'sms' })
+		if (error) {
+			toast.show(error.message)
 			ref.current?.clear()
 			return
 		}
+		await AsyncStorage.removeItem(verificationKey)
 		toast.show(t(isChange ? 'phone_updated' : 'account_verified'))
 		router.replace(isChange ? '/(tabs)/settings/account' : '/(tabs)/home')
 	}

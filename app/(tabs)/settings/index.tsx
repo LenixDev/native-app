@@ -86,10 +86,10 @@ export default function Tab() {
 	}
 
 	const handleSignout = () => {
-		signout()
-			.then(([success, response]) => {
-				if (!success) {
-					toast.show(response)
+		supabase.auth.signOut()
+			.then(({ error }) => {
+				if (error) {
+					toast.show(error.message)
 					return
 				}
 				router.replace('/signin')
