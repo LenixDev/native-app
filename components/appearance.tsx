@@ -143,7 +143,7 @@ export const Appearance = () => {
 						<RadioGroup value={lang} onValueChange={handleLang}>
 							<RadioGroup.Item value={'en' satisfies Lang}>
 								<View className='flex-row gap-2'>
-									<IconSymbol name='globe.europe.africa' size={20} color={foreground} />
+									<IconSymbol name='globe.americas' size={20} color={foreground} />
 									<Label>English</Label>
 								</View>
 								<Radio />
@@ -159,7 +159,7 @@ export const Appearance = () => {
 							<Separator className='my-1' />
 							<RadioGroup.Item value={'es' satisfies Lang}>
 								<View className='flex-row gap-2'>
-									<IconSymbol name='globe.americas' size={20} color={foreground} />
+									<IconSymbol name='globe.europe.africa' size={20} color={foreground} />
 									<Label>Español</Label>
 								</View>
 								<Radio />
