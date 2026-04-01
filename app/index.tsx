@@ -25,10 +25,6 @@ export default function Page() {
 				setRoute('/signin')
 				return
 			}
-			if (event === 'SIGNED_OUT') {
-				setRoute('/signin')
-				return
-			}
 			if (event === 'INITIAL_SESSION' && session) {
 				setRoute('/(tabs)/home')
 				return
