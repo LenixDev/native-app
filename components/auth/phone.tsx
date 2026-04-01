@@ -49,9 +49,9 @@ export const PhoneInput = ({
 	return (
 		<InputGroup>
 			{isRtl ? 
-				<InputGroup.Suffix>
+				<InputGroup.Suffix className='px-0'>
 					<Codes {...{ onCodeSelect, country, isCountryOpen }} />
-				</InputGroup.Suffix>	
+				</InputGroup.Suffix>
 			: <InputGroup.Prefix className='px-0'>
 				<Codes {...{ onCodeSelect, country, isCountryOpen }} />
 			</InputGroup.Prefix>}

@@ -128,7 +128,7 @@ export default function Page() {
 					className='w-full'
 					variant={isChange ? 'outline' : 'danger-soft'}
 					onPress={() => {
-						router.replace(isChange ? '/(tabs)/settings/account' : '/signin')
+						router.replace(isChange ? '/(tabs)/settings' : '/signin')
 						AsyncStorage.removeItem(verificationKey).catch(raise)
 						isChange && AsyncStorage.removeItem(changeKey).catch(raise)
 					}}

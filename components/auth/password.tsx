@@ -30,7 +30,7 @@ export const PasswordInput = ({
 
 	return (
 		<InputGroup>
-			<InputGroup.Prefix isDecorative>
+			<InputGroup.Prefix isDecorative={!isRtl}>
 				{isRtl ? <Eye isVisible={isPasswordVisible} onPress={() => {
 					setIsPasswordVisible(!isPasswordVisible)
 				}} /> : <IconSymbol color={muted} name='lock.fill' size={16} />}
