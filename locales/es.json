@@ -50,5 +50,7 @@
 	"current_password": "Contraseña actual",
 	"current_password_context": "Contraseña actual de tu cuenta",
 	"save": "Guardar",
-	"delete": "Eliminar"
+	"delete": "Eliminar",
+	"this_ereversable": "Esta acción es irreversible y no se puede deshacer",
+	"signout_context": "Cerrar sesión en todas las demás dispositivos excepto el dispositivo actual"
 }

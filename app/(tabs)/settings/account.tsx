@@ -117,7 +117,8 @@ export default function Page() {
             {operation === 'deletion' && t("are_you_sure")}
           </Dialog.Title>
           <TextField>
-            {operation === 'password' && (
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {operation === 'password' ? (
               <>
                 <Label>{t('current_password')}</Label>
                 <PasswordInput
@@ -128,6 +129,10 @@ export default function Page() {
                 />
                 <Description>{t('current_password_context')}</Description>
               </>
+            ) : operation === 'deletion' ? (
+              <Description>{t('this_ereversable')}</Description>
+            ) : operation === 'signout' && (
+              <Description>{t('signout_context')}</Description>
             )}
           </TextField>
           <Button
@@ -136,6 +141,7 @@ export default function Page() {
               else if (operation === 'signout') handleSignout()
               else handleDeletion()
             }}
+            variant={operation === 'deletion' || operation === 'signout' ? 'danger' : 'primary'}
           >
             {/* eslint-disable-next-line no-nested-ternary */}
             {operation === 'phone' || operation === 'password'

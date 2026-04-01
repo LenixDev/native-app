@@ -50,5 +50,7 @@
 	"current_password": "Current password",
 	"current_password_context": "Your current account's password",
 	"save": "Save",
-	"delete": "Delete"
+	"delete": "Delete",
+	"this_ereversable": "This action is irreversible and can not be undone",
+	"signout_context": "Sign out from all other devices except the current device"
 }
