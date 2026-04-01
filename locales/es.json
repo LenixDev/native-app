@@ -57,5 +57,6 @@
 	"did_not_receive": "No recibiste el código?",
 	"resend": "Reenviar",
 	"important": "Importante",
-	"understood": "Entendido"
+	"understood": "Entendido",
+	"abort": "Abortar"
 }

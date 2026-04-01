@@ -57,5 +57,6 @@
 	"did_not_receive": "لم تستلم رمز؟",
 	"resend": "إرسال مجدداً",
 	"important": "هام",
-	"understood": "مفهوم"
+	"understood": "مفهوم",
+	"abort": "إلغاء"
 }

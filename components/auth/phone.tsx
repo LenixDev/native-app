@@ -22,14 +22,18 @@ export const PhoneInput = ({
           className='flex-1 w-full px-4 justify-center'
           onPress={onCodeSelect}
         >
-          {country ?
+          {country
+          ?
             <Text className='text-foreground'>
               {`${flag[country.code]} ${country.dial}`}
             </Text>
-            : <IconSymbol
+          :
+            <IconSymbol
               color={muted}
               name={`chevron.${isCountryOpen ? 'up' : 'down'}`}
-              size={16} />}
+              size={16}
+            />
+          }
         </Pressable>
       </InputGroup.Prefix>
       <InputGroup.Input

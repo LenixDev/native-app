@@ -1,10 +1,10 @@
 import { BottomModal } from '@/components/bottom-modal'
 import { IconSymbol } from '@/components/ui/icon-symbol'
-import { verificationKey } from '@/constants'
+import { changeKey, verificationKey } from '@/constants'
 import { raise } from '@/lib/utils'
 import { verify } from '@/services/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import {
 	BottomSheet,
 	Button,
@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, max-statements
 export default function Page() {
 	const { toast } = useToast()
 	const { t } = useTranslation()
@@ -27,19 +27,26 @@ export default function Page() {
 	const ref = useRef<InputOTPRef>(null)
 	const [phone, setPhone] = useState<string | null>(null)
 	const [open, setOpen] = useState(false)
+	const [isChange, setIsChange] = useState<boolean | null>(null)
 
 	useEffect(() => {
 		AsyncStorage.getItem(verificationKey)
 			.then(value => {
-				if (typeof value === 'string') setPhone(value)
+				if (typeof value === 'string')
+				AsyncStorage
+				.getItem(changeKey)
+				.then(val => {
+					setIsChange(typeof val === 'string')
+        	setPhone(value)
+				}).catch(raise)
 				else router.replace('/signin')
 			})
 			.catch(raise)
 	}, [])
 
-	if (phone === null) return null
+	if (phone === null || isChange === null) return null
 	
-	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(phone.length - 6)}`
+	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(Math.max(0, phone.length - 7))}${phone[phone.length - 1]}`
 
 	const onComplete = async (code: string) => {
 		const [success, response] = await verify(phone, code)
@@ -48,14 +55,14 @@ export default function Page() {
 			ref.current?.clear()
 			return
 		}
-		toast.show(t('account_verified'))
-		router.replace('/(tabs)/home')
+		toast.show(t(isChange ? 'phone_updated' : 'account_verified'))
+		router.replace(isChange ? '/(tabs)/settings/account' : '/(tabs)/home')
 	}
 
 	return (
 		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
 			<View className='flex-1 items-center justify-between w-full px-5 py-20'>
-				<Button
+				{!isChange && <Button
 					variant='ghost'
 					isIconOnly
 					className='absolute top-5 right-5'
@@ -64,7 +71,7 @@ export default function Page() {
 					}}
 				>
 					<IconSymbol color={'red'} name='info.circle' size={18} />
-				</Button>
+				</Button>}
 				<View className='px-5 justify-center gap-3'>
 					<View>
 						<Label>{t("verify_account")}</Label>
@@ -116,13 +123,14 @@ export default function Page() {
 				</View>
 				<Button
 					className='w-full'
-					variant='danger-soft'
+					variant={isChange ? 'outline' : 'danger-soft'}
 					onPress={() => {
-						router.replace('/signin')
+						router.replace(isChange ? '/(tabs)/settings/account' : '/signin')
 						AsyncStorage.removeItem(verificationKey).catch(raise)
+						isChange && AsyncStorage.removeItem(changeKey).catch(raise)
 					}}
 				>
-					{t('signout')}
+					{isChange ? t('abort') : t('signout')}
 				</Button>
 			</View>
 		</KeyboardAwareScrollView>

@@ -1,9 +1,12 @@
 import { ModalProvider } from "@/components/auth/countries";
 import { PasswordInput } from "@/components/auth/password";
 import { PhoneInput } from "@/components/auth/phone";
+import { changeKey, verificationKey } from "@/constants";
 import { supabase } from "@/lib/supabase";
 import { isValidPassword, raise } from "@/lib/utils";
 import type { Country } from "@/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import { Button, Description, Dialog, Label, Separator, Surface, TextField, useToast } from "heroui-native";
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,13 +50,33 @@ export default function Page() {
   })
   
   const handleUpdate = (type: 'password' | 'phone') => {
-    supabase.auth.updateUser({ [type]: credentials[type], current_password }).then(({ error }) => {
+    if (type === 'phone' && !country) {
+      raise('failed to handle account update. cause: country was falsy')
+      return
+    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const phoneNumber = `${country!.dial}${credentials.phone}`
+    const credential = type === 'phone' ? phoneNumber : credentials.password
+    supabase.auth.updateUser({ [type]: credential, current_password }).then(({ error }) => {
       if (error) {
         toast.show(error.message)
         return
       }
-      toast.show(t('account_updated'))
       setIsDialogOn(false)
+      if (type === 'phone') {
+        AsyncStorage
+        .setItem(verificationKey, phoneNumber)
+        .then(() => {
+          AsyncStorage
+          .setItem(changeKey, 'phone')
+          .then(() => {
+            router.replace('/verify')
+          }).catch(raise)
+        }).catch(raise)
+        return
+      }
+      toast.show(t('account_updated'))
+      setCredentials(prev => ({ ...prev, [type]: '' }))
     }).catch(raise)
   }
 
@@ -98,7 +121,11 @@ export default function Page() {
                 />
                 <Description>{t("phone_context")}</Description>
               </TextField>
-              <Button variant='tertiary' onPress={() => { setOperation('phone'); setIsDialogOn(true) }}>{t("update")}</Button>
+              <Button variant='tertiary' isDisabled={credentials.phone.length === 0	|| country === null} onPress={() => {
+                setOperation('phone')
+                // setIsDialogOn(true)
+                handleUpdate('phone')
+              }}>{t("update")}</Button>
             </Surface>
           </View>
           <Separator />
@@ -113,7 +140,7 @@ export default function Page() {
                 />
                 <Description>{t("password_context")}</Description>
               </TextField>
-              <Button variant='tertiary' onPress={() => {
+              <Button variant='tertiary' isDisabled={credentials.password.length === 0} onPress={() => {
                 if (!isValidPassword(credentials.password)) {
                   toast.show(t("password_short"))
                   return
@@ -121,7 +148,6 @@ export default function Page() {
                 setOperation('password')
                 // setIsDialogOn(true)
                 handleUpdate('password')
-                setCredentials(prev => ({ ...prev, password: '' }))
               }}>{t("update")}</Button>
             </Surface>
           </View>
