@@ -1,6 +1,6 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import countries from '@/lib/countries.json' with { type: 'json' }
-import { flag, raise } from '@/lib/utils'
+import { flag, raise, isValidName } from '@/lib/utils'
 import { type Href, router } from 'expo-router'
 import {
 	Button,
@@ -33,14 +33,12 @@ export const Auth = ({
 	exMethodLabel,
 	exMethod,
 	passwordLength,
-	nameLength,
 }: {
 	auth: (phone: string, password: string, name?: string) => Promise<void>
 	authLabel: string
 	exMethodLabel: string
 	exMethod: Href
 	passwordLength?: number
-	nameLength?: number
 }) => {
 	const { t } = useTranslation()
 	const muted = useThemeColor('muted')
@@ -63,12 +61,13 @@ export const Auth = ({
 	const [isCountryOpen, setIsCountryOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
 
+	const isSignup =
+		typeof passwordLength === 'number'
+		&& exMethod === '/signin'
+
 	// eslint-disable-next-line max-statements
 	const handleAuth = async () => {
-		if (
-			typeof nameLength === 'number'
-			&& (!/^[\p{L}\s]+$/u.test(name) || name.length <= nameLength)
-		) {
+		if (isSignup && !isValidName(name)) {
 			toast.show(t('name_error'))
 			return
 		}
@@ -87,11 +86,6 @@ export const Auth = ({
 		await auth(`${country.dial}${phone}`, password, name)
 		setLoading(false)
 	}
-
-	const isSignup =
-		typeof passwordLength === 'number'
-		&& typeof nameLength === 'number'
-		&& exMethod === '/signin'
 
 	return (
 		<KeyboardAwareScrollView
@@ -206,7 +200,7 @@ export const Auth = ({
 							|| phone.length === 0
 							|| country === null
 							|| password.length === 0
-							|| (typeof nameLength === 'number' && name.length === 0)
+							|| (isSignup && name.length === 0)
 						}
 					>
 						<Button.Label className='dark:text-background text-foreground'>

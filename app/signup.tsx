@@ -26,7 +26,6 @@ export default function Page() {
 				exMethodLabel: t('signin'),
 				exMethod: '/signin',
 				passwordLength: 6,
-				nameLength: 3,
 			}}
 		/>
 	)
