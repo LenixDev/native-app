@@ -58,5 +58,6 @@
 	"resend": "Resend",
 	"important": "Important",
 	"understood": "Understood",
-	"abort": "Abort"
+	"abort": "Abort",
+	"phone_updated": "Phone number updated successfully"
 }
