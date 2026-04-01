@@ -32,5 +32,9 @@
 	"dark": "Oscuro",
 	"light": "Claro",
 	"system": "Sistema",
-	"theme_error": "No se ha podido identificar el tema del sistema"
+	"theme_error": "No se ha podido identificar el tema del sistema",
+	"update_name": "Actualizar nombre de cuenta",
+	"update": "Actualizar",
+	"display_name": "Nombre de visualización",
+	"name_updated": "Nombre de cuenta actualizado correctamente"
 }

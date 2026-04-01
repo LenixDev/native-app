@@ -32,5 +32,9 @@
 	"dark": "Dark",
 	"light": "Light",
 	"system": "System",
-	"theme_error": "Could not identify the device theme"
+	"theme_error": "Could not identify the device theme",
+	"update_name": "Update account name",
+	"update": "Update",
+	"display_name": "Display name",
+	"name_updated": "Account name updated successfully"
 }
