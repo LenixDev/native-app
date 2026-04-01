@@ -27,7 +27,6 @@ export default function Page() {
 	const ref = useRef<InputOTPRef>(null)
 	const [phone, setPhone] = useState<string | null>(null)
 	const [open, setOpen] = useState(false)
-	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(phone.length - 6)}`
 
 	useEffect(() => {
 		AsyncStorage.getItem(verificationKey)
@@ -39,6 +38,8 @@ export default function Page() {
 	}, [])
 
 	if (phone === null) return null
+	
+	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(phone.length - 6)}`
 
 	const onComplete = async (code: string) => {
 		const [success, response] = await verify(phone, code)

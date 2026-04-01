@@ -7,7 +7,7 @@ import type { Country } from "@/types";
 import { Button, Description, Dialog, Label, Separator, Surface, TextField, useToast } from "heroui-native";
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const DialogProvider = ({ 
@@ -84,7 +84,7 @@ export default function Page() {
       <KeyboardAwareScrollView  showsVerticalScrollIndicator={false}>
         <View className="flex-1 justify-center px-3 gap-8 my-5 mt-20">
           <View>
-            <Text className="text-2xl mb-2">{t("phone")}</Text>
+            <Text className="text-2xl mb-2 ml-4 text-foreground">{t("phone")}</Text>
             <Surface className="gap-5">
               <TextField>
                 <Label>{t("new_phone")}</Label>
@@ -103,7 +103,7 @@ export default function Page() {
           </View>
           <Separator />
           <View>
-            <Text className="text-2xl mb-2">{t("password")}</Text>
+            <Text className="text-2xl mb-2 ml-4 text-foreground">{t("password")}</Text>
             <Surface className="gap-5">
               <TextField>
                 <Label>{t("new_password")}</Label>
@@ -119,8 +119,9 @@ export default function Page() {
                   return
                 }
                 setOperation('password')
-                setIsDialogOn(true)
-                Keyboard.dismiss()
+                // setIsDialogOn(true)
+                handleUpdate('password')
+                setCredentials(prev => ({ ...prev, password: '' }))
               }}>{t("update")}</Button>
             </Surface>
           </View>
@@ -133,7 +134,6 @@ export default function Page() {
         <View className="gap-5">
           <Dialog.Title>
             {operation === 'phone' && t("are_you_sure")}
-            {operation === 'password' && t("is_it_you")}
             {operation === 'signout' && t("are_you_sure")}
             {operation === 'deletion' && t("are_you_sure")}
           </Dialog.Title>
