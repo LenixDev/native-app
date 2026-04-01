@@ -1,4 +1,4 @@
-import { nameMinChars } from '@/constants'
+import { minPasswordLength, nameMinChars } from '@/constants'
 import countries from '@/lib/countries.json' with { type: 'json' }
 
 export const raise = (err: unknown) => {
@@ -18,3 +18,5 @@ export const guard = <T>(value: unknown, from: readonly T[]): value is T =>
 	(from as readonly unknown[]).includes(value)
 
 export const isValidName = (name: string) => /^[\p{L}\s]+$/u.test(name) && name.length >= nameMinChars
+
+export const isValidPassword = (password: string) => password.length >= minPasswordLength

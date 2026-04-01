@@ -1,3 +1,4 @@
+import { PasswordInput } from "@/components/auth/password";
 import { supabase } from "@/lib/supabase";
 import { raise } from "@/lib/utils";
 import { Button, Description, Dialog, FieldError, Input, Label, Separator, Surface, TextField, useToast } from "heroui-native";
@@ -119,7 +120,12 @@ export default function Page() {
             {operation === 'password' && (
               <>
                 <Label>{t('current_password')}</Label>
-                <Input placeholder="password" value={current_password} onChangeText={me => { setCredentials(prev => ({ ...prev, current_password: me })) }} />
+                <PasswordInput
+                  value={current_password}
+                  onChangeText={me => {
+                    setCredentials(prev => ({ ...prev, current_password: me }))
+                  }}
+                />
                 <Description>{t('current_password_context')}</Description>
               </>
             )}

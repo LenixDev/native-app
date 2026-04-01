@@ -1,6 +1,6 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import countries from '@/lib/countries.json' with { type: 'json' }
-import { flag, raise, isValidName } from '@/lib/utils'
+import { flag, raise, isValidName, isValidPassword } from '@/lib/utils'
 import { type Href, router } from 'expo-router'
 import {
 	Button,
@@ -21,6 +21,7 @@ import {
 	type TextInput,
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { PasswordInput } from './password'
 
 type Country = typeof countries
 
@@ -32,13 +33,11 @@ export const Auth = ({
 	authLabel,
 	exMethodLabel,
 	exMethod,
-	passwordLength,
 }: {
 	auth: (phone: string, password: string, name?: string) => Promise<void>
 	authLabel: string
 	exMethodLabel: string
 	exMethod: Href
-	passwordLength?: number
 }) => {
 	const { t } = useTranslation()
 	const muted = useThemeColor('muted')
@@ -51,7 +50,6 @@ export const Auth = ({
 		country: Country[number] | null
 		name: string
 	}
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 	const [{ phone, password, country, name }, setForm] = useState<Form>({
 		phone: '',
 		password: '',
@@ -61,9 +59,7 @@ export const Auth = ({
 	const [isCountryOpen, setIsCountryOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
 
-	const isSignup =
-		typeof passwordLength === 'number'
-		&& exMethod === '/signin'
+	const isSignup = exMethod === '/signin'
 
 	// eslint-disable-next-line max-statements
 	const handleAuth = async () => {
@@ -75,10 +71,7 @@ export const Auth = ({
 			toast.show(t('country_code_error'))
 			return
 		}
-		if (
-			typeof passwordLength === 'number'
-			&& password.length < passwordLength
-		) {
+		if (isSignup && !isValidPassword(password)) {
 			toast.show(t('password_short'))
 			return
 		}
@@ -156,37 +149,13 @@ export const Auth = ({
 						</InputGroup>
 					</View>
 
-					<InputGroup>
-						<InputGroup.Prefix isDecorative>
-							<IconSymbol color={muted} name='lock.fill' size={16} />
-						</InputGroup.Prefix>
-						<InputGroup.Input
-							ref={passwordRef}
-							returnKeyType='done'
-							placeholder={t('password')}
-							autoCapitalize='none'
-							autoCorrect={false}
-							secureTextEntry={!isPasswordVisible}
-							value={password}
-							onChangeText={self => {
-								setForm(form => ({ ...form, password: self }))
-							}}
-						/>
-						<InputGroup.Suffix>
-							<Pressable
-								hitSlop={20}
-								onPress={() => {
-									setIsPasswordVisible(!isPasswordVisible)
-								}}
-							>
-								<IconSymbol
-									size={16}
-									name={`eye.${isPasswordVisible ? 'slash.' : ''}fill`}
-									color={muted}
-								/>
-							</Pressable>
-						</InputGroup.Suffix>
-					</InputGroup>
+					<PasswordInput
+        		ref={passwordRef}
+						value={password}
+						onChangeText={self => {
+							setForm(form => ({ ...form, password: self }))
+						}}
+					/>
 				</KeyboardAvoidingView>
 
 				<View className='justify-center w-full'>
