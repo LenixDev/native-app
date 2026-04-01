@@ -1,6 +1,7 @@
 import { ModalProvider } from '@/components/auth/countries'
 import { PasswordInput } from '@/components/auth/password'
 import { PhoneInput } from '@/components/auth/phone'
+import { DialogProvider } from '@/components/dialog'
 import { changeKey, verificationKey } from '@/constants'
 import { useRTL } from '@/hooks/use-rtl'
 import { supabase } from '@/lib/supabase'
@@ -18,27 +19,9 @@ import {
 	TextField,
 	useToast,
 } from 'heroui-native'
-import { type ReactNode, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Text, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
-const DialogProvider = ({
-	isOpen,
-	setIsOpen,
-	children,
-}: {
-	isOpen: boolean
-	setIsOpen: (open: boolean) => void
-	children: ReactNode
-}) => (
-	<Dialog isOpen={isOpen} onOpenChange={setIsOpen}>
-		<Dialog.Portal>
-			<Dialog.Overlay />
-			<Dialog.Content>{children}</Dialog.Content>
-		</Dialog.Portal>
-	</Dialog>
-)
+import { KeyboardAvoidingView, Text, View } from 'react-native'
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 export default function Page() {
@@ -127,7 +110,7 @@ export default function Page() {
 
 	return (
 		<>
-			<KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+			<KeyboardAvoidingView behavior='padding'>
 				<View className='flex-1 justify-center px-3 gap-8 my-5 mt-20'>
 					<View>
 						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
@@ -218,7 +201,7 @@ export default function Page() {
 						{t('delete_account')}
 					</Button>
 				</View>
-			</KeyboardAwareScrollView>
+			</KeyboardAvoidingView>
 			<DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
 				<View className='gap-5'>
 					<Dialog.Title>

@@ -3,7 +3,9 @@ import { raise, isValidName, isValidPassword } from '@/lib/utils'
 import { type Href, router } from 'expo-router'
 import {
 	Button,
+	Dialog,
 	InputGroup,
+	LinkButton,
 	Separator,
 	useThemeColor,
 	useToast,
@@ -16,7 +18,10 @@ import { PasswordInput } from './password'
 import { PhoneInput } from './phone'
 import { ModalProvider } from './countries'
 import type { Country } from '@/types'
-import { useIsRTL } from '@/hooks/use-rtl'
+import { useIsRTL, useRTL } from '@/hooks/use-rtl'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { resetKey } from '@/constants'
+import { DialogProvider } from '../dialog'
 
 // HARD & COMPLEXE :)
 
@@ -36,6 +41,8 @@ export const Auth = ({
 	const muted = useThemeColor('muted')
 	const { toast } = useToast()
 	const isRtl = useIsRTL()
+	const rtl = useRTL()
+
 	const passwordRef = useRef<TextInput>(null)
 	const phoneRef = useRef<TextInput>(null)
 	interface Form {
@@ -52,6 +59,7 @@ export const Auth = ({
 	})
 	const [isCountryOpen, setIsCountryOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [isDialogOn, setIsDialogOn] = useState(false)
 
 	const isSignup = exMethod === '/signin'
 
@@ -133,6 +141,40 @@ export const Auth = ({
 							setForm(form => ({ ...form, password: self }))
 						}}
 					/>
+					{!isSignup && (
+						<>
+							<View className={`w-full mx-5 ${isRtl ? 'items-end' : 'items-start'}`}>
+								<LinkButton size='sm' onPress={() => {
+									if (phone.length === 0 || country === null) {
+										toast.show('Please enter the account\'s phone number that you want to reset his password first and make sure to select a country code')
+										return
+									}
+									setIsDialogOn(true)
+								}}>
+									<LinkButton.Label className='text-muted'>{t('reset_password')}</LinkButton.Label>
+								</LinkButton>
+							</View>
+							<DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
+								<View className='gap-5'>
+									<Dialog.Title className={`text-foreground text-2xl ${rtl('text-right')}`}>Reset Password</Dialog.Title>
+									{/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-extra-non-null-assertion, @typescript-eslint/no-unnecessary-condition */}
+									<Dialog.Description className={rtl('text-right')}>Are you sure this the phone number {country!?.dial}{phone}?</Dialog.Description>
+									<Button onPress={() => {
+										AsyncStorage
+										.setItem(resetKey, 'password')
+										.then(() => {
+											AsyncStorage
+											// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+											.setItem(resetKey, `${country!.dial}${phone}`)
+											.then(() => {
+												router.replace('/verify')
+											}).catch(raise)
+										}).catch(raise)
+									}}>Get Code</Button>
+								</View>
+							</DialogProvider>
+						</>
+					)}
 				</KeyboardAvoidingView>
 
 				<View className='justify-center w-full'>

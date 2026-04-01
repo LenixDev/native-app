@@ -59,5 +59,6 @@
 	"important": "هام",
 	"understood": "مفهوم",
 	"abort": "إلغاء",
-	"phone_updated": "تم تحديث رقم الهاتف بنجاح"
+	"phone_updated": "تم تحديث رقم الهاتف بنجاح",
+	"reset_password": "إعادة تعيين كلمة المرور"
 }

@@ -59,5 +59,6 @@
 	"important": "Important",
 	"understood": "Understood",
 	"abort": "Abort",
-	"phone_updated": "Phone number updated successfully"
+	"phone_updated": "Phone number updated successfully",
+	"reset_password": "Reset password"
 }

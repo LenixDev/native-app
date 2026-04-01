@@ -1,6 +1,8 @@
+import { PasswordInput } from '@/components/auth/password'
 import { BottomModal } from '@/components/bottom-modal'
+import { DialogProvider } from '@/components/dialog'
 import { IconSymbol } from '@/components/ui/icon-symbol'
-import { changeKey, verificationKey } from '@/constants'
+import { changeKey, resetKey, verificationKey } from '@/constants'
 import { supabase } from '@/lib/supabase'
 import { raise } from '@/lib/utils'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -9,6 +11,7 @@ import {
 	BottomSheet,
 	Button,
 	Description,
+	Dialog,
 	Label,
 	LinkButton,
 } from 'heroui-native'
@@ -28,7 +31,17 @@ export default function Page() {
 	const [phone, setPhone] = useState<string | null>(null)
 	const [open, setOpen] = useState(false)
 	const [isChange, setIsChange] = useState<boolean | null>(null)
-
+	const [isReset, setIsReset] = useState<boolean | null>(null)
+	const [isDialogOn, setIsDialogOn] = useState(false)
+	const [newPassword, setNewPassword] = useState('')
+	
+	const sendResetCode = (phone: string) => {
+		supabase.auth.signInWithOtp({ phone })
+		.then(({ error }) => {
+			if (error)
+			toast.show(error.message)
+		}).catch(raise)
+	}
 	useEffect(() => {
 		AsyncStorage.getItem(verificationKey)
 			.then(value => {
@@ -39,20 +52,36 @@ export default function Page() {
 							setPhone(value)
 						})
 						.catch(raise)
-				else router.replace('/signin')
-			})
-			.catch(raise)
+				else
+					setIsChange(false)
+					AsyncStorage.getItem(resetKey)
+					.then(val => {
+						if (typeof val === 'string') {
+							setIsReset(true)
+							setPhone(val)
+							sendResetCode(val)
+						} else {
+							router.replace('/signin')
+							setIsReset(true)
+						}
+					}).catch(raise)
+			}).catch(raise)
 	}, [])
 
-	if (phone === null || isChange === null) return null
+	if (phone === null || isChange === null || isReset === null) return null
 
 	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(Math.max(0, phone.length - 7))}${phone[phone.length - 1]}`
 
+	// eslint-disable-next-line max-statements
 	const onComplete = async (token: string) => {
 		const { error } = await supabase.auth.verifyOtp({ phone, token, type: isChange ? 'phone_change' : 'sms' })
 		if (error) {
 			toast.show(error.message)
 			ref.current?.clear()
+			return
+		}
+		if (isReset) {
+			setIsDialogOn(true)
 			return
 		}
 		await AsyncStorage.removeItem(verificationKey)
@@ -63,7 +92,7 @@ export default function Page() {
 	return (
 		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
 			<View className='flex-1 items-center justify-between w-full px-5 py-20'>
-				{!isChange && (
+				{!isChange && !isReset && (
 					<Button
 						variant='ghost'
 						isIconOnly
@@ -101,7 +130,9 @@ export default function Page() {
 					</InputOTP>
 					<View className='flex-row items-center gap-2'>
 						<Description>{t('did_not_receive')}</Description>
-						<LinkButton>
+						<LinkButton onPress={() => {
+							isReset && sendResetCode(phone)
+						}}>
 							<LinkButton.Label className='dark:text-accent'>
 								{t('resend')}
 							</LinkButton.Label>
@@ -126,15 +157,37 @@ export default function Page() {
 				</View>
 				<Button
 					className='w-full'
-					variant={isChange ? 'outline' : 'danger-soft'}
+					variant={isChange || isReset ? 'outline' : 'danger-soft'}
 					onPress={() => {
 						router.replace(isChange ? '/(tabs)/settings' : '/signin')
 						AsyncStorage.removeItem(verificationKey).catch(raise)
 						isChange && AsyncStorage.removeItem(changeKey).catch(raise)
+						isReset && AsyncStorage.removeItem(resetKey).catch(raise)
 					}}
 				>
-					{isChange ? t('abort') : t('signout')}
+					{isChange || isReset ? t('abort') : t('signout')}
 				</Button>
+				<DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
+					<View>
+						<Dialog.Title>New Password</Dialog.Title>
+						<PasswordInput
+							onChangeText={value => { setNewPassword(value) }}
+						/>
+						<Button onPress={() => {
+							supabase.auth.updateUser({ password: newPassword })
+							.then(({ error }) =>  {
+								if (error) {
+									toast.show(error.message)
+									return
+								}
+								router.replace('/(tabs)/home')
+								toast.show("The password was reset successfuly")
+							}).catch(raise)
+						}}>
+							Update
+						</Button>
+					</View>
+				</DialogProvider>
 			</View>
 		</KeyboardAwareScrollView>
 	)
