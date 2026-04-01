@@ -1,6 +1,5 @@
 import { IconSymbol } from '@/components/ui/icon-symbol'
-import countries from '@/lib/countries.json' with { type: 'json' }
-import { flag, raise, isValidName, isValidPassword } from '@/lib/utils'
+import { raise, isValidName, isValidPassword } from '@/lib/utils'
 import { type Href, router } from 'expo-router'
 import {
 	Button,
@@ -12,18 +11,15 @@ import {
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-	FlatList,
-	KeyboardAvoidingView,
-	Modal,
-	Pressable,
-	Text,
+	KeyboardAvoidingView, Text,
 	View,
-	type TextInput,
+	type TextInput
 } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { PasswordInput } from './password'
-
-type Country = typeof countries
+import { PhoneInput } from './phone'
+import { ModalProvider } from './countries'
+import type { Country } from '@/types'
 
 // HARD & COMPLEXE :)
 
@@ -115,38 +111,17 @@ export const Auth = ({
 						</View>
 					)}
 					<View className='flex gap-2'>
-						<InputGroup>
-							<InputGroup.Prefix className='px-0'>
-								<Pressable
-									className='flex-1 w-full px-4 justify-center'
-									onPress={() => {
-										setIsCountryOpen(true)
-									}}
-								>
-									{country ?
-										<Text className='text-foreground'>
-											{`${flag[country.code]} ${country.dial}`}
-										</Text>
-									:	<IconSymbol
-											color={muted}
-											name={`chevron.${isCountryOpen ? 'up' : 'down'}`}
-											size={16}
-										/>
-									}
-								</Pressable>
-							</InputGroup.Prefix>
-							<InputGroup.Input
-								ref={phoneRef}
-								onSubmitEditing={() => passwordRef.current?.focus()}
-								returnKeyType='next'
-								placeholder={t('phone')}
-								keyboardType='number-pad'
-								value={phone}
-								onChangeText={self => {
-									setForm(form => ({ ...form, phone: self }))
-								}}
-							/>
-						</InputGroup>
+						<PhoneInput
+							{...{ country, isCountryOpen, phone }}
+							onCodeSelect={() => {
+								setIsCountryOpen(true)
+							}}
+							onChange={me => {
+								setForm(form => ({ ...form, phone: me }))
+							}}
+							ref={phoneRef}
+							onSubmitEditing={() => passwordRef.current?.focus()}
+						/>
 					</View>
 
 					<PasswordInput
@@ -178,43 +153,13 @@ export const Auth = ({
 					</Button>
 				</View>
 
-				<Modal
+				<ModalProvider
 					visible={isCountryOpen}
-					transparent
-					animationType='slide'
-					onRequestClose={() => {
-						setIsCountryOpen(false)
+					onDismiss={() => { setIsCountryOpen(false) }}
+					onSelect={(countryItem: Country[number]) => {
+						setForm(form => ({ ...form, country: countryItem }))
 					}}
-				>
-					<Pressable
-						style={{ flex: 1 }}
-						onPress={() => {
-							setIsCountryOpen(false)
-						}}
-					/>
-					<View className='h-1/2 bg-segment'>
-						<FlatList
-							data={countries}
-							keyExtractor={countryItem => countryItem.code}
-							renderItem={({ item: countryItem }) => (
-								<>
-									<Pressable
-										className='flex flex-row items-center gap-3 p-4 active:bg-muted'
-										onPress={() => {
-											setForm(form => ({ ...form, country: countryItem }))
-											setIsCountryOpen(false)
-										}}
-									>
-										<Text>{flag[countryItem.code]}</Text>
-										<Text className='text-foreground'>{countryItem.dial}</Text>
-										<Text className='text-foreground'>{countryItem.name}</Text>
-									</Pressable>
-									<Separator className='w-full h-px' orientation='vertical' />
-								</>
-							)}
-						/>
-					</View>
-				</Modal>
+				/>
 
 				<View className='w-full flex justify-evenly items-center flex-1'>
 					<View className='flex flex-row items-center gap-4 w-2/3'>
