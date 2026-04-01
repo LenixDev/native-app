@@ -1,10 +1,13 @@
+import { ModalProvider } from "@/components/auth/countries";
 import { PasswordInput } from "@/components/auth/password";
+import { PhoneInput } from "@/components/auth/phone";
 import { supabase } from "@/lib/supabase";
-import { raise } from "@/lib/utils";
-import { Button, Description, Dialog, FieldError, Input, Label, Separator, Surface, TextField, useToast } from "heroui-native";
+import { isValidPassword, raise } from "@/lib/utils";
+import type { Country } from "@/types";
+import { Button, Description, Dialog, Label, Separator, Surface, TextField, useToast } from "heroui-native";
 import { type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Keyboard, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const DialogProvider = ({ 
@@ -28,12 +31,18 @@ const DialogProvider = ({
 export default function Page() {
   const { toast } = useToast()
   const { t } = useTranslation()
-  const [isOpen, setIsOpen] = useState(false)
+
+  const [isDialogOn, setIsDialogOn] = useState(false)
+  const [isCountryOpen, setIsCountryOpen] = useState(false)
 
   const [operation, setOperation] = useState<'password' | 'phone' | 'signout' | 'deletion'>('phone')
-  const [{ current_password, ...credentials }, setCredentials] = useState({
+  const [{ current_password, country, ...credentials }, setCredentials] = useState<
+    Record<'country', Country[number] | null>
+    & Record<'phone' | 'password' | 'current_password', string>
+  >({
     password: '',
     phone: '',
+    country: null,
     current_password: ''
   })
   
@@ -44,7 +53,7 @@ export default function Page() {
         return
       }
       toast.show(t('account_updated'))
-      setIsOpen(false)
+      setIsDialogOn(false)
     }).catch(raise)
   }
 
@@ -55,7 +64,7 @@ export default function Page() {
         return
       }
       toast.show(t('signout_success'))
-      setIsOpen(false)
+      setIsDialogOn(false)
     }).catch(raise)
   }
 
@@ -66,24 +75,30 @@ export default function Page() {
         return
       }
       toast.show(t('account_deleted'))
-      setIsOpen(false)
+      setIsDialogOn(false)
     }).catch(raise)
   }
 
   return (
     <>
-      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAwareScrollView  showsVerticalScrollIndicator={false}>
         <View className="flex-1 justify-center px-3 gap-8 my-5 mt-20">
           <View>
             <Text className="text-2xl mb-2">{t("phone")}</Text>
             <Surface className="gap-5">
               <TextField>
                 <Label>{t("new_phone")}</Label>
-                <Input value={credentials.phone} onChangeText={me => { setCredentials(prev => ({ ...prev, phone: me })) }} />
+                <PhoneInput
+                  {...{ isCountryOpen, country }}
+                  onCodeSelect={() => {
+                    setIsCountryOpen(true)
+                  }}
+                  phone={credentials.phone}
+                  onChange={me => { setCredentials(prev => ({ ...prev, phone: me })) }}
+                />
                 <Description>{t("phone_context")}</Description>
-                <FieldError></FieldError>
               </TextField>
-              <Button variant='tertiary' onPress={() => { setOperation('phone'); setIsOpen(true) }}>{t("update")}</Button>
+              <Button variant='tertiary' onPress={() => { setOperation('phone'); setIsDialogOn(true) }}>{t("update")}</Button>
             </Surface>
           </View>
           <Separator />
@@ -92,23 +107,29 @@ export default function Page() {
             <Surface className="gap-5">
               <TextField>
                 <Label>{t("new_password")}</Label>
-                <Input
+                <PasswordInput
                   value={credentials.password}
                   onChangeText={me => { setCredentials(prev => ({ ...prev, password: me })) }}
-                  autoCapitalize="none"
                 />
                 <Description>{t("password_context")}</Description>
-                <FieldError></FieldError>
               </TextField>
-              <Button variant='tertiary' onPress={() => { setOperation('password'); setIsOpen(true) }}>{t("update")}</Button>
+              <Button variant='tertiary' onPress={() => {
+                if (!isValidPassword(credentials.password)) {
+                  toast.show(t("password_short"))
+                  return
+                }
+                setOperation('password')
+                setIsDialogOn(true)
+                Keyboard.dismiss()
+              }}>{t("update")}</Button>
             </Surface>
           </View>
           <Separator />
-          <Button variant="outline" onPress={() => { setOperation('signout'); setIsOpen(true) }}>{t("signout_others")}</Button>
-          <Button variant="danger-soft" onPress={() => { setOperation('deletion'); setIsOpen(true) }}>{t("delete_account")}</Button>
+          <Button variant="outline" onPress={() => { setOperation('signout'); setIsDialogOn(true) }}>{t("signout_others")}</Button>
+          <Button variant="danger-soft" onPress={() => { setOperation('deletion'); setIsDialogOn(true) }}>{t("delete_account")}</Button>
         </View>
       </KeyboardAwareScrollView>
-      <DialogProvider isOpen={isOpen} setIsOpen={setIsOpen}>
+      <DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
         <View className="gap-5">
           <Dialog.Title>
             {operation === 'phone' && t("are_you_sure")}
@@ -150,6 +171,13 @@ export default function Page() {
           </Button>
         </View>
       </DialogProvider>
+      <ModalProvider
+        visible={isCountryOpen}
+        onDismiss={() => { setIsCountryOpen(false) }}
+        onSelect={(countryItem: Country[number]) => {
+          setCredentials(prev => ({ ...prev, country: countryItem }))
+        }}
+      />
     </>
   )
 }
