@@ -52,5 +52,11 @@
 	"save": "Save",
 	"delete": "Delete",
 	"this_ereversable": "This action is irreversible and can not be undone",
-	"signout_context": "Sign out from all other devices except the current device"
+	"signout_context": "Sign out from all other devices except the current device",
+	"verify_account": "Verify account",
+	"sent_to": "We've sent a code to {{maskedNumber}}",
+	"did_not_receive": "Didn't receive a code?",
+	"resend": "Resend",
+	"important": "Important",
+	"understood": "Understood"
 }

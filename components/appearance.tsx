@@ -168,7 +168,7 @@ export const Appearance = () => {
 							<RadioGroup.Item value={'system' satisfies Lang}>
 								<View className='flex-row gap-2'>
 									<IconSymbol name='gearshape' size={20} color={foreground} />
-									<Label>System</Label>
+									<Label>{t("system")}</Label>
 								</View>
 								<Radio />
 							</RadioGroup.Item>

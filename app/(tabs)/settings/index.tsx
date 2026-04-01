@@ -72,7 +72,7 @@ export default function Tab() {
 			}
 			setName(data.user.user_metadata.display_name)
 		}).catch(raise)
-	})
+	}, [])
 
 	if (name.trim() === '') return null
 	

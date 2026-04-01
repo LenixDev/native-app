@@ -27,6 +27,7 @@ export default function Page() {
 	const ref = useRef<InputOTPRef>(null)
 	const [phone, setPhone] = useState<string | null>(null)
 	const [open, setOpen] = useState(false)
+	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(phone.length - 6)}`
 
 	useEffect(() => {
 		AsyncStorage.getItem(verificationKey)
@@ -49,7 +50,7 @@ export default function Page() {
 		toast.show(t('account_verified'))
 		router.replace('/(tabs)/home')
 	}
-	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(phone.length - 6)}`
+
 	return (
 		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
 			<View className='flex-1 items-center justify-between w-full px-5 py-20'>
@@ -65,8 +66,8 @@ export default function Page() {
 				</Button>
 				<View className='px-5 justify-center gap-3'>
 					<View>
-						<Label>Verify account</Label>
-						<Description>We've sent a code to {maskedNumber}</Description>
+						<Label>{t("verify_account")}</Label>
+						<Description>{t("sent_to", { maskedNumber })}</Description>
 					</View>
 					<InputOTP
 						ref={ref}
@@ -88,16 +89,16 @@ export default function Page() {
 						</InputOTP.Group>
 					</InputOTP>
 					<View className='flex-row items-center gap-2'>
-						<Description>Didn't receive a code?</Description>
+						<Description>{t("did_not_receive")}</Description>
 						<LinkButton>
 							<LinkButton.Label className='dark:text-accent'>
-								Resend
+								{t('resend')}
 							</LinkButton.Label>
 						</LinkButton>
 					</View>
 					<BottomModal open={open} setOpen={setOpen}>
 						<View className='gap-8'>
-							<BottomSheet.Title>Important</BottomSheet.Title>
+							<BottomSheet.Title>{t("important")}</BottomSheet.Title>
 							<Description>
 								{t('account_not_verified', { amount: 30 })}
 							</Description>
@@ -107,7 +108,7 @@ export default function Page() {
 									setOpen(false)
 								}}
 							>
-								Understood
+								{t("understood")}
 							</Button>
 						</View>
 					</BottomModal>
