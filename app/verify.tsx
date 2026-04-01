@@ -57,7 +57,7 @@ export default function Page() {
 		}
 		await AsyncStorage.removeItem(verificationKey)
 		toast.show(t(isChange ? 'phone_updated' : 'account_verified'))
-		router.replace(isChange ? '/(tabs)/settings/account' : '/(tabs)/home')
+		router.replace(isChange ? '/(tabs)/settings' : '/(tabs)/home')
 	}
 
 	return (

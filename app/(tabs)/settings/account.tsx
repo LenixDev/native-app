@@ -2,6 +2,7 @@ import { ModalProvider } from '@/components/auth/countries'
 import { PasswordInput } from '@/components/auth/password'
 import { PhoneInput } from '@/components/auth/phone'
 import { changeKey, verificationKey } from '@/constants'
+import { useRTL } from '@/hooks/use-rtl'
 import { supabase } from '@/lib/supabase'
 import { isValidPassword, raise } from '@/lib/utils'
 import type { Country } from '@/types'
@@ -39,10 +40,11 @@ const DialogProvider = ({
 	</Dialog>
 )
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, max-statements
 export default function Page() {
 	const { toast } = useToast()
 	const { t } = useTranslation()
+	const rtl = useRTL()
 
 	const [isDialogOn, setIsDialogOn] = useState(false)
 	const [isCountryOpen, setIsCountryOpen] = useState(false)
@@ -128,12 +130,14 @@ export default function Page() {
 			<KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
 				<View className='flex-1 justify-center px-3 gap-8 my-5 mt-20'>
 					<View>
-						<Text className='text-2xl mb-2 ml-4 text-foreground'>
+						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
 							{t('phone')}
 						</Text>
 						<Surface className='gap-5'>
 							<TextField>
-								<Label>{t('new_phone')}</Label>
+								<Label>
+									<Label.Text className={rtl('text-right')}>{t('new_phone')}</Label.Text>
+								</Label>
 								<PhoneInput
 									{...{ isCountryOpen, country }}
 									onCodeSelect={() => {
@@ -144,7 +148,7 @@ export default function Page() {
 										setCredentials(prev => ({ ...prev, phone: me }))
 									}}
 								/>
-								<Description>{t('phone_context')}</Description>
+								<Description className={rtl('text-right')}>{t('phone_context')}</Description>
 							</TextField>
 							<Button
 								variant='tertiary'
@@ -161,19 +165,21 @@ export default function Page() {
 					</View>
 					<Separator />
 					<View>
-						<Text className='text-2xl mb-2 ml-4 text-foreground'>
+						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
 							{t('password')}
 						</Text>
 						<Surface className='gap-5'>
 							<TextField>
-								<Label>{t('new_password')}</Label>
+								<Label>
+									<Label.Text className={rtl('text-right')}>{t('new_password')}</Label.Text>
+								</Label>
 								<PasswordInput
 									value={credentials.password}
 									onChangeText={me => {
 										setCredentials(prev => ({ ...prev, password: me }))
 									}}
 								/>
-								<Description>{t('password_context')}</Description>
+								<Description className={rtl('text-right')}>{t('password_context')}</Description>
 							</TextField>
 							<Button
 								variant='tertiary'
