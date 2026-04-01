@@ -16,6 +16,7 @@ import { PasswordInput } from './password'
 import { PhoneInput } from './phone'
 import { ModalProvider } from './countries'
 import type { Country } from '@/types'
+import { useIsRTL } from '@/hooks/use-rtl'
 
 // HARD & COMPLEXE :)
 
@@ -34,6 +35,7 @@ export const Auth = ({
 	const { t } = useTranslation()
 	const muted = useThemeColor('muted')
 	const { toast } = useToast()
+	const isRtl = useIsRTL()
 	const passwordRef = useRef<TextInput>(null)
 	const phoneRef = useRef<TextInput>(null)
 	interface Form {
@@ -90,10 +92,14 @@ export const Auth = ({
 					{isSignup && (
 						<View className='flex gap-2'>
 							<InputGroup>
-								<InputGroup.Prefix>
+								{isRtl ? <InputGroup.Suffix>
 									<IconSymbol color={muted} name='person' size={16} />
-								</InputGroup.Prefix>
+								</InputGroup.Suffix>
+								: <InputGroup.Prefix>
+									<IconSymbol color={muted} name='person' size={16} />
+								</InputGroup.Prefix>}
 								<InputGroup.Input
+									textAlign={isRtl ? 'right' : 'left'}
 									onSubmitEditing={() => phoneRef.current?.focus()}
 									returnKeyType='next'
 									placeholder={t('fake_name')}
