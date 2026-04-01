@@ -10,11 +10,7 @@ import {
 } from 'heroui-native'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-	KeyboardAvoidingView, Text,
-	View,
-	type TextInput
-} from 'react-native'
+import { KeyboardAvoidingView, Text, View, type TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { PasswordInput } from './password'
 import { PhoneInput } from './phone'
@@ -125,7 +121,7 @@ export const Auth = ({
 					</View>
 
 					<PasswordInput
-        		ref={passwordRef}
+						ref={passwordRef}
 						value={password}
 						onChangeText={self => {
 							setForm(form => ({ ...form, password: self }))
@@ -155,7 +151,9 @@ export const Auth = ({
 
 				<ModalProvider
 					visible={isCountryOpen}
-					onDismiss={() => { setIsCountryOpen(false) }}
+					onDismiss={() => {
+						setIsCountryOpen(false)
+					}}
 					onSelect={(countryItem: Country[number]) => {
 						setForm(form => ({ ...form, country: countryItem }))
 					}}

@@ -5,7 +5,9 @@ import { Separator } from 'heroui-native'
 import { Modal, Pressable, View, FlatList, Text } from 'react-native'
 
 export const ModalProvider = ({
-	visible, onSelect, onDismiss
+	visible,
+	onSelect,
+	onDismiss,
 }: {
 	visible: boolean
 	onSelect: (countryItem: Country[number]) => void
@@ -17,10 +19,7 @@ export const ModalProvider = ({
 		animationType='slide'
 		onRequestClose={onDismiss}
 	>
-		<Pressable
-			style={{ flex: 1 }}
-			onPress={onDismiss}
-		/>
+		<Pressable style={{ flex: 1 }} onPress={onDismiss} />
 		<View className='h-1/2 bg-segment'>
 			<FlatList
 				data={countries}

@@ -4,7 +4,7 @@ import { changeKey, verificationKey } from '@/constants'
 import { raise } from '@/lib/utils'
 import { verify } from '@/services/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { router, useLocalSearchParams } from 'expo-router'
+import { router } from 'expo-router'
 import {
 	BottomSheet,
 	Button,
@@ -33,19 +33,19 @@ export default function Page() {
 		AsyncStorage.getItem(verificationKey)
 			.then(value => {
 				if (typeof value === 'string')
-				AsyncStorage
-				.getItem(changeKey)
-				.then(val => {
-					setIsChange(typeof val === 'string')
-        	setPhone(value)
-				}).catch(raise)
+					AsyncStorage.getItem(changeKey)
+						.then(val => {
+							setIsChange(typeof val === 'string')
+							setPhone(value)
+						})
+						.catch(raise)
 				else router.replace('/signin')
 			})
 			.catch(raise)
 	}, [])
 
 	if (phone === null || isChange === null) return null
-	
+
 	const maskedNumber = `${phone.slice(0, 6)}${'*'.repeat(Math.max(0, phone.length - 7))}${phone[phone.length - 1]}`
 
 	const onComplete = async (code: string) => {
@@ -62,20 +62,22 @@ export default function Page() {
 	return (
 		<KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
 			<View className='flex-1 items-center justify-between w-full px-5 py-20'>
-				{!isChange && <Button
-					variant='ghost'
-					isIconOnly
-					className='absolute top-5 right-5'
-					onPress={() => {
-						setOpen(true)
-					}}
-				>
-					<IconSymbol color={'red'} name='info.circle' size={18} />
-				</Button>}
+				{!isChange && (
+					<Button
+						variant='ghost'
+						isIconOnly
+						className='absolute top-5 right-5'
+						onPress={() => {
+							setOpen(true)
+						}}
+					>
+						<IconSymbol color={'red'} name='info.circle' size={18} />
+					</Button>
+				)}
 				<View className='px-5 justify-center gap-3'>
 					<View>
-						<Label>{t("verify_account")}</Label>
-						<Description>{t("sent_to", { maskedNumber })}</Description>
+						<Label>{t('verify_account')}</Label>
+						<Description>{t('sent_to', { maskedNumber })}</Description>
 					</View>
 					<InputOTP
 						ref={ref}
@@ -97,7 +99,7 @@ export default function Page() {
 						</InputOTP.Group>
 					</InputOTP>
 					<View className='flex-row items-center gap-2'>
-						<Description>{t("did_not_receive")}</Description>
+						<Description>{t('did_not_receive')}</Description>
 						<LinkButton>
 							<LinkButton.Label className='dark:text-accent'>
 								{t('resend')}
@@ -106,7 +108,7 @@ export default function Page() {
 					</View>
 					<BottomModal open={open} setOpen={setOpen}>
 						<View className='gap-8'>
-							<BottomSheet.Title>{t("important")}</BottomSheet.Title>
+							<BottomSheet.Title>{t('important')}</BottomSheet.Title>
 							<Description>
 								{t('account_not_verified', { amount: 30 })}
 							</Description>
@@ -116,7 +118,7 @@ export default function Page() {
 									setOpen(false)
 								}}
 							>
-								{t("understood")}
+								{t('understood')}
 							</Button>
 						</View>
 					</BottomModal>

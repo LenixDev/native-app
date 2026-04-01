@@ -31,9 +31,16 @@ export const ListItem = ({
 							{context}
 						</ListGroup.ItemDescription>
 					</ListGroup.ItemContent>
-					{suffix && <ListGroup.ItemSuffix style={{ transform: rtl('rotate(180deg)') }} >
-						<IconSymbol name={suffix} size={14} color={foreground} weight='light' />
-					</ListGroup.ItemSuffix>}
+					{suffix && (
+						<ListGroup.ItemSuffix style={{ transform: rtl('rotate(180deg)') }}>
+							<IconSymbol
+								name={suffix}
+								size={14}
+								color={foreground}
+								weight='light'
+							/>
+						</ListGroup.ItemSuffix>
+					)}
 				</ListGroup.Item>
 			</PressableFeedback.Scale>
 			<PressableFeedback.Ripple />

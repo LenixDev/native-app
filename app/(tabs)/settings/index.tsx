@@ -20,7 +20,7 @@ import {
 	Separator,
 	TextField,
 	useThemeColor,
-	useToast
+	useToast,
 } from 'heroui-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -54,7 +54,7 @@ export default function Tab() {
 	const { theme } = useUniwind()
 	const muted = useThemeColor('muted')
 	const inputRef = useRef<TextInput>(null)
-	
+
 	const [name, setName] = useState('')
 	const [newName, setNewName] = useState('')
 
@@ -65,17 +65,20 @@ export default function Tab() {
 	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
-		supabase.auth.getUser().then(({ error, data }) => {
-			if (error) {
-				toast.show(error.message)
-				return
-			}
-			setName(data.user.user_metadata.display_name)
-		}).catch(raise)
-	}, [])
+		supabase.auth
+			.getUser()
+			.then(({ error, data }) => {
+				if (error) {
+					toast.show(error.message)
+					return
+				}
+				setName(data.user.user_metadata.display_name)
+			})
+			.catch(raise)
+	}, [toast])
 
 	if (name.trim() === '') return null
-	
+
 	const avatarFromName = () => {
 		const words = name.toUpperCase().trim().split(/\s+/u)
 		if (words.length === 1) return words[0][0]
@@ -84,52 +87,68 @@ export default function Tab() {
 
 	const handleSignout = () => {
 		signout()
-		.then(([success, response]) => {
-			if (!success) {
-				toast.show(response)
-				return
-			}
-			router.replace('/signin')
-			toast.show(t('signout_success'))
-		})
-		.catch(raise)
+			.then(([success, response]) => {
+				if (!success) {
+					toast.show(response)
+					return
+				}
+				router.replace('/signin')
+				toast.show(t('signout_success'))
+			})
+			.catch(raise)
 	}
 
 	const handleUpdate = () => {
 		setLoading(true)
-		supabase
-		.auth
-		.updateUser({ data: { display_name: newName } })
-		.then(({ error, data }) => {
-			if (error) {
-				toast.show(error.message)
+		supabase.auth
+			.updateUser({ data: { display_name: newName } })
+			.then(({ error, data }) => {
+				if (error) {
+					toast.show(error.message)
+					setLoading(false)
+					return
+				}
 				setLoading(false)
-				return
-			}
-			setLoading(false)
-			setProfileOpen(false)
-			setName(newName)
-			toast.show(t('name_updated'))
-		})
-		.catch(raise)
+				setProfileOpen(false)
+				setName(newName)
+				toast.show(t('name_updated'))
+			})
+			.catch(raise)
 	}
 
 	!profileOpen && Keyboard.dismiss()
 
 	return (
 		<View className='flex justify-between h-full p-5'>
-			<PressableFeedback className='flex-1 py-10' onPress={() => { setProfileOpen(true) }}>
+			<PressableFeedback
+				className='flex-1 py-10'
+				onPress={() => {
+					setProfileOpen(true)
+				}}
+			>
 				<View className={`flex-row${rtl('-reverse')} justify-between`}>
 					<View className={rtl('flex items-end')}>
 						<Text className='text-4xl text-foreground'>{t('preferences')}</Text>
 						<Description>{t('manage_preferences')}</Description>
 					</View>
 					<View>
-						<Avatar color={theme === 'dark' ? 'accent' : 'default'} alt='account-avatar'>
-						<Avatar.Fallback
-							textProps={{ style: { fontSize: 24, lineHeight: 32 } }}
-							styles={{ container: { justifyContent: 'center', alignItems: 'center', paddingBottom: 0, marginBottom: 0 } }}
-						>{avatarFromName()}</Avatar.Fallback>
+						<Avatar
+							color={theme === 'dark' ? 'accent' : 'default'}
+							alt='account-avatar'
+						>
+							<Avatar.Fallback
+								textProps={{ style: { fontSize: 24, lineHeight: 32 } }}
+								styles={{
+									container: {
+										justifyContent: 'center',
+										alignItems: 'center',
+										paddingBottom: 0,
+										marginBottom: 0,
+									},
+								}}
+							>
+								{avatarFromName()}
+							</Avatar.Fallback>
 						</Avatar>
 					</View>
 				</View>
@@ -141,7 +160,9 @@ export default function Tab() {
 					suffix='chevron.right'
 					title={t('account')}
 					context={t('account_context')}
-					onPress={() => { router.push('/settings/account') }}
+					onPress={() => {
+						router.push('/settings/account')
+					}}
 				/>
 				<Separator className='mx-4' />
 				<ListItem
@@ -169,27 +190,49 @@ export default function Tab() {
 			<BottomModal open={profileOpen} setOpen={setProfileOpen}>
 				<View className='gap-10 mb-10'>
 					<BottomSheet.Title>{t('update_name')}</BottomSheet.Title>
-					<TextField isRequired isInvalid={newName.length > 0 && !isValidName(newName)}>
+					<TextField
+						isRequired
+						isInvalid={newName.length > 0 && !isValidName(newName)}
+					>
 						<Label>{t('display_name')}</Label>
 						<InputGroup>
 							<InputGroup.Input
 								className='bg-border'
 								placeholder={t('fake_name')}
-								onFocus={() => { setFocused(true) }}
-								onBlur={() => { setFocused(false) }}
+								onFocus={() => {
+									setFocused(true)
+								}}
+								onBlur={() => {
+									setFocused(false)
+								}}
 								value={newName}
 								onChangeText={setNewName}
 								ref={inputRef}
 							/>
 							<InputGroup.Suffix>
-								<PressableFeedback onPress={() => { inputRef.current?.focus() }}>
-									<IconSymbol name='square.and.pencil' color={muted} size={16} />
+								<PressableFeedback
+									onPress={() => {
+										inputRef.current?.focus()
+									}}
+								>
+									<IconSymbol
+										name='square.and.pencil'
+										color={muted}
+										size={16}
+									/>
 								</PressableFeedback>
 							</InputGroup.Suffix>
 						</InputGroup>
-						<FieldError>{t("name_error")}</FieldError>
+						<FieldError>{t('name_error')}</FieldError>
 					</TextField>
-					<Button isDisabled={newName.length === 0 || !isValidName(newName) || loading} onPress={handleUpdate}>{t('update')}</Button>
+					<Button
+						isDisabled={
+							newName.length === 0 || !isValidName(newName) || loading
+						}
+						onPress={handleUpdate}
+					>
+						{t('update')}
+					</Button>
 					{focused && <View className='h-screen'></View>}
 				</View>
 			</BottomModal>
