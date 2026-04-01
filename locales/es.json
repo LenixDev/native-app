@@ -23,7 +23,7 @@
 	"account": "Cuenta",
 	"appearance": "Apariencia",
 	"ai": "Inteligencia Artificial",
-	"account_context": "Nombre, teléfono, contraseña, correo, dispositivos, eliminación",
+	"account_context": "teléfono, contraseña, correo, dispositivos, eliminación",
 	"appearance_context": "Tema, idioma, reducir movimiento",
 	"ai_context": "Gestión de memoria, Créditos",
 	"language": "Idioma",

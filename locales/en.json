@@ -23,7 +23,7 @@
 	"account": "Account",
 	"appearance": "Appearance",
 	"ai": "Artificial Intelligence",
-	"account_context": "Name, phone, password, email, devices, deletion",
+	"account_context": "phone, password, email, devices, deletion",
 	"appearance_context": "Theme, language, reduce motion",
 	"ai_context": "Memory management, Credits",
 	"language": "Language",
