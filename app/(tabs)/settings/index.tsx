@@ -1,6 +1,7 @@
 import { Appearance } from '@/components/appearance'
 import { BottomModal } from '@/components/bottom-modal'
 import { ListItem } from '@/components/list-item'
+import { IconSymbol } from '@/components/ui/icon-symbol'
 import { useRTL } from '@/hooks/use-rtl'
 import { supabase } from '@/lib/supabase'
 import { isValidName, raise } from '@/lib/utils'
@@ -12,17 +13,19 @@ import {
 	Button,
 	Description,
 	FieldError,
-	Input,
+	InputGroup,
 	Label,
 	ListGroup,
 	PressableFeedback,
 	Separator,
 	TextField,
-	useToast,
+	useThemeColor,
+	useToast
 } from 'heroui-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Keyboard, Text, View } from 'react-native'
+import { Keyboard, Text, TextInput, View } from 'react-native'
+import { useUniwind } from 'uniwind'
 
 // Faq accordittion
 
@@ -48,6 +51,9 @@ export default function Tab() {
 	const { t } = useTranslation()
 	const { toast } = useToast()
 	const rtl = useRTL()
+	const { theme } = useUniwind()
+	const muted = useThemeColor('muted')
+	const inputRef = useRef<TextInput>(null)
 	
 	const [name, setName] = useState('')
 	const [newName, setNewName] = useState('')
@@ -71,7 +77,7 @@ export default function Tab() {
 	if (name.trim() === '') return null
 	
 	const avatarFromName = () => {
-		const words = name.toUpperCase().trim().split(/\s+/)
+		const words = name.toUpperCase().trim().split(/\s+/u)
 		if (words.length === 1) return words[0][0]
 		return `${words[0][0]} ${words[1][0]}`
 	}
@@ -102,12 +108,13 @@ export default function Tab() {
 			}
 			setLoading(false)
 			setProfileOpen(false)
-			Keyboard.dismiss()
 			setName(newName)
 			toast.show(t('name_updated'))
 		})
 		.catch(raise)
 	}
+
+	!profileOpen && Keyboard.dismiss()
 
 	return (
 		<View className='flex justify-between h-full p-5'>
@@ -118,7 +125,7 @@ export default function Tab() {
 						<Description>{t('manage_preferences')}</Description>
 					</View>
 					<View>
-						<Avatar color="accent" alt='account-avatar'>
+						<Avatar color={theme === 'dark' ? 'accent' : 'default'} alt='account-avatar'>
 						<Avatar.Fallback
 							textProps={{ style: { fontSize: 24, lineHeight: 32 } }}
 							styles={{ container: { justifyContent: 'center', alignItems: 'center', paddingBottom: 0, marginBottom: 0 } }}
@@ -128,23 +135,24 @@ export default function Tab() {
 				</View>
 			</PressableFeedback>
 
-			<ListGroup className='flex-2 p-0'>
+			<ListGroup className='p-0'>
 				<ListItem
-					icon='person'
+					prefix='person'
 					title={t('account')}
 					context={t('account_context')}
+					onPress={() => { router.push('/settings/account') }}
 				/>
 				<Separator className='mx-4' />
 				<ListItem
 					onPress={() => {
 						setAppearanceOpen(true)
 					}}
-					icon='pencil'
+					prefix='pencil'
 					title={t('appearance')}
 					context={t('appearance_context')}
 				/>
 				<Separator className='mx-4' />
-				<ListItem icon='cpu' title={t('ai')} context={t('ai_context')} />
+				<ListItem prefix='cpu' title={t('ai')} context={t('ai_context')} />
 			</ListGroup>
 
 			<View className='flex-1 flex justify-end'>
@@ -162,14 +170,22 @@ export default function Tab() {
 					<BottomSheet.Title>{t('update_name')}</BottomSheet.Title>
 					<TextField isRequired isInvalid={newName.length > 0 && !isValidName(newName)}>
 						<Label>{t('display_name')}</Label>
-						<Input
-							className='bg-border'
-							placeholder={t('fake_name')}
-							onFocus={() => { setFocused(true) }}
-							onBlur={() => { setFocused(false) }}
-							value={newName}
-							onChangeText={setNewName}
-						/>
+						<InputGroup>
+							<InputGroup.Input
+								className='bg-border'
+								placeholder={t('fake_name')}
+								onFocus={() => { setFocused(true) }}
+								onBlur={() => { setFocused(false) }}
+								value={newName}
+								onChangeText={setNewName}
+								ref={inputRef}
+							/>
+							<InputGroup.Suffix>
+								<PressableFeedback onPress={() => { inputRef.current?.focus() }}>
+									<IconSymbol name='square.and.pencil' color={muted} size={16} />
+								</PressableFeedback>
+							</InputGroup.Suffix>
+						</InputGroup>
 						<FieldError>{t("name_error")}</FieldError>
 					</TextField>
 					<Button isDisabled={newName.length === 0 || !isValidName(newName) || loading} onPress={handleUpdate}>{t('update')}</Button>
