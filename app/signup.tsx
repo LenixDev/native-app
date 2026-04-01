@@ -8,7 +8,11 @@ export default function Page() {
 	const { t } = useTranslation()
 	const { toast } = useToast()
 
-	const auth = async (phone: string, password: string, name: string) => {
+	const auth = async (phone: string, password: string, name?: string) => {
+		if (typeof name !== 'string') {
+			toast.show(`expected string, got ${typeof name} at #3`)
+			return
+		}
 		const { error } = await signup(phone, password, name)
 		if (error) {
 			toast.show(error.message)
