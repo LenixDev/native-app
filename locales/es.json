@@ -36,5 +36,19 @@
 	"update_name": "Actualizar nombre de cuenta",
 	"update": "Actualizar",
 	"display_name": "Nombre de visualización",
-	"name_updated": "Nombre de cuenta actualizado correctamente"
+	"name_updated": "Nombre de cuenta actualizado correctamente",
+	"account_updated": "Cuenta actualizada correctamente",
+	"account_deleted": "Cuenta eliminada correctamente",
+	"new_phone": "Número de teléfono nuevo",
+	"phone_context": "Actualizar número de teléfono asociado a tu cuenta",
+	"new_password": "Contraseña nueva",
+	"password_context": "Actualizar contraseña de tu cuenta",
+	"signout_others": "Cerrar sesión en todas las demás dispositivos",
+	"delete_account": "Eliminar cuenta",
+	"are_you_sure": "¿Estás seguro?",
+	"is_it_you": "Verificar que eres tú",
+	"current_password": "Contraseña actual",
+	"current_password_context": "Contraseña actual de tu cuenta",
+	"save": "Guardar",
+	"delete": "Eliminar"
 }

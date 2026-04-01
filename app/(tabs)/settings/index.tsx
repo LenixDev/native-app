@@ -24,7 +24,7 @@ import {
 } from 'heroui-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Keyboard, Text, TextInput, View } from 'react-native'
+import { Keyboard, Text, type TextInput, View } from 'react-native'
 import { useUniwind } from 'uniwind'
 
 // Faq accordittion
@@ -138,6 +138,7 @@ export default function Tab() {
 			<ListGroup className='p-0'>
 				<ListItem
 					prefix='person'
+					suffix='chevron.right'
 					title={t('account')}
 					context={t('account_context')}
 					onPress={() => { router.push('/settings/account') }}

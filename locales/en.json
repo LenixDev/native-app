@@ -36,5 +36,19 @@
 	"update_name": "Update account name",
 	"update": "Update",
 	"display_name": "Display name",
-	"name_updated": "Account name updated successfully"
+	"name_updated": "Account name updated successfully",
+	"account_updated": "Account updated successfully",
+	"account_deleted": "Account deleted successfully",
+	"new_phone": "New phone number",
+	"phone_context": "Update the phone number that is associated with your account",
+	"new_password": "New password",
+	"password_context": "Update your account's password",
+	"signout_others": "Sign out from all other devices",
+	"delete_account": "Delete Account",
+	"are_you_sure": "Are you sure?",
+	"is_it_you": "Making sure it's you",
+	"current_password": "Current password",
+	"current_password_context": "Your current account's password",
+	"save": "Save",
+	"delete": "Delete"
 }
