@@ -9,15 +9,15 @@ export const useChangeLang = () => {
 	const { toast } = useToast()
 
 	return async (lang: Lang) => {
-		const { error: userError, data } = await supabase.auth.getUser()
-		if (userError) {
-			toast.show(userError.message)
+		const { error: userError, data } = await supabase.auth.getSession()
+		if (userError || !data.session) {
+			toast.show(userError?.message || 'could not retrieve user from session')
 			return false
 		}
 		const { error } = await supabase
 			.from('accounts')
 			.update({ lang })
-			.eq('id', data.user.id)
+			.eq('id', data.session.user.id)
 		if (error) {
 			toast.show(error.message)
 			return false

@@ -9,9 +9,9 @@ export default function Tab() {
 
 	useEffect(() => {
 		supabase.auth
-			.getUser()
+			.getSession()
 			.then(({ error, data }) => {
-				const name = data.user?.user_metadata.display_name
+				const name = data.session?.user?.user_metadata.display_name
 				if (error || typeof name !== 'string') {
 					router.replace('/+not-found')
 					return

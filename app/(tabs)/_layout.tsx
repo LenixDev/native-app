@@ -41,7 +41,7 @@ export default function TabLayout() {
 				options={{
 					title: 'Preferences',
 					tabBarIcon: ({ color }) => (
-						<IconSymbol size={28} name='chevron.right' color={color} />
+						<IconSymbol size={28} name='slider.horizontal.3' color={color} />
 					),
 				}}
 			/>

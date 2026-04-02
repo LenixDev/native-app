@@ -22,8 +22,9 @@ export default function RootLayout() {
 
 	useEffect(() => {
 		supabase.auth
-			.getUser()
-			.then(({ data: { user } }) => {
+			.getSession()
+			.then(({ data }) => {
+				const user = data.session?.user
 				if (!user) {
 					setMounted(true)
 					return
