@@ -114,13 +114,17 @@ export default function Page() {
 			<KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
 				<View className='flex-1 justify-center px-3 gap-8 my-5 mt-20'>
 					<KeyboardAvoidingView behavior='padding'>
-						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
+						<Text
+							className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}
+						>
 							{t('phone')}
 						</Text>
 						<Surface className='gap-5'>
 							<TextField>
 								<Label>
-									<Label.Text className={rtl('text-right')}>{t('new_phone')}</Label.Text>
+									<Label.Text className={rtl('text-right')}>
+										{t('new_phone')}
+									</Label.Text>
 								</Label>
 								<PhoneInput
 									{...{ isCountryOpen, country }}
@@ -132,7 +136,9 @@ export default function Page() {
 										setCredentials(prev => ({ ...prev, phone: me }))
 									}}
 								/>
-								<Description className={rtl('text-right')}>{t('phone_context')}</Description>
+								<Description className={rtl('text-right')}>
+									{t('phone_context')}
+								</Description>
 							</TextField>
 							<Button
 								variant='tertiary'
@@ -149,13 +155,17 @@ export default function Page() {
 					</KeyboardAvoidingView>
 					<Separator />
 					<KeyboardAvoidingView>
-						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
+						<Text
+							className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}
+						>
 							{t('password')}
 						</Text>
 						<Surface className='gap-5'>
 							<TextField>
 								<Label>
-									<Label.Text className={rtl('text-right')}>{t('new_password')}</Label.Text>
+									<Label.Text className={rtl('text-right')}>
+										{t('new_password')}
+									</Label.Text>
 								</Label>
 								<PasswordInput
 									value={credentials.password}
@@ -163,7 +173,9 @@ export default function Page() {
 										setCredentials(prev => ({ ...prev, password: me }))
 									}}
 								/>
-								<Description className={rtl('text-right')}>{t('password_context')}</Description>
+								<Description className={rtl('text-right')}>
+									{t('password_context')}
+								</Description>
 							</TextField>
 							<Button
 								variant='tertiary'

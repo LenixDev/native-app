@@ -5,13 +5,16 @@ import { IconSymbol } from '../ui/icon-symbol'
 import { useState } from 'react'
 import { useIsRTL } from '@/hooks/use-rtl'
 
-const Eye = ({ isVisible, onPress }: { isVisible: boolean; onPress: () => void }) => {
+const Eye = ({
+	isVisible,
+	onPress,
+}: {
+	isVisible: boolean
+	onPress: () => void
+}) => {
 	const muted = useThemeColor('muted')
 	return (
-		<Pressable
-			hitSlop={20}
-			{...{ onPress }}
-		>
+		<Pressable hitSlop={20} {...{ onPress }}>
 			<IconSymbol
 				size={16}
 				name={`eye.${isVisible ? 'slash.' : ''}fill`}
@@ -31,9 +34,14 @@ export const PasswordInput = ({
 	return (
 		<InputGroup>
 			<InputGroup.Prefix isDecorative={!isRtl}>
-				{isRtl ? <Eye isVisible={isPasswordVisible} onPress={() => {
-					setIsPasswordVisible(!isPasswordVisible)
-				}} /> : <IconSymbol color={muted} name='lock.fill' size={16} />}
+				{isRtl ?
+					<Eye
+						isVisible={isPasswordVisible}
+						onPress={() => {
+							setIsPasswordVisible(!isPasswordVisible)
+						}}
+					/>
+				:	<IconSymbol color={muted} name='lock.fill' size={16} />}
 			</InputGroup.Prefix>
 			<InputGroup.Input
 				textAlign={isRtl ? 'right' : 'left'}
@@ -45,9 +53,15 @@ export const PasswordInput = ({
 				{...prop}
 			/>
 			<InputGroup.Suffix>
-				{isRtl ? <IconSymbol color={muted} name='lock.fill' size={16} /> : <Eye isVisible={isPasswordVisible} onPress={() => {
-					setIsPasswordVisible(!isPasswordVisible)
-				}}/>}
+				{isRtl ?
+					<IconSymbol color={muted} name='lock.fill' size={16} />
+				:	<Eye
+						isVisible={isPasswordVisible}
+						onPress={() => {
+							setIsPasswordVisible(!isPasswordVisible)
+						}}
+					/>
+				}
 			</InputGroup.Suffix>
 		</InputGroup>
 	)

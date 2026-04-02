@@ -6,7 +6,11 @@ import { IconSymbol } from '../ui/icon-symbol'
 import type { Country } from '@/types'
 import { useIsRTL } from '@/hooks/use-rtl'
 
-const Codes = ({ onCodeSelect, country, isCountryOpen }: {
+const Codes = ({
+	onCodeSelect,
+	country,
+	isCountryOpen,
+}: {
 	onCodeSelect: () => void
 	country: Country[number] | null
 	isCountryOpen: boolean
@@ -48,13 +52,14 @@ export const PhoneInput = ({
 	const isRtl = useIsRTL()
 	return (
 		<InputGroup>
-			{isRtl ? 
+			{isRtl ?
 				<InputGroup.Suffix className='px-0'>
 					<Codes {...{ onCodeSelect, country, isCountryOpen }} />
 				</InputGroup.Suffix>
-			: <InputGroup.Prefix className='px-0'>
-				<Codes {...{ onCodeSelect, country, isCountryOpen }} />
-			</InputGroup.Prefix>}
+			:	<InputGroup.Prefix className='px-0'>
+					<Codes {...{ onCodeSelect, country, isCountryOpen }} />
+				</InputGroup.Prefix>
+			}
 			<InputGroup.Input
 				textAlign={isRtl ? 'right' : 'left'}
 				returnKeyType='next'

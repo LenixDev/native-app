@@ -1,5 +1,5 @@
-import { Dialog } from "heroui-native/dialog"
-import { ReactNode } from "react"
+import { Dialog } from 'heroui-native/dialog'
+import type { ReactNode } from 'react'
 
 export const DialogProvider = ({
 	isOpen,

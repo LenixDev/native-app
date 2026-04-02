@@ -5,7 +5,6 @@ import { IconSymbol } from '@/components/ui/icon-symbol'
 import { useIsRTL, useRTL } from '@/hooks/use-rtl'
 import { supabase } from '@/lib/supabase'
 import { isValidName, raise } from '@/lib/utils'
-import { signout } from '@/services/auth'
 import { router } from 'expo-router'
 import {
 	Avatar,
@@ -87,7 +86,8 @@ export default function Tab() {
 	}
 
 	const handleSignout = () => {
-		supabase.auth.signOut()
+		supabase.auth
+			.signOut()
 			.then(({ error }) => {
 				if (error) {
 					toast.show(error.message)
@@ -190,13 +190,17 @@ export default function Tab() {
 
 			<BottomModal open={profileOpen} setOpen={setProfileOpen}>
 				<View className='gap-10 mb-10'>
-					<BottomSheet.Title className={rtl('text-right')}>{t('update_name')}</BottomSheet.Title>
+					<BottomSheet.Title className={rtl('text-right')}>
+						{t('update_name')}
+					</BottomSheet.Title>
 					<TextField
 						isRequired
 						isInvalid={newName.length > 0 && !isValidName(newName)}
 					>
 						<Label>
-							<Label.Text className={rtl('text-right')}>{t('display_name')}</Label.Text>
+							<Label.Text className={rtl('text-right')}>
+								{t('display_name')}
+							</Label.Text>
 						</Label>
 						<InputGroup>
 							<InputGroup.Input
@@ -212,31 +216,34 @@ export default function Tab() {
 								onChangeText={setNewName}
 								ref={inputRef}
 							/>
-							{isRtl ? <InputGroup.Prefix>
-								<PressableFeedback
-									onPress={() => {
-										inputRef.current?.focus()
-									}}
-								>
-									<IconSymbol
-										name='square.and.pencil'
-										color={muted}
-										size={16}
-									/>
-								</PressableFeedback>
-							</InputGroup.Prefix> : <InputGroup.Suffix>
-								<PressableFeedback
-									onPress={() => {
-										inputRef.current?.focus()
-									}}
-								>
-									<IconSymbol
-										name='square.and.pencil'
-										color={muted}
-										size={16}
-									/>
-								</PressableFeedback>
-							</InputGroup.Suffix>}
+							{isRtl ?
+								<InputGroup.Prefix>
+									<PressableFeedback
+										onPress={() => {
+											inputRef.current?.focus()
+										}}
+									>
+										<IconSymbol
+											name='square.and.pencil'
+											color={muted}
+											size={16}
+										/>
+									</PressableFeedback>
+								</InputGroup.Prefix>
+							:	<InputGroup.Suffix>
+									<PressableFeedback
+										onPress={() => {
+											inputRef.current?.focus()
+										}}
+									>
+										<IconSymbol
+											name='square.and.pencil'
+											color={muted}
+											size={16}
+										/>
+									</PressableFeedback>
+								</InputGroup.Suffix>
+							}
 						</InputGroup>
 						<FieldError>{t('name_error')}</FieldError>
 					</TextField>

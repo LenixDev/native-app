@@ -15,7 +15,7 @@ export default function Page() {
 			toast.show(`expected string, got ${typeof name} at #3`)
 			return
 		}
-		
+
 		const { error } = await supabase.auth.signUp({
 			phone,
 			password,

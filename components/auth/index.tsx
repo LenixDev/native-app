@@ -100,12 +100,14 @@ export const Auth = ({
 					{isSignup && (
 						<View className='flex gap-2'>
 							<InputGroup>
-								{isRtl ? <InputGroup.Suffix>
-									<IconSymbol color={muted} name='person' size={16} />
-								</InputGroup.Suffix>
-								: <InputGroup.Prefix>
-									<IconSymbol color={muted} name='person' size={16} />
-								</InputGroup.Prefix>}
+								{isRtl ?
+									<InputGroup.Suffix>
+										<IconSymbol color={muted} name='person' size={16} />
+									</InputGroup.Suffix>
+								:	<InputGroup.Prefix>
+										<IconSymbol color={muted} name='person' size={16} />
+									</InputGroup.Prefix>
+								}
 								<InputGroup.Input
 									textAlign={isRtl ? 'right' : 'left'}
 									onSubmitEditing={() => phoneRef.current?.focus()}
@@ -143,34 +145,54 @@ export const Auth = ({
 					/>
 					{!isSignup && (
 						<>
-							<View className={`w-full -mx-5 ${isRtl ? 'mx-5 items-start' : 'items-end'}`}>
-								<LinkButton size='sm' onPress={() => {
-									if (phone.length === 0 || country === null) {
-										toast.show('Please enter the account\'s phone number that you want to reset his password first and make sure to select a country code')
-										return
-									}
-									setIsDialogOn(true)
-								}}>
-									<LinkButton.Label className='text-muted'>{t('reset_password')}</LinkButton.Label>
+							<View
+								className={`w-full -mx-5 ${isRtl ? 'mx-5 items-start' : 'items-end'}`}
+							>
+								<LinkButton
+									size='sm'
+									onPress={() => {
+										if (phone.length === 0 || country === null) {
+											toast.show(
+												"Please enter the account's phone number that you want to reset his password first and make sure to select a country code",
+											)
+											return
+										}
+										setIsDialogOn(true)
+									}}
+								>
+									<LinkButton.Label className='text-muted'>
+										{t('reset_password')}
+									</LinkButton.Label>
 								</LinkButton>
 							</View>
 							<DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
 								<View className='gap-5'>
-									<Dialog.Title className={`text-foreground text-2xl ${rtl('text-right')}`}>Reset Password</Dialog.Title>
-									{/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-extra-non-null-assertion, @typescript-eslint/no-unnecessary-condition */}
-									<Dialog.Description className={rtl('text-right')}>Are you sure this the phone number {country!?.dial}{phone}?</Dialog.Description>
-									<Button onPress={() => {
-										AsyncStorage
-										.setItem(resetKey, 'password')
-										.then(() => {
-											AsyncStorage
-											// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-											.setItem(resetKey, `${country!.dial}${phone}`)
-											.then(() => {
-												router.replace('/verify')
-											}).catch(raise)
-										}).catch(raise)
-									}}>Get Code</Button>
+									<Dialog.Title
+										className={`text-foreground text-2xl ${rtl('text-right')}`}
+									>
+										Reset Password
+									</Dialog.Title>
+									<Dialog.Description className={rtl('text-right')}>
+										Are you sure this the phone number {country?.dial}
+										{phone}?
+									</Dialog.Description>
+									<Button
+										onPress={() => {
+											AsyncStorage.setItem(resetKey, 'password')
+												.then(() => {
+													AsyncStorage
+														// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+														.setItem(resetKey, `${country!.dial}${phone}`)
+														.then(() => {
+															router.replace('/verify')
+														})
+														.catch(raise)
+												})
+												.catch(raise)
+										}}
+									>
+										Get Code
+									</Button>
 								</View>
 							</DialogProvider>
 						</>
