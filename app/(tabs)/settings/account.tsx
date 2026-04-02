@@ -105,6 +105,7 @@ export default function Page() {
 					toast.show(error.message)
 					return
 				}
+				handleSignout()
 				toast.show(t('account_deleted'))
 				setIsDialogOn(false)
 				router.replace('/signin')

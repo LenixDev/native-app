@@ -1,5 +1,8 @@
-import { Text } from 'react-native'
+import { router } from 'expo-router'
+import { Button } from 'heroui-native'
 
 export default function Tab() {
-	return <Text>Not Found</Text>
+	return (
+		<Button onPress={() => { router.replace('/signin') }}>Sign in</Button>
+	)
 }
