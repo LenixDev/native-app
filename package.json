@@ -17,6 +17,8 @@
 		"supalink": "supabase link",
 		"supapull": "supabase db pull",
 		"supatypes": "supabase gen types typescript --project-id lghbeurdpwyiuxgiruys > types/_db.ts",
+		"supanewfn": "supabase functions new ",
+		"supafndeploy": "supabase functions deploy",
 		"format": "pnpm exec prettier . --write",
 		"push": "eas update"
 	},
