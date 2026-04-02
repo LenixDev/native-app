@@ -53,13 +53,13 @@
 	"this_ereversable": "هذا عملية غير قابلة للرجوع و لا يمكن فكًها",
 	"signout_context": "تسجيل الخروج من جميع الأجهزة الأخرى بإسنتثاء الجهاز الحالي؟",
 	"verify_account": "التحقق من الحساب",
-	"sent_to": "قمنا بريد لرمز {{maskedNumber}}",
+	"sent_to": "تم إرسال رمز التحقق إلى",
 	"did_not_receive": "لم تستلم رمز؟",
 	"resend": "إرسال مجدداً",
 	"important": "هام",
 	"understood": "مفهوم",
 	"abort": "إلغاء",
 	"phone_updated": "تم تحديث رقم الهاتف بنجاح",
-	"reset_password": "إعادة تعيين كلمة المرور",
+	"reset_password": "إعادة تعيين كلمة المرور ",
 	"reduce_motion_desc": "هذه الميزة غير متوفرة حتى الان"
 }

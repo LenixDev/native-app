@@ -53,7 +53,7 @@
 	"this_ereversable": "Esta acción es irreversible y no se puede deshacer",
 	"signout_context": "Cerrar sesión en todas las demás dispositivos excepto el dispositivo actual",
 	"verify_account": "Verificar cuenta",
-	"sent_to": "Enviamos un código a {{maskedNumber}}",
+	"sent_to": "Enviamos un código a",
 	"did_not_receive": "No recibiste el código?",
 	"resend": "Reenviar",
 	"important": "Importante",

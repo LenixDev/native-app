@@ -3,6 +3,7 @@ import { BottomModal } from '@/components/bottom-modal'
 import { DialogProvider } from '@/components/dialog'
 import { IconSymbol } from '@/components/ui/icon-symbol'
 import { changeKey, resetKey, verificationKey } from '@/constants'
+import { useRTL } from '@/hooks/use-rtl'
 import { supabase } from '@/lib/supabase'
 import { raise } from '@/lib/utils'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -26,6 +27,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default function Page() {
 	const { toast } = useToast()
 	const { t } = useTranslation()
+	const rtl = useRTL()
 
 	const ref = useRef<InputOTPRef>(null)
 	const [phone, setPhone] = useState<string | null>(null)
@@ -113,9 +115,11 @@ export default function Page() {
 					</Button>
 				)}
 				<View className='px-5 justify-center gap-3'>
-					<View>
+					<View className={rtl('items-end')}>
 						<Label>{t('verify_account')}</Label>
-						<Description>{t('sent_to', { maskedNumber })}</Description>
+						<View className={`flex-row ${rtl('flex-row-reverse')} gap-1`}>
+							<Description>{t('sent_to')}</Description><Description className='text-foreground'>{maskedNumber}</Description>
+						</View>
 					</View>
 					<InputOTP
 						ref={ref}
@@ -136,7 +140,7 @@ export default function Page() {
 							))}
 						</InputOTP.Group>
 					</InputOTP>
-					<View className='flex-row items-center gap-2'>
+					<View className={`flex-row ${rtl('flex-row-reverse')} items-center gap-2 justify-start`}>
 						<Description>{t('did_not_receive')}</Description>
 						<LinkButton
 							onPress={() => {
