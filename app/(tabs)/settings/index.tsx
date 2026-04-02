@@ -26,15 +26,9 @@ import { useTranslation } from 'react-i18next'
 import { Keyboard, Text, type TextInput, View } from 'react-native'
 import { useUniwind } from 'uniwind'
 
-// Faq accordittion
-
-// Chat avatart
-
 // Other settings checkbox
 // Controlfield
-// Switch
 // Menu
-// Radio
 
 // Scroll shadow chat
 // Surface chat
@@ -42,8 +36,7 @@ import { useUniwind } from 'uniwind'
 // TODO:
 // - Generate memory from chat history to improve response quality
 // - decrease conversation by deleting unused topics in tthe same chat session
-// - help
-// - profile
+// - help/Faq(accordittion)
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 export default function Tab() {
