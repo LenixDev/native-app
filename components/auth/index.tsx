@@ -152,7 +152,7 @@ export const Auth = ({
 									size='sm'
 									onPress={() => {
 										if (phone.length === 0 || country === null) {
-											toast.show(t("reset_error"))
+											toast.show(t('reset_error'))
 											return
 										}
 										setIsDialogOn(true)
@@ -168,7 +168,7 @@ export const Auth = ({
 									<Dialog.Title
 										className={`text-foreground text-2xl ${rtl('text-right')}`}
 									>
-										{t("reset_password")}
+										{t('reset_password')}
 									</Dialog.Title>
 									<Dialog.Description className={rtl('text-right')}>
 										{t('are_you_sure_number')} {country?.dial}

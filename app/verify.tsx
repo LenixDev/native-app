@@ -37,41 +37,43 @@ export default function Page() {
 	const [isDialogOn, setIsDialogOn] = useState(false)
 	const [newPassword, setNewPassword] = useState('')
 
-	const sendResetCode = useCallback((phoneNumber: string) => {
-		supabase.auth
-			.signInWithOtp({ phone: phoneNumber })
-			.then(({ error }) => {
-				if (error) toast.show(error.message)
-			})
-			.catch(raise)
-	}, [toast])
-	
+	const sendResetCode = useCallback(
+		(phoneNumber: string) => {
+			supabase.auth
+				.signInWithOtp({ phone: phoneNumber })
+				.then(({ error }) => {
+					if (error) toast.show(error.message)
+				})
+				.catch(raise)
+		},
+		[toast],
+	)
 
 	useEffect(() => {
 		AsyncStorage.getItem(verificationKey)
-		.then(value => {
-			if (typeof value === 'string')
-				AsyncStorage.getItem(changeKey)
+			.then(value => {
+				if (typeof value === 'string')
+					AsyncStorage.getItem(changeKey)
+						.then(val => {
+							setIsChange(typeof val === 'string')
+							setPhone(value)
+						})
+						.catch(raise)
+				else setIsChange(false)
+				AsyncStorage.getItem(resetKey)
 					.then(val => {
-						setIsChange(typeof val === 'string')
-						setPhone(value)
+						if (typeof val === 'string') {
+							setIsReset(true)
+							setPhone(val)
+							sendResetCode(val)
+						} else {
+							router.replace('/signin')
+							setIsReset(false)
+						}
 					})
 					.catch(raise)
-			else setIsChange(false)
-			AsyncStorage.getItem(resetKey)
-				.then(val => {
-					if (typeof val === 'string') {
-						setIsReset(true)
-						setPhone(val)
-						sendResetCode(val)
-					} else {
-						router.replace('/signin')
-						setIsReset(false)
-					}
-				})
-				.catch(raise)
-		})
-		.catch(raise)
+			})
+			.catch(raise)
 	}, [])
 
 	if (phone === null || isChange === null || isReset === null) return null
@@ -119,7 +121,10 @@ export default function Page() {
 					<View className={rtl('items-end')}>
 						<Label>{t('verify_account')}</Label>
 						<View className={`flex-row ${rtl('flex-row-reverse')} gap-1`}>
-							<Description>{t('sent_to')}</Description><Description className='text-foreground'>{maskedNumber}</Description>
+							<Description>{t('sent_to')}</Description>
+							<Description className='text-foreground'>
+								{maskedNumber}
+							</Description>
 						</View>
 					</View>
 					<InputOTP
@@ -141,7 +146,9 @@ export default function Page() {
 							))}
 						</InputOTP.Group>
 					</InputOTP>
-					<View className={`flex-row ${rtl('flex-row-reverse')} items-center gap-2 justify-start`}>
+					<View
+						className={`flex-row ${rtl('flex-row-reverse')} items-center gap-2 justify-start`}
+					>
 						<Description>{t('did_not_receive')}</Description>
 						<LinkButton
 							onPress={() => {
@@ -185,7 +192,7 @@ export default function Page() {
 				<KeyboardAvoidingView behavior='padding'>
 					<DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
 						<View className='gap-5'>
-							<Dialog.Title>{t("new_password")}</Dialog.Title>
+							<Dialog.Title>{t('new_password')}</Dialog.Title>
 							<PasswordInput
 								className='bg-background'
 								onChangeText={value => {

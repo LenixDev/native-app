@@ -107,7 +107,11 @@ export const Appearance = () => {
 						{t('theme')}
 					</Text>
 					<Surface>
-						<RadioGroup className='gap-2' value={theme} onValueChange={handleTheme}>
+						<RadioGroup
+							className='gap-2'
+							value={theme}
+							onValueChange={handleTheme}
+						>
 							<RadioGroup.Item value={'light' satisfies Theme}>
 								<View className='flex-row gap-2'>
 									<IconSymbol name='sun.max' size={20} color={foreground} />
@@ -140,7 +144,11 @@ export const Appearance = () => {
 						{t('language')}
 					</Text>
 					<Surface>
-						<RadioGroup className='gap-2' value={lang} onValueChange={handleLang}>
+						<RadioGroup
+							className='gap-2'
+							value={lang}
+							onValueChange={handleLang}
+						>
 							<RadioGroup.Item value={'en' satisfies Lang}>
 								<View className='flex-row gap-2'>
 									<IconSymbol
@@ -206,7 +214,11 @@ export const Appearance = () => {
 								</ListGroup.ItemDescription>
 							</ListGroup.ItemContent>
 							<ListGroup.ItemSuffix>
-								<Switch isDisabled isSelected={motion} onSelectedChange={handleMotion} />
+								<Switch
+									isDisabled
+									isSelected={motion}
+									onSelectedChange={handleMotion}
+								/>
 							</ListGroup.ItemSuffix>
 						</ListGroup.Item>
 					</ListGroup>
