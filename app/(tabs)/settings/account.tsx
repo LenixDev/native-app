@@ -22,6 +22,7 @@ import {
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyboardAvoidingView, Text, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 export default function Page() {
@@ -110,9 +111,9 @@ export default function Page() {
 
 	return (
 		<>
-			<KeyboardAvoidingView behavior='padding'>
+			<KeyboardAwareScrollView showsVerticalScrollIndicator>
 				<View className='flex-1 justify-center px-3 gap-8 my-5 mt-20'>
-					<View>
+					<KeyboardAvoidingView behavior='padding'>
 						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
 							{t('phone')}
 						</Text>
@@ -145,9 +146,9 @@ export default function Page() {
 								{t('update')}
 							</Button>
 						</Surface>
-					</View>
+					</KeyboardAvoidingView>
 					<Separator />
-					<View>
+					<KeyboardAvoidingView>
 						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
 							{t('password')}
 						</Text>
@@ -180,7 +181,7 @@ export default function Page() {
 								{t('update')}
 							</Button>
 						</Surface>
-					</View>
+					</KeyboardAvoidingView>
 					<Separator />
 					<Button
 						variant='outline'
@@ -201,7 +202,7 @@ export default function Page() {
 						{t('delete_account')}
 					</Button>
 				</View>
-			</KeyboardAvoidingView>
+			</KeyboardAwareScrollView>
 			<DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
 				<View className='gap-5'>
 					<Dialog.Title>
