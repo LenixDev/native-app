@@ -12,28 +12,34 @@ export default function Tab() {
 	const [mounted, setMounted] = useState(false)
 
 	useEffect(() => {
-		supabase.auth.getSession().then(({ error, data }) => {
-			const name = data.session?.user.user_metadata.display_name
-			if (error || typeof name !== 'string' || !data.session) {
-				router.replace('/+not-found')
-				return
-			}
-			setDisplayName(name)
-			supabase
-				.from('accounts')
-				.select('lang')
-				.eq('id', data.session.user.id)
-				.single<{ lang: Lang }>()
-				.then(({ error: errorLang, data: dataLang }) => {
-					if (errorLang) {
-						router.replace('/+not-found')
-						return
-					}
-					i18n.changeLanguage(dataLang.lang).then(() => {
-						setMounted(true)
-					}).catch(raise)
-				})
-		}).catch(raise)
+		supabase.auth
+			.getSession()
+			.then(({ error, data }) => {
+				const name = data.session?.user.user_metadata.display_name
+				if (error || typeof name !== 'string' || !data.session) {
+					router.replace('/+not-found')
+					return
+				}
+				setDisplayName(name)
+				supabase
+					.from('accounts')
+					.select('lang')
+					.eq('id', data.session.user.id)
+					.single<{ lang: Lang }>()
+					.then(({ error: errorLang, data: dataLang }) => {
+						if (errorLang) {
+							router.replace('/+not-found')
+							return
+						}
+						i18n
+							.changeLanguage(dataLang.lang)
+							.then(() => {
+								setMounted(true)
+							})
+							.catch(raise)
+					})
+			})
+			.catch(raise)
 	}, [])
 
 	if (!mounted) return null

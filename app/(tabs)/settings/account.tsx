@@ -96,22 +96,28 @@ export default function Page() {
 	}
 
 	const handleDeletion = () => {
-		supabase.auth.getSession().then(({ error: sessionErr , data }) => {
-			if (data.session)
-			supabase.functions.invoke('delete-user', {
-				headers: { Authorization: `Bearer ${data.session.access_token}` }
-			}).then(({ error }) => {
-				if (error instanceof Error) {
-					toast.show(error.message)
-					return
-				}
-				handleSignout()
-				toast.show(t('account_deleted'))
-				setIsDialogOn(false)
-				router.replace('/signin')
-			}).catch(raise)
-			else toast.show(`${sessionErr?.message}`)
-		}).catch(raise)
+		supabase.auth
+			.getSession()
+			.then(({ error: sessionErr, data }) => {
+				if (data.session)
+					supabase.functions
+						.invoke('delete-user', {
+							headers: { Authorization: `Bearer ${data.session.access_token}` },
+						})
+						.then(({ error }) => {
+							if (error instanceof Error) {
+								toast.show(error.message)
+								return
+							}
+							handleSignout()
+							toast.show(t('account_deleted'))
+							setIsDialogOn(false)
+							router.replace('/signin')
+						})
+						.catch(raise)
+				else toast.show(`${sessionErr?.message}`)
+			})
+			.catch(raise)
 	}
 
 	return (
@@ -241,9 +247,13 @@ export default function Page() {
 								<Description>{t('current_password_context')}</Description>
 							</>
 						: operation === 'deletion' ?
-							<Description className={rtl('text-right')}>{t('this_ereversable')}</Description>
+							<Description className={rtl('text-right')}>
+								{t('this_ereversable')}
+							</Description>
 						:	operation === 'signout' && (
-								<Description className={rtl('text-right')}>{t('signout_context')}</Description>
+								<Description className={rtl('text-right')}>
+									{t('signout_context')}
+								</Description>
 							)
 						}
 					</TextField>

@@ -264,20 +264,24 @@ export default function Tab() {
 					</BottomSheet.Title>
 					<ControlField style={{ direction: isRtl }}>
 						<View className={`flex-1 ${rtl('items-start')}`}>
-							<Label>{t("memorize")}</Label>
-							<Description className={rtl('text-left')}>{t("memorize_context")}</Description>
+							<Label>{t('memorize')}</Label>
+							<Description className={rtl('text-left')}>
+								{t('memorize_context')}
+							</Description>
 						</View>
 						<ControlField.Indicator>
-							<Switch isDisabled/>
+							<Switch isDisabled />
 						</ControlField.Indicator>
 					</ControlField>
 					<ControlField style={{ direction: isRtl }}>
 						<View className={`flex-1 ${rtl('items-start')}`}>
-							<Label>{t("increase_performance")}</Label>
-							<Description className={rtl('text-left')}>{t("increase_context")}</Description>
+							<Label>{t('increase_performance')}</Label>
+							<Description className={rtl('text-left')}>
+								{t('increase_context')}
+							</Description>
 						</View>
 						<ControlField.Indicator>
-							<Switch isDisabled/>
+							<Switch isDisabled />
 						</ControlField.Indicator>
 					</ControlField>
 				</View>
