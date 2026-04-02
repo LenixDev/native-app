@@ -98,7 +98,7 @@ export const Appearance = () => {
 
 	return (
 		<>
-			<BottomSheet.Title className={`mb-6 ${rtl('text-right')}`}>
+			<BottomSheet.Title className={`text-2xl mb-6 ${rtl('text-right')}`}>
 				{t('appearance')}
 			</BottomSheet.Title>
 			<View className='gap-6'>
@@ -107,7 +107,7 @@ export const Appearance = () => {
 						{t('theme')}
 					</Text>
 					<Surface>
-						<RadioGroup value={theme} onValueChange={handleTheme}>
+						<RadioGroup className='gap-2' value={theme} onValueChange={handleTheme}>
 							<RadioGroup.Item value={'light' satisfies Theme}>
 								<View className='flex-row gap-2'>
 									<IconSymbol name='sun.max' size={20} color={foreground} />
@@ -115,7 +115,7 @@ export const Appearance = () => {
 								</View>
 								<Radio />
 							</RadioGroup.Item>
-							<Separator className='my-1' />
+							<Separator />
 							<RadioGroup.Item value={'dark' satisfies Theme}>
 								<View className='flex-row gap-2'>
 									<IconSymbol name='moon' size={20} color={foreground} />
@@ -123,7 +123,7 @@ export const Appearance = () => {
 								</View>
 								<Radio />
 							</RadioGroup.Item>
-							<Separator className='my-1' />
+							<Separator />
 							<RadioGroup.Item value={'system' satisfies Theme}>
 								<View className='flex-row gap-2'>
 									<IconSymbol name='gearshape' size={20} color={foreground} />
@@ -140,7 +140,7 @@ export const Appearance = () => {
 						{t('language')}
 					</Text>
 					<Surface>
-						<RadioGroup value={lang} onValueChange={handleLang}>
+						<RadioGroup className='gap-2' value={lang} onValueChange={handleLang}>
 							<RadioGroup.Item value={'en' satisfies Lang}>
 								<View className='flex-row gap-2'>
 									<IconSymbol
@@ -152,7 +152,7 @@ export const Appearance = () => {
 								</View>
 								<Radio />
 							</RadioGroup.Item>
-							<Separator className='my-1' />
+							<Separator />
 							<RadioGroup.Item value={'ar' satisfies Lang}>
 								<View className='flex-row gap-2'>
 									<IconSymbol
@@ -164,7 +164,7 @@ export const Appearance = () => {
 								</View>
 								<Radio />
 							</RadioGroup.Item>
-							<Separator className='my-1' />
+							<Separator />
 							<RadioGroup.Item value={'es' satisfies Lang}>
 								<View className='flex-row gap-2'>
 									<IconSymbol
@@ -176,7 +176,7 @@ export const Appearance = () => {
 								</View>
 								<Radio />
 							</RadioGroup.Item>
-							<Separator className='my-1' />
+							<Separator />
 							<RadioGroup.Item value={'system' satisfies Lang}>
 								<View className='flex-row gap-2'>
 									<IconSymbol name='gearshape' size={20} color={foreground} />
@@ -188,7 +188,7 @@ export const Appearance = () => {
 					</Surface>
 				</View>
 
-				<View className='gap-2' style={{ direction: isRtl }}>
+				<View className='gap-2 mb-3' style={{ direction: isRtl }}>
 					<Text className={`text-sm text-muted ml-1 ${rtl('text-left')}`}>
 						{t('reduce_motion')}
 					</Text>
@@ -201,9 +201,12 @@ export const Appearance = () => {
 								<ListGroup.ItemTitle className={rtl('text-left')}>
 									{t('reduce_motion')}
 								</ListGroup.ItemTitle>
+								<ListGroup.ItemDescription>
+									{t('reduce_motion_desc')}
+								</ListGroup.ItemDescription>
 							</ListGroup.ItemContent>
 							<ListGroup.ItemSuffix>
-								<Switch isSelected={motion} onSelectedChange={handleMotion} />
+								<Switch isDisabled isSelected={motion} onSelectedChange={handleMotion} />
 							</ListGroup.ItemSuffix>
 						</ListGroup.Item>
 					</ListGroup>

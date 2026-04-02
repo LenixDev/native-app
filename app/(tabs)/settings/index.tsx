@@ -193,10 +193,7 @@ export default function Tab() {
 					<BottomSheet.Title className={rtl('text-right')}>
 						{t('update_name')}
 					</BottomSheet.Title>
-					<TextField
-						isRequired
-						isInvalid={newName.length > 0 && !isValidName(newName)}
-					>
+					<TextField isInvalid={newName.length > 0 && !isValidName(newName)}>
 						<Label>
 							<Label.Text className={rtl('text-right')}>
 								{t('display_name')}
@@ -204,7 +201,7 @@ export default function Tab() {
 						</Label>
 						<InputGroup>
 							<InputGroup.Input
-								className={`bg-border ${rtl('text-right')}`}
+								className={rtl('text-right')}
 								placeholder={t('fake_name')}
 								onFocus={() => {
 									setFocused(true)

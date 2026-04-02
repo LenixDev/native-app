@@ -63,7 +63,7 @@ export default function Page() {
 						sendResetCode(val)
 					} else {
 						router.replace('/signin')
-						setIsReset(true)
+						setIsReset(false)
 					}
 				})
 				.catch(raise)

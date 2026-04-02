@@ -60,5 +60,6 @@
 	"understood": "Understood",
 	"abort": "Abort",
 	"phone_updated": "Phone number updated successfully",
-	"reset_password": "Reset password"
+	"reset_password": "Reset password",
+	"reduce_motion_desc": "This feature is not available yet"
 }
