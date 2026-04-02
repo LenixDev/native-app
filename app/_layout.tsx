@@ -17,41 +17,9 @@ import '../global.css'
 // eslint-disable-next-line max-lines-per-function
 export default function RootLayout() {
 	const theme = useTheme()
-	const [mounted, setMounted] = useState(false)
 	const { t, i18n } = useTranslation()
 
-	useEffect(() => {
-		supabase.auth
-			.getSession()
-			.then(({ data }) => {
-				const user = data.session?.user
-				if (!user) {
-					setMounted(true)
-					return
-				}
-				supabase
-					.from('accounts')
-					.select('lang')
-					.eq('id', user.id)
-					.single<{ lang: Lang }>()
-					.then(({ error: errorLang, data: dataLang }) => {
-						if (errorLang) {
-							router.replace('/+not-found')
-							return
-						}
-						i18n
-							.changeLanguage(dataLang.lang)
-							.then(() => {
-								setMounted(true)
-							})
-							.catch(raise)
-					})
-			})
-			.catch(raise)
-	}, [i18n])
-
 	if (!i18n.isInitialized) return null
-	if (!mounted) return null
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
