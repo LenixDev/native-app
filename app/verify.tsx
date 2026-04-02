@@ -72,7 +72,7 @@ export default function Page() {
 				.catch(raise)
 		})
 		.catch(raise)
-	}, [sendResetCode])
+	}, [])
 
 	if (phone === null || isChange === null || isReset === null) return null
 
