@@ -10,6 +10,7 @@ import {
 	Avatar,
 	BottomSheet,
 	Button,
+	ControlField,
 	Description,
 	FieldError,
 	InputGroup,
@@ -17,6 +18,7 @@ import {
 	ListGroup,
 	PressableFeedback,
 	Separator,
+	Switch,
 	TextField,
 	useThemeColor,
 	useToast,
@@ -34,8 +36,6 @@ import { useUniwind } from 'uniwind'
 // Surface chat
 
 // TODO:
-// - Generate memory from chat history to improve response quality
-// - decrease conversation by deleting unused topics in tthe same chat session
 // - help/Faq(accordittion)
 
 // eslint-disable-next-line max-lines-per-function, max-statements
@@ -53,6 +53,7 @@ export default function Tab() {
 
 	const [appearanceOpen, setAppearanceOpen] = useState(false)
 	const [profileOpen, setProfileOpen] = useState(false)
+	const [aiOpen, setAiOpen] = useState(false)
 
 	const [focused, setFocused] = useState(false)
 	const [loading, setLoading] = useState(false)
@@ -168,7 +169,14 @@ export default function Tab() {
 					context={t('appearance_context')}
 				/>
 				<Separator className='mx-4' />
-				<ListItem prefix='cpu' title={t('ai')} context={t('ai_context')} />
+				<ListItem
+					prefix='cpu'
+					title={t('ai')}
+					context={t('ai_context')}
+					onPress={() => {
+						setAiOpen(true)
+					}}
+				/>
 			</ListGroup>
 
 			<View className='flex-1 flex justify-end'>
@@ -194,7 +202,7 @@ export default function Tab() {
 						</Label>
 						<InputGroup>
 							<InputGroup.Input
-								className={rtl('text-right')}
+								className={`bg-background ${rtl('text-right')}`}
 								placeholder={t('fake_name')}
 								onFocus={() => {
 									setFocused(true)
@@ -246,6 +254,32 @@ export default function Tab() {
 						{t('update')}
 					</Button>
 					{focused && <View className='h-screen'></View>}
+				</View>
+			</BottomModal>
+
+			<BottomModal open={aiOpen} setOpen={setAiOpen}>
+				<View className='gap-10 mb-10'>
+					<BottomSheet.Title className={`text-2xl ${rtl('text-right')}`}>
+						{t('customise_ai')}
+					</BottomSheet.Title>
+					<ControlField style={{ direction: isRtl }}>
+						<View className={`flex-1 ${rtl('items-start')}`}>
+							<Label>{t("memorize")}</Label>
+							<Description className={rtl('text-left')}>{t("memorize_context")}</Description>
+						</View>
+						<ControlField.Indicator>
+							<Switch isDisabled/>
+						</ControlField.Indicator>
+					</ControlField>
+					<ControlField style={{ direction: isRtl }}>
+						<View className={`flex-1 ${rtl('items-start')}`}>
+							<Label>{t("increase_performance")}</Label>
+							<Description className={rtl('text-left')}>{t("increase_context")}</Description>
+						</View>
+						<ControlField.Indicator>
+							<Switch isDisabled/>
+						</ControlField.Indicator>
+					</ControlField>
 				</View>
 			</BottomModal>
 		</View>

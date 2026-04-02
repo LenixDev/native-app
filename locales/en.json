@@ -65,5 +65,10 @@
 	"get_code": "Get Code",
 	"are_you_sure_number": "Are you sure this the phone number",
 	"reset_error": "Please enter the account's phone number that you want to reset his password first and make sure to select a country code",
-	"password_changed": "Password changed successfully"
+	"password_changed": "Password changed successfully",
+	"customise_ai": "Customise AI",
+	"memorize": "Memorize History",
+	"memorize_context": "Help AI remember your past conversations to improve his answers for you and generate better quality responses. (still unavailable)",
+	"increase_performance": "Increase Performance",
+	"increase_context": "This will continusly keep deleting the topics you have skipped and started another topic in the same conversation. (still unavailable)"
 }

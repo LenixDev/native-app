@@ -65,5 +65,10 @@
 	"get_code": "Obtener código",
 	"are_you_sure_number": "¿Estás seguro de este número de teléfono?",
 	"reset_error": "Por favor, introduce el número de teléfono de la cuenta que quieres restablecer la contraseña primero y asegúrate de seleccionar un código de países",
-	"password_changed": "Contraseña cambiada correctamente"
+	"password_changed": "Contraseña cambiada correctamente",
+	"customise_ai": "Personalizar IA",
+	"memorize": "Recuerda la historia",
+	"memorize_context": "La IA se encargara de recordar tus conversaciones pasadas para mejorar sus respuestas para ti y generar respuestas de mejor calidad. (no disponible todavía)",
+	"increase_performance": "Mejorar el rendimiento",
+	"increase_context": "Esto se mantendrá continuamente eliminando los temas que has saltado y empezando otro tema en la misma conversación. (no disponible todavía)"
 }
