@@ -152,9 +152,7 @@ export const Auth = ({
 									size='sm'
 									onPress={() => {
 										if (phone.length === 0 || country === null) {
-											toast.show(
-												"Please enter the account's phone number that you want to reset his password first and make sure to select a country code",
-											)
+											toast.show(t("reset_error"))
 											return
 										}
 										setIsDialogOn(true)
@@ -170,10 +168,10 @@ export const Auth = ({
 									<Dialog.Title
 										className={`text-foreground text-2xl ${rtl('text-right')}`}
 									>
-										Reset Password
+										{t("reset_password")}
 									</Dialog.Title>
 									<Dialog.Description className={rtl('text-right')}>
-										Are you sure this the phone number {country?.dial}
+										{t('are_you_sure_number')} {country?.dial}
 										{phone}?
 									</Dialog.Description>
 									<Button
@@ -191,7 +189,7 @@ export const Auth = ({
 												.catch(raise)
 										}}
 									>
-										Get Code
+										{t('get_code')}
 									</Button>
 								</View>
 							</DialogProvider>

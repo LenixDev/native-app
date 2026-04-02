@@ -18,7 +18,7 @@ import {
 } from 'heroui-native'
 import { InputOTP, type InputOTPRef } from 'heroui-native/input-otp'
 import { useToast } from 'heroui-native/toast'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { KeyboardAvoidingView, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -37,14 +37,15 @@ export default function Page() {
 	const [isDialogOn, setIsDialogOn] = useState(false)
 	const [newPassword, setNewPassword] = useState('')
 
-	const sendResetCode = (phoneNumber: string) => {
+	const sendResetCode = useCallback((phoneNumber: string) => {
 		supabase.auth
 			.signInWithOtp({ phone: phoneNumber })
 			.then(({ error }) => {
 				if (error) toast.show(error.message)
 			})
 			.catch(raise)
-	}
+	}, [toast])
+	
 
 	useEffect(() => {
 		AsyncStorage.getItem(verificationKey)

@@ -61,5 +61,8 @@
 	"abort": "Abortar",
 	"phone_updated": "Teléfono actualizado correctamente",
 	"reset_password": "Restablecer contraseña",
-	"reduce_motion_desc": "Esta característica no está disponible todavía"
+	"reduce_motion_desc": "Esta característica no está disponible todavía",
+	"get_code": "Obtener código",
+	"are_you_sure_number": "¿Estás seguro de este número de teléfono?",
+	"reset_error": "Por favor, introduce el número de teléfono de la cuenta que quieres restablecer la contraseña primero y asegúrate de seleccionar un código de países"
 }

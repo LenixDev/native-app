@@ -201,7 +201,7 @@ export const Appearance = () => {
 								<ListGroup.ItemTitle className={rtl('text-left')}>
 									{t('reduce_motion')}
 								</ListGroup.ItemTitle>
-								<ListGroup.ItemDescription>
+								<ListGroup.ItemDescription className={rtl('text-left')}>
 									{t('reduce_motion_desc')}
 								</ListGroup.ItemDescription>
 							</ListGroup.ItemContent>
