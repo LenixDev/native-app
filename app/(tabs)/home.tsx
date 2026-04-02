@@ -1,6 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { raise } from '@/lib/utils'
-import { Lang } from '@/types'
+import type { Lang } from '@/types'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +13,7 @@ export default function Tab() {
 
 	useEffect(() => {
 		supabase.auth.getSession().then(({ error, data }) => {
-			const name = data.session?.user?.user_metadata.display_name
+			const name = data.session?.user.user_metadata.display_name
 			if (error || typeof name !== 'string' || !data.session) {
 				router.replace('/+not-found')
 				return
@@ -31,9 +31,9 @@ export default function Tab() {
 					}
 					i18n.changeLanguage(dataLang.lang).then(() => {
 						setMounted(true)
-					})
+					}).catch(raise)
 				})
-		})
+		}).catch(raise)
 	}, [])
 
 	if (!mounted) return null

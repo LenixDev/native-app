@@ -1,20 +1,15 @@
 import { useTheme } from '@/hooks/use-theme'
 import '@/i18next'
-import { supabase } from '@/lib/supabase'
 import '@/lib/theme'
-import { raise } from '@/lib/utils'
-import type { Lang } from '@/types'
 import { ThemeProvider } from '@react-navigation/native'
-import { router, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { HeroUINativeProvider } from 'heroui-native'
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-reanimated'
 import '../global.css'
 
-// eslint-disable-next-line max-lines-per-function
 export default function RootLayout() {
 	const theme = useTheme()
 	const { t, i18n } = useTranslation()
