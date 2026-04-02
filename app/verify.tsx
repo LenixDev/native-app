@@ -145,7 +145,7 @@ export default function Page() {
 						<Description>{t('did_not_receive')}</Description>
 						<LinkButton
 							onPress={() => {
-								isReset && sendResetCode(phone)
+								sendResetCode(phone)
 							}}
 						>
 							<LinkButton.Label className='dark:text-accent'>
@@ -185,7 +185,7 @@ export default function Page() {
 				<KeyboardAvoidingView behavior='padding'>
 					<DialogProvider isOpen={isDialogOn} setIsOpen={setIsDialogOn}>
 						<View className='gap-5'>
-							<Dialog.Title>New Password</Dialog.Title>
+							<Dialog.Title>{t("new_password")}</Dialog.Title>
 							<PasswordInput
 								className='bg-background'
 								onChangeText={value => {
@@ -202,12 +202,12 @@ export default function Page() {
 												return
 											}
 											router.replace('/(tabs)/home')
-											toast.show('The password was reset successfuly')
+											toast.show(t('password_changed'))
 										})
 										.catch(raise)
 								}}
 							>
-								Update
+								{t('update')}
 							</Button>
 						</View>
 					</DialogProvider>

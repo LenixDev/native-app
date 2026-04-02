@@ -64,5 +64,6 @@
 	"reduce_motion_desc": "This feature is not available yet",
 	"get_code": "Get Code",
 	"are_you_sure_number": "Are you sure this the phone number",
-	"reset_error": "Please enter the account's phone number that you want to reset his password first and make sure to select a country code"
+	"reset_error": "Please enter the account's phone number that you want to reset his password first and make sure to select a country code",
+	"password_changed": "Password changed successfully"
 }
