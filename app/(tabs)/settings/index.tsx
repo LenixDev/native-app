@@ -2,7 +2,7 @@ import { Appearance } from '@/components/appearance'
 import { BottomModal } from '@/components/bottom-modal'
 import { ListItem } from '@/components/list-item'
 import { IconSymbol } from '@/components/ui/icon-symbol'
-import { useRTL } from '@/hooks/use-rtl'
+import { useIsRTL, useRTL } from '@/hooks/use-rtl'
 import { supabase } from '@/lib/supabase'
 import { isValidName, raise } from '@/lib/utils'
 import { signout } from '@/services/auth'
@@ -51,6 +51,7 @@ export default function Tab() {
 	const { t } = useTranslation()
 	const { toast } = useToast()
 	const rtl = useRTL()
+	const isRtl = useIsRTL()
 	const { theme } = useUniwind()
 	const muted = useThemeColor('muted')
 	const inputRef = useRef<TextInput>(null)
@@ -189,15 +190,17 @@ export default function Tab() {
 
 			<BottomModal open={profileOpen} setOpen={setProfileOpen}>
 				<View className='gap-10 mb-10'>
-					<BottomSheet.Title>{t('update_name')}</BottomSheet.Title>
+					<BottomSheet.Title className={rtl('text-right')}>{t('update_name')}</BottomSheet.Title>
 					<TextField
 						isRequired
 						isInvalid={newName.length > 0 && !isValidName(newName)}
 					>
-						<Label>{t('display_name')}</Label>
+						<Label>
+							<Label.Text className={rtl('text-right')}>{t('display_name')}</Label.Text>
+						</Label>
 						<InputGroup>
 							<InputGroup.Input
-								className='bg-border'
+								className={`bg-border ${rtl('text-right')}`}
 								placeholder={t('fake_name')}
 								onFocus={() => {
 									setFocused(true)
@@ -209,7 +212,7 @@ export default function Tab() {
 								onChangeText={setNewName}
 								ref={inputRef}
 							/>
-							<InputGroup.Suffix>
+							{isRtl ? <InputGroup.Prefix>
 								<PressableFeedback
 									onPress={() => {
 										inputRef.current?.focus()
@@ -221,7 +224,19 @@ export default function Tab() {
 										size={16}
 									/>
 								</PressableFeedback>
-							</InputGroup.Suffix>
+							</InputGroup.Prefix> : <InputGroup.Suffix>
+								<PressableFeedback
+									onPress={() => {
+										inputRef.current?.focus()
+									}}
+								>
+									<IconSymbol
+										name='square.and.pencil'
+										color={muted}
+										size={16}
+									/>
+								</PressableFeedback>
+							</InputGroup.Suffix>}
 						</InputGroup>
 						<FieldError>{t('name_error')}</FieldError>
 					</TextField>
