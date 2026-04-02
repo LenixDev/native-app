@@ -143,7 +143,7 @@ export const Auth = ({
 					/>
 					{!isSignup && (
 						<>
-							<View className={`w-full mx-5 ${isRtl ? 'items-end' : 'items-start'}`}>
+							<View className={`w-full -mx-5 ${isRtl ? 'mx-5 items-start' : 'items-end'}`}>
 								<LinkButton size='sm' onPress={() => {
 									if (phone.length === 0 || country === null) {
 										toast.show('Please enter the account\'s phone number that you want to reset his password first and make sure to select a country code')

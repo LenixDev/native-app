@@ -111,7 +111,7 @@ export default function Page() {
 
 	return (
 		<>
-			<KeyboardAwareScrollView showsVerticalScrollIndicator>
+			<KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
 				<View className='flex-1 justify-center px-3 gap-8 my-5 mt-20'>
 					<KeyboardAvoidingView behavior='padding'>
 						<Text className={`text-2xl mb-2 mx-4 text-foreground ${rtl('text-right')}`}>
