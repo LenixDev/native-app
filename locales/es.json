@@ -60,5 +60,6 @@
 	"understood": "Entendido",
 	"abort": "Abortar",
 	"phone_updated": "Teléfono actualizado correctamente",
-	"reset_password": "Restablecer contraseña"
+	"reset_password": "Restablecer contraseña",
+	"reduce_motion_desc": "Esta característica no está disponible todavía"
 }

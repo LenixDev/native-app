@@ -60,5 +60,6 @@
 	"understood": "مفهوم",
 	"abort": "إلغاء",
 	"phone_updated": "تم تحديث رقم الهاتف بنجاح",
-	"reset_password": "إعادة تعيين كلمة المرور"
+	"reset_password": "إعادة تعيين كلمة المرور",
+	"reduce_motion_desc": "هذه الميزة غير متوفرة حتى الان"
 }
